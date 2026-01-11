@@ -1,0 +1,148 @@
+{
+  "a11y": {
+    "focus": {
+      "ring": {
+        "width": {
+          "$value": "2px",
+          "$type": "dimension",
+          "$description": "Focus ring width - visible focus indicator"
+        },
+        "offset": {
+          "$value": "2px",
+          "$type": "dimension",
+          "$description": "Space between element and focus ring"
+        },
+        "color": {
+          "$value": "#3b82f6",
+          "$type": "color",
+          "$description": "Focus ring color - must have 3:1 contrast (blue-500)"
+        }
+      }
+    },
+    "touch": {
+      "target": {
+        "min": {
+          "$value": "44px",
+          "$type": "dimension",
+          "$description": "WCAG 2.5.5 - Minimum touch target size"
+        },
+        "comfortable": {
+          "$value": "48px",
+          "$type": "dimension",
+          "$description": "Comfortable touch target for mobile"
+        }
+      },
+      "spacing": {
+        "$value": "8px",
+        "$type": "dimension",
+        "$description": "Minimum spacing between touch targets"
+      }
+    },
+    "motion": {
+      "duration": {
+        "instant": {
+          "$value": "0ms",
+          "$type": "duration",
+          "$description": "For prefers-reduced-motion"
+        },
+        "fast": {
+          "$value": "150ms",
+          "$type": "duration",
+          "$description": "Quick transitions"
+        },
+        "normal": {
+          "$value": "250ms",
+          "$type": "duration",
+          "$description": "Standard transitions"
+        },
+        "slow": {
+          "$value": "400ms",
+          "$type": "duration",
+          "$description": "Slower, more noticeable transitions"
+        }
+      },
+      "easing": {
+        "default": {
+          "$value": "cubic-bezier(0.4, 0, 0.2, 1)",
+          "$type": "cubicBezier",
+          "$description": "Standard easing curve"
+        },
+        "in": {
+          "$value": "cubic-bezier(0.4, 0, 1, 1)",
+          "$type": "cubicBezier",
+          "$description": "Accelerating easing"
+        },
+        "out": {
+          "$value": "cubic-bezier(0, 0, 0.2, 1)",
+          "$type": "cubicBezier",
+          "$description": "Decelerating easing"
+        }
+      }
+    },
+    "contrast": {
+      "text": {
+        "normal": {
+          "$value": "4.5",
+          "$type": "number",
+          "$description": "WCAG AA - Normal text contrast ratio"
+        },
+        "large": {
+          "$value": "3",
+          "$type": "number",
+          "$description": "WCAG AA - Large text (18px+) contrast ratio"
+        }
+      },
+      "ui": {
+        "$value": "3",
+        "$type": "number",
+        "$description": "WCAG AA - UI component contrast ratio"
+      }
+    },
+    "text": {
+      "lineLength": {
+        "min": {
+          "$value": "45ch",
+          "$type": "dimension",
+          "$description": "Minimum comfortable line length"
+        },
+        "max": {
+          "$value": "75ch",
+          "$type": "dimension",
+          "$description": "Maximum comfortable line length for readability"
+        },
+        "optimal": {
+          "$value": "65ch",
+          "$type": "dimension",
+          "$description": "Optimal line length for reading"
+        }
+      }
+    },
+    "zIndex": {
+      "dropdown": {
+        "$value": "1000",
+        "$type": "number",
+        "$description": "Dropdowns and popovers"
+      },
+      "sticky": {
+        "$value": "1100",
+        "$type": "number",
+        "$description": "Sticky headers"
+      },
+      "modal": {
+        "$value": "1200",
+        "$type": "number",
+        "$description": "Modal dialogs"
+      },
+      "toast": {
+        "$value": "1300",
+        "$type": "number",
+        "$description": "Toast notifications"
+      },
+      "tooltip": {
+        "$value": "1400",
+        "$type": "number",
+        "$description": "Tooltips - always on top"
+      }
+    }
+  }
+}
