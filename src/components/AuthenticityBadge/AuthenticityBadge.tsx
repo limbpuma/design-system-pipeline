@@ -1,0 +1,348 @@
+import * as React from 'react';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { cn } from '../../lib/utils';
+
+/**
+ * AuthenticityBadge Component
+ * Visual indicator for image authenticity scores
+ * Key differentiator for AI-powered real estate verification
+ */
+
+const badgeVariants = cva(
+  'inline-flex items-center gap-1.5 font-medium transition-all',
+  {
+    variants: {
+      status: {
+        verified: [
+          'bg-green-50 text-green-700 border-green-200',
+          'dark:bg-green-950/50 dark:text-green-400 dark:border-green-800',
+        ].join(' '),
+        caution: [
+          'bg-yellow-50 text-yellow-700 border-yellow-200',
+          'dark:bg-yellow-950/50 dark:text-yellow-400 dark:border-yellow-800',
+        ].join(' '),
+        alert: [
+          'bg-red-50 text-red-700 border-red-200',
+          'dark:bg-red-950/50 dark:text-red-400 dark:border-red-800',
+        ].join(' '),
+      },
+      size: {
+        sm: 'px-2 py-0.5 text-xs rounded-md border',
+        md: 'px-2.5 py-1 text-sm rounded-lg border',
+        lg: 'px-3 py-1.5 text-base rounded-lg border-2',
+      },
+      interactive: {
+        true: 'cursor-pointer hover:opacity-80',
+        false: '',
+      },
+    },
+    defaultVariants: {
+      status: 'verified',
+      size: 'md',
+      interactive: false,
+    },
+  }
+);
+
+export interface AuthenticityIndicator {
+  type: string;
+  description: string;
+  severity: 'low' | 'medium' | 'high' | 'positive';
+}
+
+export interface AuthenticityBadgeProps
+  extends Omit<VariantProps<typeof badgeVariants>, 'status' | 'interactive'> {
+  /** Authenticity score from 0 to 100 */
+  score: number;
+  /** Whether the images appear AI-generated */
+  isAIGenerated?: boolean;
+  /** Whether the images appear digitally edited */
+  isEdited?: boolean;
+  /** Show detailed tooltip/popup on click */
+  showDetails?: boolean;
+  /** Detailed indicators for the tooltip */
+  indicators?: AuthenticityIndicator[];
+  /** Click handler */
+  onClick?: () => void;
+  /** Additional class names */
+  className?: string;
+  /** Show label text alongside score */
+  showLabel?: boolean;
+}
+
+// Icons
+const CheckCircleIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+    <path d="m9 11 3 3L22 4" />
+  </svg>
+);
+
+const AlertTriangleIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+    <path d="M12 9v4" />
+    <path d="M12 17h.01" />
+  </svg>
+);
+
+const XCircleIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <path d="m15 9-6 6" />
+    <path d="m9 9 6 6" />
+  </svg>
+);
+
+const ShieldCheckIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>
+);
+
+const SparklesIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+  </svg>
+);
+
+const PencilIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+  </svg>
+);
+
+const InfoIcon = ({ className }: { className?: string }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 16v-4" />
+    <path d="M12 8h.01" />
+  </svg>
+);
+
+function getStatus(score: number): 'verified' | 'caution' | 'alert' {
+  if (score >= 90) return 'verified';
+  if (score >= 70) return 'caution';
+  return 'alert';
+}
+
+function getStatusConfig(status: 'verified' | 'caution' | 'alert') {
+  switch (status) {
+    case 'verified':
+      return {
+        label: 'Verified',
+        description: 'Authentic images',
+        Icon: CheckCircleIcon,
+      };
+    case 'caution':
+      return {
+        label: 'Review',
+        description: 'Needs review',
+        Icon: AlertTriangleIcon,
+      };
+    case 'alert':
+      return {
+        label: 'Alert',
+        description: 'Possible manipulation',
+        Icon: XCircleIcon,
+      };
+  }
+}
+
+export function AuthenticityBadge({
+  score,
+  isAIGenerated = false,
+  isEdited = false,
+  showDetails = false,
+  indicators = [],
+  onClick,
+  size,
+  className,
+  showLabel = true,
+}: AuthenticityBadgeProps) {
+  const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
+  const tooltipRef = React.useRef<HTMLDivElement>(null);
+
+  const status = getStatus(score);
+  const config = getStatusConfig(status);
+  const iconSize = size === 'lg' ? 'h-5 w-5' : size === 'sm' ? 'h-3 w-3' : 'h-4 w-4';
+  const isInteractive = showDetails || !!onClick;
+
+  // Close tooltip on outside click
+  React.useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+        setIsTooltipOpen(false);
+      }
+    }
+    if (isTooltipOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isTooltipOpen]);
+
+  const handleClick = () => {
+    if (showDetails) {
+      setIsTooltipOpen(!isTooltipOpen);
+    }
+    onClick?.();
+  };
+
+  const BadgeElement = isInteractive ? 'button' : 'div';
+
+  return (
+    <div className="relative inline-block" ref={tooltipRef}>
+      <BadgeElement
+        type={isInteractive ? 'button' : undefined}
+        onClick={isInteractive ? handleClick : undefined}
+        className={cn(badgeVariants({ status, size, interactive: isInteractive }), className)}
+        aria-label={`Authenticity score: ${score}%`}
+        aria-expanded={showDetails ? isTooltipOpen : undefined}
+      >
+        <config.Icon className={iconSize} />
+        <span>{score}%</span>
+        {showLabel && size !== 'sm' && <span className="hidden sm:inline">{config.label}</span>}
+      </BadgeElement>
+
+      {/* Warning badges for AI/Edited */}
+      {(isAIGenerated || isEdited) && (
+        <div className="absolute -top-1 -right-1 flex gap-0.5">
+          {isAIGenerated && (
+            <span
+              className="flex items-center justify-center w-4 h-4 bg-purple-500 rounded-full"
+              title="Possibly AI-generated"
+            >
+              <SparklesIcon className="h-2.5 w-2.5 text-white" />
+            </span>
+          )}
+          {isEdited && (
+            <span
+              className="flex items-center justify-center w-4 h-4 bg-orange-500 rounded-full"
+              title="Digitally edited"
+            >
+              <PencilIcon className="h-2.5 w-2.5 text-white" />
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* Details tooltip */}
+      {showDetails && isTooltipOpen && (
+        <div
+          className={cn(
+            'absolute z-50 top-full left-0 mt-2',
+            'w-72 p-4 rounded-xl',
+            'bg-[var(--semantic-color-popover-default)]',
+            'border border-[var(--semantic-color-border-default)]',
+            'shadow-xl'
+          )}
+          role="tooltip"
+        >
+          {/* Header */}
+          <div className="flex items-center gap-3 pb-3 border-b border-[var(--semantic-color-border-default)]">
+            <div
+              className={cn(
+                'flex items-center justify-center w-12 h-12 rounded-full',
+                status === 'verified' && 'bg-green-100 dark:bg-green-950',
+                status === 'caution' && 'bg-yellow-100 dark:bg-yellow-950',
+                status === 'alert' && 'bg-red-100 dark:bg-red-950'
+              )}
+            >
+              <ShieldCheckIcon
+                className={cn(
+                  'h-6 w-6',
+                  status === 'verified' && 'text-green-600 dark:text-green-400',
+                  status === 'caution' && 'text-yellow-600 dark:text-yellow-400',
+                  status === 'alert' && 'text-red-600 dark:text-red-400'
+                )}
+              />
+            </div>
+            <div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold">{score}</span>
+                <span className="text-[var(--semantic-color-muted-foreground)]">/100</span>
+              </div>
+              <p className="text-sm text-[var(--semantic-color-muted-foreground)]">{config.description}</p>
+            </div>
+          </div>
+
+          {/* Indicators */}
+          {indicators.length > 0 && (
+            <ul className="mt-3 space-y-2">
+              {indicators.map((indicator, index) => (
+                <li key={index} className="flex items-start gap-2 text-sm">
+                  {indicator.severity === 'positive' ? (
+                    <CheckCircleIcon className="h-4 w-4 mt-0.5 text-green-500 shrink-0" />
+                  ) : indicator.severity === 'high' ? (
+                    <XCircleIcon className="h-4 w-4 mt-0.5 text-red-500 shrink-0" />
+                  ) : indicator.severity === 'medium' ? (
+                    <AlertTriangleIcon className="h-4 w-4 mt-0.5 text-yellow-500 shrink-0" />
+                  ) : (
+                    <InfoIcon className="h-4 w-4 mt-0.5 text-[var(--semantic-color-muted-foreground)] shrink-0" />
+                  )}
+                  <span>{indicator.description}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* Warning flags */}
+          {(isAIGenerated || isEdited) && (
+            <div className="mt-3 pt-3 border-t border-[var(--semantic-color-border-default)] space-y-2">
+              {isAIGenerated && (
+                <div className="flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400">
+                  <SparklesIcon className="h-4 w-4" />
+                  <span>Possibly AI-generated</span>
+                </div>
+              )}
+              {isEdited && (
+                <div className="flex items-center gap-2 text-sm text-orange-600 dark:text-orange-400">
+                  <PencilIcon className="h-4 w-4" />
+                  <span>Digitally edited</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Footer note */}
+          <p className="mt-3 pt-3 border-t border-[var(--semantic-color-border-default)] text-xs text-[var(--semantic-color-muted-foreground)]">
+            Authenticity analysis uses AI to detect possible image manipulation.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Compact authenticity score display for cards
+ */
+export function AuthenticityScore({
+  score,
+  className,
+}: {
+  score: number;
+  className?: string;
+}) {
+  const status = getStatus(score);
+
+  return (
+    <div
+      className={cn(
+        'inline-flex items-center justify-center',
+        'w-10 h-10 rounded-lg font-bold text-sm',
+        status === 'verified' && 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400',
+        status === 'caution' && 'bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-400',
+        status === 'alert' && 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400',
+        className
+      )}
+      title={`Authenticity score: ${score}%`}
+    >
+      {score}%
+    </div>
+  );
+}
+
+export { badgeVariants };
+export default AuthenticityBadge;
