@@ -161,50 +161,81 @@ export function AuthenticityBadge({
   className,
   showLabel = true,
 }: AuthenticityBadgeProps) {
-  const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
-  const tooltipRef = React.useRef<HTMLDivElement>(null);
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const popoverRef = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<HTMLButtonElement | HTMLDivElement>(null);
+  const popoverId = React.useId();
 
   const status = getStatus(score);
   const config = getStatusConfig(status);
   const iconSize = size === 'lg' ? 'h-5 w-5' : size === 'sm' ? 'h-3 w-3' : 'h-4 w-4';
   const isInteractive = showDetails || !!onClick;
 
-  // Close tooltip on outside click
+  // Close popover on outside click
   React.useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
-        setIsTooltipOpen(false);
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsPopoverOpen(false);
       }
     }
-    if (isTooltipOpen) {
+    if (isPopoverOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isTooltipOpen]);
+  }, [isPopoverOpen]);
+
+  // Close on Escape key and trap focus
+  React.useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape' && isPopoverOpen) {
+        setIsPopoverOpen(false);
+        triggerRef.current?.focus();
+      }
+    }
+    if (isPopoverOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+      // Focus the popover when it opens
+      popoverRef.current?.focus();
+    }
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isPopoverOpen]);
 
   const handleClick = () => {
     if (showDetails) {
-      setIsTooltipOpen(!isTooltipOpen);
+      setIsPopoverOpen(!isPopoverOpen);
     }
     onClick?.();
   };
 
-  const BadgeElement = isInteractive ? 'button' : 'div';
-
   return (
-    <div className="relative inline-block" ref={tooltipRef}>
-      <BadgeElement
-        type={isInteractive ? 'button' : undefined}
-        role={isInteractive ? undefined : 'img'}
-        onClick={isInteractive ? handleClick : undefined}
-        className={cn(badgeVariants({ status, size, interactive: isInteractive }), className)}
-        aria-label={`Authenticity score: ${score}%`}
-        aria-expanded={isInteractive && showDetails ? isTooltipOpen : undefined}
-      >
-        <config.Icon className={iconSize} />
-        <span>{score}%</span>
-        {showLabel && size !== 'sm' && <span className="hidden sm:inline">{config.label}</span>}
-      </BadgeElement>
+    <div className="relative inline-block" ref={containerRef}>
+      {isInteractive ? (
+        <button
+          ref={triggerRef as React.RefObject<HTMLButtonElement>}
+          type="button"
+          onClick={handleClick}
+          className={cn(badgeVariants({ status, size, interactive: true }), className)}
+          aria-label={`Authenticity score: ${score}%`}
+          aria-expanded={showDetails ? isPopoverOpen : undefined}
+          aria-haspopup={showDetails ? 'dialog' : undefined}
+          aria-controls={showDetails && isPopoverOpen ? popoverId : undefined}
+        >
+          <config.Icon className={iconSize} aria-hidden="true" />
+          <span>{score}%</span>
+          {showLabel && size !== 'sm' && <span className="hidden sm:inline">{config.label}</span>}
+        </button>
+      ) : (
+        <div
+          role="img"
+          className={cn(badgeVariants({ status, size, interactive: false }), className)}
+          aria-label={`Authenticity score: ${score}%`}
+        >
+          <config.Icon className={iconSize} aria-hidden="true" />
+          <span aria-hidden="true">{score}%</span>
+          {showLabel && size !== 'sm' && <span className="hidden sm:inline" aria-hidden="true">{config.label}</span>}
+        </div>
+      )}
 
       {/* Warning badges for AI/Edited */}
       {(isAIGenerated || isEdited) && (
@@ -230,9 +261,11 @@ export function AuthenticityBadge({
         </div>
       )}
 
-      {/* Details tooltip */}
-      {showDetails && isTooltipOpen && (
+      {/* Details popover (accessible dialog pattern) */}
+      {showDetails && isPopoverOpen && (
         <div
+          ref={popoverRef}
+          id={popoverId}
           className={cn(
             'absolute z-50 top-full left-0 mt-2',
             'w-72 p-4 rounded-xl',
@@ -240,7 +273,10 @@ export function AuthenticityBadge({
             'border border-[var(--semantic-color-border-default)]',
             'shadow-xl'
           )}
-          role="tooltip"
+          role="dialog"
+          aria-modal="false"
+          aria-label={`Authenticity details: ${score}% - ${config.description}`}
+          tabIndex={-1}
         >
           {/* Header */}
           <div className="flex items-center gap-3 pb-3 border-b border-[var(--semantic-color-border-default)]">
@@ -253,6 +289,7 @@ export function AuthenticityBadge({
               )}
             >
               <ShieldCheckIcon
+                aria-hidden="true"
                 className={cn(
                   'h-6 w-6',
                   status === 'verified' && 'text-green-700 dark:text-green-200',
@@ -276,13 +313,13 @@ export function AuthenticityBadge({
               {indicators.map((indicator, index) => (
                 <li key={index} className="flex items-start gap-2 text-sm">
                   {indicator.severity === 'positive' ? (
-                    <CheckCircleIcon className="h-4 w-4 mt-0.5 text-green-700 dark:text-green-300 shrink-0" />
+                    <CheckCircleIcon aria-hidden="true" className="h-4 w-4 mt-0.5 text-green-700 dark:text-green-300 shrink-0" />
                   ) : indicator.severity === 'high' ? (
-                    <XCircleIcon className="h-4 w-4 mt-0.5 text-red-700 dark:text-red-300 shrink-0" />
+                    <XCircleIcon aria-hidden="true" className="h-4 w-4 mt-0.5 text-red-700 dark:text-red-300 shrink-0" />
                   ) : indicator.severity === 'medium' ? (
-                    <AlertTriangleIcon className="h-4 w-4 mt-0.5 text-yellow-700 dark:text-yellow-300 shrink-0" />
+                    <AlertTriangleIcon aria-hidden="true" className="h-4 w-4 mt-0.5 text-yellow-700 dark:text-yellow-300 shrink-0" />
                   ) : (
-                    <InfoIcon className="h-4 w-4 mt-0.5 text-gray-600 dark:text-gray-300 shrink-0" />
+                    <InfoIcon aria-hidden="true" className="h-4 w-4 mt-0.5 text-gray-600 dark:text-gray-300 shrink-0" />
                   )}
                   <span>{indicator.description}</span>
                 </li>
@@ -295,13 +332,13 @@ export function AuthenticityBadge({
             <div className="mt-3 pt-3 border-t border-[var(--semantic-color-border-default)] space-y-2">
               {isAIGenerated && (
                 <div className="flex items-center gap-2 text-sm text-purple-800 dark:text-purple-200">
-                  <SparklesIcon className="h-4 w-4" />
+                  <SparklesIcon aria-hidden="true" className="h-4 w-4" />
                   <span>Possibly AI-generated</span>
                 </div>
               )}
               {isEdited && (
                 <div className="flex items-center gap-2 text-sm text-orange-800 dark:text-orange-200">
-                  <PencilIcon className="h-4 w-4" />
+                  <PencilIcon aria-hidden="true" className="h-4 w-4" />
                   <span>Digitally edited</span>
                 </div>
               )}
@@ -329,6 +366,7 @@ export function AuthenticityScore({
   className?: string;
 }) {
   const status = getStatus(score);
+  const statusLabel = status === 'verified' ? 'Verified' : status === 'caution' ? 'Needs review' : 'Alert';
 
   return (
     <div
@@ -340,9 +378,10 @@ export function AuthenticityScore({
         status === 'alert' && 'bg-red-100 text-red-900 dark:bg-red-900 dark:text-red-100',
         className
       )}
-      title={`Authenticity score: ${score}%`}
+      role="img"
+      aria-label={`Authenticity score: ${score}% - ${statusLabel}`}
     >
-      {score}%
+      <span aria-hidden="true">{score}%</span>
     </div>
   );
 }

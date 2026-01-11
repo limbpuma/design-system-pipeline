@@ -267,10 +267,16 @@ export function SearchBar({
 }: SearchBarProps) {
   const [internalValue, setInternalValue] = React.useState('');
   const [isFocused, setIsFocused] = React.useState(false);
+  const [activeIndex, setActiveIndex] = React.useState(-1);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const currentValue = value !== undefined ? String(value) : internalValue;
+
+  // Reset activeIndex when suggestions change or dropdown closes
+  React.useEffect(() => {
+    setActiveIndex(-1);
+  }, [suggestions, isFocused]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (value === undefined) {
@@ -280,10 +286,24 @@ export function SearchBar({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && currentValue.trim()) {
-      onSearch?.(currentValue.trim());
-    }
-    if (e.key === 'Escape') {
+    const suggestionsVisible = showSuggestions && isFocused && suggestions.length > 0;
+
+    if (e.key === 'ArrowDown' && suggestionsVisible) {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : 0));
+    } else if (e.key === 'ArrowUp' && suggestionsVisible) {
+      e.preventDefault();
+      setActiveIndex((prev) => (prev > 0 ? prev - 1 : suggestions.length - 1));
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIndex >= 0 && activeIndex < suggestions.length) {
+        // Select the active suggestion
+        handleSuggestionClick(suggestions[activeIndex]);
+      } else if (currentValue.trim()) {
+        onSearch?.(currentValue.trim());
+      }
+    } else if (e.key === 'Escape') {
+      setActiveIndex(-1);
       inputRef.current?.blur();
     }
   };
@@ -362,6 +382,7 @@ export function SearchBar({
           aria-haspopup="listbox"
           aria-controls={shouldShowSuggestions ? suggestionsId : undefined}
           aria-autocomplete="list"
+          aria-activedescendant={shouldShowSuggestions && activeIndex >= 0 ? `${suggestionsId}-option-${activeIndex}` : undefined}
           {...props}
         />
 
@@ -441,18 +462,24 @@ export function SearchBar({
           role="listbox"
           aria-label="Search suggestions"
         >
-          {suggestions.map((suggestion) => (
+          {suggestions.map((suggestion, index) => (
             <button
               key={suggestion.id}
+              id={`${suggestionsId}-option-${index}`}
               onClick={() => handleSuggestionClick(suggestion)}
+              onMouseEnter={() => setActiveIndex(index)}
               className={cn(
                 'w-full flex items-center gap-3 px-3 py-2',
-                'text-left hover:bg-[var(--semantic-color-accent-default)] transition-colors',
-                'focus:bg-[var(--semantic-color-accent-default)] focus:outline-none'
+                'text-left transition-colors',
+                'focus:outline-none',
+                activeIndex === index
+                  ? 'bg-[var(--semantic-color-accent-default)]'
+                  : 'hover:bg-[var(--semantic-color-accent-default)]'
               )}
               role="option"
+              aria-selected={activeIndex === index}
             >
-              {getSuggestionIcon(suggestion.type)}
+              <span aria-hidden="true">{getSuggestionIcon(suggestion.type)}</span>
               <span className={cn(
                 'flex-1 truncate',
                 suggestion.type === 'example' && 'text-[var(--semantic-color-muted-foreground)]'
