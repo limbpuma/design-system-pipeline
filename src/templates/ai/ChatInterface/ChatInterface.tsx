@@ -111,6 +111,7 @@ export function ChatInterface({
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
+                  aria-hidden="true"
                 >
                   <path
                     strokeLinecap="round"
@@ -146,7 +147,7 @@ export function ChatInterface({
                   aria-label={showContextPanel ? 'Hide context panel' : 'Show context panel'}
                   aria-pressed={showContextPanel}
                 >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -169,7 +170,7 @@ export function ChatInterface({
                   )}
                   aria-label="Clear conversation"
                 >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
