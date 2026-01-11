@@ -1,12 +1,12 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { cn } from '../../lib/utils';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-// Utility function for merging Tailwind classes
-function cn(...inputs: (string | undefined)[]) {
-  return twMerge(clsx(inputs));
-}
+/**
+ * Button Component
+ * A versatile button with multiple variants and sizes
+ * Uses semantic design tokens for consistent theming
+ */
 
 // Button variants using CVA (Class Variance Authority)
 const buttonVariants = cva(
@@ -15,23 +15,57 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary:
-          'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 focus-visible:ring-blue-600',
-        secondary:
-          'bg-gray-100 text-gray-900 hover:bg-gray-200 active:bg-gray-300 focus-visible:ring-gray-400',
-        outline:
-          'border border-gray-300 bg-transparent hover:bg-gray-50 active:bg-gray-100 focus-visible:ring-gray-400',
-        ghost:
-          'bg-transparent hover:bg-gray-100 active:bg-gray-200 focus-visible:ring-gray-400',
-        danger:
-          'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-600',
-        success:
-          'bg-green-600 text-white hover:bg-green-700 active:bg-green-800 focus-visible:ring-green-600',
+        primary: [
+          'bg-[var(--semantic-color-primary-default)]',
+          'text-[var(--semantic-color-primary-foreground)]',
+          'hover:bg-[var(--semantic-color-primary-hover)]',
+          'active:bg-[var(--semantic-color-primary-active)]',
+          'focus-visible:ring-[var(--semantic-color-ring-default)]',
+        ].join(' '),
+        secondary: [
+          'bg-[var(--semantic-color-secondary-default)]',
+          'text-[var(--semantic-color-secondary-foreground)]',
+          'hover:bg-[var(--semantic-color-secondary-hover)]',
+          'active:bg-[var(--semantic-color-secondary-active)]',
+          'focus-visible:ring-[var(--semantic-color-ring-default)]',
+        ].join(' '),
+        outline: [
+          'border border-[var(--semantic-color-border-default)]',
+          'bg-transparent',
+          'hover:bg-[var(--semantic-color-accent-default)]',
+          'hover:text-[var(--semantic-color-accent-foreground)]',
+          'focus-visible:ring-[var(--semantic-color-ring-default)]',
+        ].join(' '),
+        ghost: [
+          'bg-transparent',
+          'hover:bg-[var(--semantic-color-accent-default)]',
+          'hover:text-[var(--semantic-color-accent-foreground)]',
+          'focus-visible:ring-[var(--semantic-color-ring-default)]',
+        ].join(' '),
+        danger: [
+          'bg-[var(--semantic-color-destructive-default)]',
+          'text-[var(--semantic-color-destructive-foreground)]',
+          'hover:bg-[var(--semantic-color-destructive-hover)]',
+          'active:bg-[var(--semantic-color-destructive-active)]',
+          'focus-visible:ring-[var(--semantic-color-destructive-default)]',
+        ].join(' '),
+        success: [
+          'bg-[var(--semantic-color-success-default)]',
+          'text-[var(--semantic-color-success-foreground)]',
+          'hover:bg-[var(--semantic-color-success-hover)]',
+          'active:bg-[var(--semantic-color-success-active)]',
+          'focus-visible:ring-[var(--semantic-color-success-default)]',
+        ].join(' '),
+        link: [
+          'text-[var(--semantic-color-primary-default)]',
+          'underline-offset-4 hover:underline',
+        ].join(' '),
       },
       size: {
-        sm: 'h-8 px-2.5 py-1.5 text-sm rounded-md',
+        sm: 'h-8 px-3 py-1.5 text-sm rounded-md',
         md: 'h-10 px-4 py-2 text-base rounded-md',
         lg: 'h-12 px-6 py-3 text-lg rounded-md',
+        icon: 'h-10 w-10 rounded-md',
       },
     },
     defaultVariants: {

@@ -82,10 +82,13 @@
     "vitest": "^2.0.0"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@radix-ui/react-tabs": "^1.1.13",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "tailwind-merge": "^2.5.0"
   },
   "peerDependencies": {
