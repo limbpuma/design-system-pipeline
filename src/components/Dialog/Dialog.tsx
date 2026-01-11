@@ -76,6 +76,7 @@ const DialogContent = React.forwardRef<
           strokeLinecap="round"
           strokeLinejoin="round"
           className="h-4 w-4"
+          aria-hidden="true"
         >
           <path d="M18 6 6 18" />
           <path d="m6 6 12 12" />
