@@ -14,16 +14,16 @@ const badgeVariants = cva(
     variants: {
       status: {
         verified: [
-          'bg-green-50 text-green-700 border-green-200',
-          'dark:bg-green-950/50 dark:text-green-400 dark:border-green-800',
+          'bg-green-100 text-green-900 border-green-300',
+          'dark:bg-green-900 dark:text-green-100 dark:border-green-700',
         ].join(' '),
         caution: [
-          'bg-yellow-50 text-yellow-700 border-yellow-200',
-          'dark:bg-yellow-950/50 dark:text-yellow-400 dark:border-yellow-800',
+          'bg-yellow-100 text-yellow-900 border-yellow-300',
+          'dark:bg-yellow-900 dark:text-yellow-100 dark:border-yellow-700',
         ].join(' '),
         alert: [
-          'bg-red-50 text-red-700 border-red-200',
-          'dark:bg-red-950/50 dark:text-red-400 dark:border-red-800',
+          'bg-red-100 text-red-900 border-red-300',
+          'dark:bg-red-900 dark:text-red-100 dark:border-red-700',
         ].join(' '),
       },
       size: {
@@ -244,17 +244,17 @@ export function AuthenticityBadge({
             <div
               className={cn(
                 'flex items-center justify-center w-12 h-12 rounded-full',
-                status === 'verified' && 'bg-green-100 dark:bg-green-950',
-                status === 'caution' && 'bg-yellow-100 dark:bg-yellow-950',
-                status === 'alert' && 'bg-red-100 dark:bg-red-950'
+                status === 'verified' && 'bg-green-100 dark:bg-green-900',
+                status === 'caution' && 'bg-yellow-100 dark:bg-yellow-900',
+                status === 'alert' && 'bg-red-100 dark:bg-red-900'
               )}
             >
               <ShieldCheckIcon
                 className={cn(
                   'h-6 w-6',
-                  status === 'verified' && 'text-green-600 dark:text-green-400',
-                  status === 'caution' && 'text-yellow-600 dark:text-yellow-400',
-                  status === 'alert' && 'text-red-600 dark:text-red-400'
+                  status === 'verified' && 'text-green-700 dark:text-green-200',
+                  status === 'caution' && 'text-yellow-700 dark:text-yellow-200',
+                  status === 'alert' && 'text-red-700 dark:text-red-200'
                 )}
               />
             </div>
@@ -273,13 +273,13 @@ export function AuthenticityBadge({
               {indicators.map((indicator, index) => (
                 <li key={index} className="flex items-start gap-2 text-sm">
                   {indicator.severity === 'positive' ? (
-                    <CheckCircleIcon className="h-4 w-4 mt-0.5 text-green-500 shrink-0" />
+                    <CheckCircleIcon className="h-4 w-4 mt-0.5 text-green-700 dark:text-green-300 shrink-0" />
                   ) : indicator.severity === 'high' ? (
-                    <XCircleIcon className="h-4 w-4 mt-0.5 text-red-500 shrink-0" />
+                    <XCircleIcon className="h-4 w-4 mt-0.5 text-red-700 dark:text-red-300 shrink-0" />
                   ) : indicator.severity === 'medium' ? (
-                    <AlertTriangleIcon className="h-4 w-4 mt-0.5 text-yellow-500 shrink-0" />
+                    <AlertTriangleIcon className="h-4 w-4 mt-0.5 text-yellow-700 dark:text-yellow-300 shrink-0" />
                   ) : (
-                    <InfoIcon className="h-4 w-4 mt-0.5 text-[var(--semantic-color-muted-foreground)] shrink-0" />
+                    <InfoIcon className="h-4 w-4 mt-0.5 text-gray-600 dark:text-gray-300 shrink-0" />
                   )}
                   <span>{indicator.description}</span>
                 </li>
@@ -291,13 +291,13 @@ export function AuthenticityBadge({
           {(isAIGenerated || isEdited) && (
             <div className="mt-3 pt-3 border-t border-[var(--semantic-color-border-default)] space-y-2">
               {isAIGenerated && (
-                <div className="flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400">
+                <div className="flex items-center gap-2 text-sm text-purple-800 dark:text-purple-200">
                   <SparklesIcon className="h-4 w-4" />
                   <span>Possibly AI-generated</span>
                 </div>
               )}
               {isEdited && (
-                <div className="flex items-center gap-2 text-sm text-orange-600 dark:text-orange-400">
+                <div className="flex items-center gap-2 text-sm text-orange-800 dark:text-orange-200">
                   <PencilIcon className="h-4 w-4" />
                   <span>Digitally edited</span>
                 </div>
@@ -332,9 +332,9 @@ export function AuthenticityScore({
       className={cn(
         'inline-flex items-center justify-center',
         'w-10 h-10 rounded-lg font-bold text-sm',
-        status === 'verified' && 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400',
-        status === 'caution' && 'bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-400',
-        status === 'alert' && 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400',
+        status === 'verified' && 'bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100',
+        status === 'caution' && 'bg-yellow-100 text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100',
+        status === 'alert' && 'bg-red-100 text-red-900 dark:bg-red-900 dark:text-red-100',
         className
       )}
       title={`Authenticity score: ${score}%`}

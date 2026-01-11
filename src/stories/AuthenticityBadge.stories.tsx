@@ -207,28 +207,28 @@ export const Comparison: Story = {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <div className="p-4 bg-green-50 rounded-lg text-center">
+        <div className="p-4 bg-green-100 rounded-lg text-center">
           <AuthenticityBadge score={95} size="lg" showLabel showDetails indicators={[
             { type: 'verified', description: 'All images verified', severity: 'positive' },
           ]} />
-          <p className="mt-2 text-sm text-green-700">High Trust</p>
-          <p className="text-xs text-green-600">90-100 points</p>
+          <p className="mt-2 text-sm text-green-900">High Trust</p>
+          <p className="text-xs text-green-800">90-100 points</p>
         </div>
 
-        <div className="p-4 bg-yellow-50 rounded-lg text-center">
+        <div className="p-4 bg-yellow-100 rounded-lg text-center">
           <AuthenticityBadge score={75} size="lg" showLabel showDetails indicators={[
             { type: 'warning', description: 'Minor edits detected', severity: 'medium' },
           ]} />
-          <p className="mt-2 text-sm text-yellow-700">Needs Review</p>
-          <p className="text-xs text-yellow-600">70-89 points</p>
+          <p className="mt-2 text-sm text-yellow-900">Needs Review</p>
+          <p className="text-xs text-yellow-800">70-89 points</p>
         </div>
 
-        <div className="p-4 bg-red-50 rounded-lg text-center">
+        <div className="p-4 bg-red-100 rounded-lg text-center">
           <AuthenticityBadge score={45} size="lg" showLabel isAIGenerated showDetails indicators={[
             { type: 'alert', description: 'Possible manipulation', severity: 'high' },
           ]} />
-          <p className="mt-2 text-sm text-red-700">Alert</p>
-          <p className="text-xs text-red-600">0-69 points</p>
+          <p className="mt-2 text-sm text-red-900">Alert</p>
+          <p className="text-xs text-red-800">0-69 points</p>
         </div>
       </div>
     </div>
