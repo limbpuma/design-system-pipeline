@@ -144,6 +144,7 @@ const FAQItemComponent: React.FC<FAQItemComponentProps> = ({
   return (
     <div className={cn(itemVariants({ variant }))}>
       <button
+        id={`faq-question-${item.id}`}
         onClick={onToggle}
         className={cn(
           'w-full flex items-center gap-4 text-left transition-colors',

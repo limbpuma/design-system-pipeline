@@ -243,12 +243,20 @@ export function DataTable<T extends Record<string, unknown>>({
                   key={String(column.key)}
                   className={cn(
                     'text-left font-semibold text-[var(--semantic-color-foreground-default)]',
-                    column.sortable && 'cursor-pointer select-none hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors',
+                    column.sortable && 'cursor-pointer select-none hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset',
                     column.align === 'center' && 'text-center',
                     column.align === 'right' && 'text-right'
                   )}
                   style={{ width: column.width }}
                   onClick={() => column.sortable && handleSort(String(column.key))}
+                  onKeyDown={(e) => {
+                    if (column.sortable && (e.key === 'Enter' || e.key === ' ')) {
+                      e.preventDefault();
+                      handleSort(String(column.key));
+                    }
+                  }}
+                  tabIndex={column.sortable ? 0 : undefined}
+                  role={column.sortable ? 'button' : undefined}
                   aria-sort={
                     sortColumn === column.key
                       ? sortDirection === 'asc'

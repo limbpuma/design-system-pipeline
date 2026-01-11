@@ -9,9 +9,9 @@ import { cn } from '../../../lib/utils';
  * Perfect for notification centers, alert lists, and messaging.
  *
  * @accessibility
- * - Uses semantic list structure with role="list"
+ * - Uses semantic list structure with ul/li elements
  * - New/unread notifications announced to screen readers
- * - Actions are keyboard accessible
+ * - Actions are keyboard accessible with Enter/Space support
  * - Dismiss actions have clear labels
  */
 
@@ -411,8 +411,6 @@ export function NotificationList({
       <div
         className={cn('overflow-y-auto')}
         style={{ maxHeight }}
-        role="list"
-        aria-label="Notifications"
       >
         {loading ? (
           <NotificationSkeleton />
@@ -437,14 +435,17 @@ export function NotificationList({
             <p>{emptyMessage}</p>
           </div>
         ) : (
-          notifications.map((notification) => (
-            <NotificationItem
-              key={notification.id}
-              notification={notification}
-              onClick={onNotificationClick}
-              onDismiss={onDismiss}
-            />
-          ))
+          <ul className="list-none m-0 p-0" aria-label="Notifications">
+            {notifications.map((notification) => (
+              <li key={notification.id} className="list-none">
+                <NotificationItem
+                  notification={notification}
+                  onClick={onNotificationClick}
+                  onDismiss={onDismiss}
+                />
+              </li>
+            ))}
+          </ul>
         )}
       </div>
 
