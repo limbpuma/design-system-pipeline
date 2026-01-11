@@ -60,6 +60,11 @@
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@storybook/addon-a11y": "^8.4.0",
+    "@storybook/test-runner": "^0.21.0",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.1.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "jsdom": "^25.0.0",
     "@storybook/addon-designs": "^8.0.0",
     "@storybook/addon-essentials": "^8.4.0",
     "@storybook/addon-interactions": "^8.4.0",

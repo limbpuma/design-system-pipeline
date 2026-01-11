@@ -1,0 +1,32 @@
+{
+  "name": "@limbpuma/design-system-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP Server for Design System - Exposes tokens, components, and rules to AI agents",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "design-system-mcp": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "mcp",
+    "design-system",
+    "ai-agents",
+    "model-context-protocol"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/limbpuma/design-system-pipeline.git",
+    "directory": "mcp-server"
+  }
+}

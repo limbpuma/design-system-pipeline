@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-01-11",
+  "blocks": [
+    {
+      "id": "hero-section",
+      "name": "Hero Section",
+      "path": "blocks/marketing/HeroSection",
+      "category": "marketing",
+      "metadata": "blocks/marketing/HeroSection/HeroSection.metadata.json",
+      "tags": ["hero", "landing-page", "above-fold", "conversion"]
+    },
+    {
+      "id": "feature-grid",
+      "name": "Feature Grid",
+      "path": "blocks/marketing/FeatureGrid",
+      "category": "marketing",
+      "metadata": null,
+      "tags": ["features", "benefits", "grid", "cards"]
+    },
+    {
+      "id": "stats-cards",
+      "name": "Stats Cards",
+      "path": "blocks/application/StatsCards",
+      "category": "application",
+      "metadata": null,
+      "tags": ["stats", "metrics", "kpi", "dashboard"]
+    }
+  ]
+}

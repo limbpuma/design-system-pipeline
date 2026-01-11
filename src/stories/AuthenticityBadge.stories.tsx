@@ -135,7 +135,7 @@ export const WithDetails: Story = {
   },
   render: (args) => (
     <div className="w-[400px] flex justify-center">
-      <AuthenticityBadge {...args} />
+      <AuthenticityBadge score={args.score ?? 95} {...args} />
       <p className="absolute bottom-4 text-sm text-gray-500">
         Click the badge to see details
       </p>
@@ -159,7 +159,7 @@ export const WithWarnings: Story = {
   },
   render: (args) => (
     <div className="w-[400px] flex justify-center">
-      <AuthenticityBadge {...args} />
+      <AuthenticityBadge score={args.score ?? 58} {...args} />
     </div>
   ),
 };

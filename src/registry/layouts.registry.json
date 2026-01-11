@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-01-11",
+  "layouts": [
+    {
+      "id": "app-shell",
+      "name": "App Shell",
+      "path": "layouts/AppShell",
+      "category": "shell",
+      "description": "Dashboard layout with sidebar, header, and footer",
+      "features": ["sidebar", "header", "footer", "responsive", "skip-link"]
+    },
+    {
+      "id": "auth-layout",
+      "name": "Auth Layout",
+      "path": "layouts/AuthLayout",
+      "category": "auth",
+      "description": "Centered layout for authentication pages",
+      "features": ["logo", "footer", "split-panel", "responsive"]
+    },
+    {
+      "id": "marketing-layout",
+      "name": "Marketing Layout",
+      "path": "layouts/MarketingLayout",
+      "category": "marketing",
+      "description": "Full-width layout for marketing pages",
+      "features": ["sticky-nav", "announcement-bar", "footer", "skip-link"]
+    }
+  ]
+}

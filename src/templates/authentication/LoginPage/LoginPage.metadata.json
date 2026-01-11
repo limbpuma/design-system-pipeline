@@ -1,0 +1,83 @@
+{
+  "id": "login-page",
+  "name": "Login Page",
+  "category": "authentication",
+  "version": "1.0.0",
+  "description": "Complete login page with email/password form, social login options, and remember me functionality",
+  "useCase": [
+    "user-authentication",
+    "member-login",
+    "admin-login",
+    "saas-apps"
+  ],
+  "layout": "AuthLayout",
+  "blocks": [],
+  "composition": {
+    "layouts": ["AuthLayout"],
+    "components": ["Button"],
+    "tokens": [
+      "semantic-color-foreground-default",
+      "semantic-color-foreground-muted",
+      "semantic-color-primary-default",
+      "semantic-color-border-default",
+      "semantic-color-background-default"
+    ]
+  },
+  "variants": {
+    "variant": ["centered", "split"],
+    "socialProviders": ["google", "github", "microsoft"]
+  },
+  "props": {
+    "title": {
+      "type": "string",
+      "required": false,
+      "default": "Welcome back"
+    },
+    "subtitle": {
+      "type": "string",
+      "required": false
+    },
+    "showSocialLogin": {
+      "type": "boolean",
+      "default": true
+    },
+    "showRememberMe": {
+      "type": "boolean",
+      "default": true
+    },
+    "showForgotPassword": {
+      "type": "boolean",
+      "default": true
+    },
+    "showSignUp": {
+      "type": "boolean",
+      "default": true
+    },
+    "variant": {
+      "type": "enum",
+      "values": ["centered", "split"],
+      "default": "centered"
+    },
+    "isLoading": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "accessibility": {
+    "wcag": "AA",
+    "features": [
+      "Form labels with htmlFor",
+      "Error announcements via role=alert",
+      "aria-describedby for form errors",
+      "Keyboard navigation support",
+      "Focus indicators"
+    ]
+  },
+  "tags": [
+    "authentication",
+    "login",
+    "form",
+    "social-login",
+    "complete-page"
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "id": "landing-page",
+  "name": "Landing Page",
+  "category": "marketing",
+  "version": "1.0.0",
+  "description": "Complete marketing landing page with hero section, feature grid, testimonials, and CTA",
+  "useCase": [
+    "product-launch",
+    "saas-marketing",
+    "startup-landing",
+    "feature-showcase",
+    "lead-generation"
+  ],
+  "layout": "MarketingLayout",
+  "blocks": ["HeroSection", "FeatureGrid"],
+  "composition": {
+    "layouts": ["MarketingLayout"],
+    "blocks": ["HeroSection", "FeatureGrid"],
+    "components": ["Button"],
+    "tokens": [
+      "semantic-color-foreground-default",
+      "semantic-color-foreground-muted",
+      "semantic-color-background-subtle",
+      "semantic-color-card-default",
+      "semantic-color-border-default",
+      "semantic-color-primary-default",
+      "semantic-color-accent-default"
+    ]
+  },
+  "variants": {
+    "heroLayout": ["image-left", "image-right", "image-top", "image-background", "centered"],
+    "heroSize": ["compact", "default", "hero", "full"],
+    "heroTheme": ["light", "dark", "gradient", "transparent"]
+  },
+  "props": {
+    "navigation": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "Navigation component"
+    },
+    "hero": {
+      "type": "object",
+      "required": true,
+      "description": "Hero section configuration"
+    },
+    "features": {
+      "type": "array",
+      "required": true,
+      "description": "Features to display in grid"
+    },
+    "testimonials": {
+      "type": "array",
+      "required": false,
+      "description": "Customer testimonials"
+    },
+    "pricingContent": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Custom pricing section"
+    },
+    "ctaSection": {
+      "type": "object",
+      "required": false,
+      "description": "Final call-to-action section config"
+    },
+    "footer": {
+      "type": "ReactNode",
+      "required": false
+    }
+  },
+  "accessibility": {
+    "wcag": "AA",
+    "features": [
+      "Semantic section structure",
+      "Proper heading hierarchy (h1 -> h2)",
+      "Skip link from MarketingLayout",
+      "Blockquote for testimonials",
+      "aria-labelledby for sections"
+    ]
+  },
+  "tags": [
+    "marketing",
+    "landing-page",
+    "hero",
+    "features",
+    "testimonials",
+    "cta",
+    "complete-page",
+    "conversion-optimized"
+  ]
+}

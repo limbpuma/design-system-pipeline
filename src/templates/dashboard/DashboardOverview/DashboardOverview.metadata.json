@@ -1,0 +1,83 @@
+{
+  "id": "dashboard-overview",
+  "name": "Dashboard Overview",
+  "category": "dashboard",
+  "version": "1.0.0",
+  "description": "Complete dashboard overview page with stats cards, analytics chart area, and activity feed",
+  "useCase": [
+    "admin-dashboard",
+    "analytics-overview",
+    "saas-dashboard",
+    "crm-dashboard",
+    "reporting-overview"
+  ],
+  "layout": "AppShell",
+  "blocks": ["StatsCards"],
+  "composition": {
+    "layouts": ["AppShell"],
+    "blocks": ["StatsCards"],
+    "components": [],
+    "tokens": [
+      "semantic-color-foreground-default",
+      "semantic-color-foreground-muted",
+      "semantic-color-border-default",
+      "semantic-color-card-default"
+    ]
+  },
+  "variants": {
+    "statsVariant": ["default", "compact", "detailed"],
+    "statsColumns": [2, 3, 4]
+  },
+  "props": {
+    "stats": {
+      "type": "array",
+      "required": true,
+      "description": "Array of stat objects with label, value, change, and trend"
+    },
+    "activities": {
+      "type": "array",
+      "required": false,
+      "description": "Recent activity items"
+    },
+    "chartContent": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Chart or graph component to display"
+    },
+    "sidebar": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "Sidebar navigation content"
+    },
+    "header": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Header content"
+    },
+    "title": {
+      "type": "string",
+      "default": "Dashboard"
+    },
+    "sidebarCollapsed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "accessibility": {
+    "wcag": "AA",
+    "features": [
+      "Semantic landmarks from AppShell",
+      "Activity feed uses list role",
+      "Skip link support",
+      "Keyboard navigation"
+    ]
+  },
+  "tags": [
+    "dashboard",
+    "analytics",
+    "stats",
+    "activity-feed",
+    "complete-page",
+    "data-visualization"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-01-11",
+  "templates": [
+    {
+      "id": "login-page",
+      "name": "Login Page",
+      "path": "templates/authentication/LoginPage",
+      "category": "authentication",
+      "layout": "AuthLayout",
+      "blocks": [],
+      "tags": ["authentication", "login", "form", "social-login", "complete-page"],
+      "description": "Complete login page with email/password form, social login options, and remember me functionality"
+    },
+    {
+      "id": "dashboard-overview",
+      "name": "Dashboard Overview",
+      "path": "templates/dashboard/DashboardOverview",
+      "category": "dashboard",
+      "layout": "AppShell",
+      "blocks": ["StatsCards"],
+      "tags": ["dashboard", "analytics", "stats", "activity-feed", "complete-page"],
+      "description": "Complete dashboard overview page with stats cards, analytics chart area, and activity feed"
+    },
+    {
+      "id": "landing-page",
+      "name": "Landing Page",
+      "path": "templates/marketing/LandingPage",
+      "category": "marketing",
+      "layout": "MarketingLayout",
+      "blocks": ["HeroSection", "FeatureGrid"],
+      "tags": ["marketing", "landing-page", "hero", "features", "testimonials", "cta", "complete-page"],
+      "description": "Complete marketing landing page with hero section, feature grid, testimonials, and CTA"
+    }
+  ]
+}
