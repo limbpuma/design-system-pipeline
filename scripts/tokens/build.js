@@ -1,6 +1,7 @@
 /**
  * Design Tokens Build Script
  * Transforms tokens from JSON to Tailwind CSS and CSS Variables
+ * Supports OKLCH color format and dark mode
  */
 
 import StyleDictionary from 'style-dictionary';
@@ -19,6 +20,68 @@ if (!existsSync(outputDir)) {
 }
 
 console.log('🎨 Building design tokens...\n');
+
+// Convert HEX to OKLCH
+function hexToOklch(hex) {
+  // Remove # if present
+  hex = hex.replace('#', '');
+
+  // Parse hex to RGB
+  const r = parseInt(hex.slice(0, 2), 16) / 255;
+  const g = parseInt(hex.slice(2, 4), 16) / 255;
+  const b = parseInt(hex.slice(4, 6), 16) / 255;
+
+  // Convert to linear RGB
+  const toLinear = (c) => c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  const lr = toLinear(r);
+  const lg = toLinear(g);
+  const lb = toLinear(b);
+
+  // Convert to XYZ (D65)
+  const x = 0.4124564 * lr + 0.3575761 * lg + 0.1804375 * lb;
+  const y = 0.2126729 * lr + 0.7151522 * lg + 0.0721750 * lb;
+  const z = 0.0193339 * lr + 0.1191920 * lg + 0.9503041 * lb;
+
+  // Convert XYZ to LMS
+  const l = 0.8189330101 * x + 0.3618667424 * y - 0.1288597137 * z;
+  const m = 0.0329845436 * x + 0.9293118715 * y + 0.0361456387 * z;
+  const s = 0.0482003018 * x + 0.2643662691 * y + 0.6338517070 * z;
+
+  // Convert to L'M'S' (cube root)
+  const l_ = Math.cbrt(l);
+  const m_ = Math.cbrt(m);
+  const s_ = Math.cbrt(s);
+
+  // Convert to OKLab
+  const L = 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_;
+  const A = 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_;
+  const B = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_;
+
+  // Convert OKLab to OKLCH
+  const C = Math.sqrt(A * A + B * B);
+  let H = Math.atan2(B, A) * 180 / Math.PI;
+  if (H < 0) H += 360;
+
+  // Round values
+  const lightness = Math.round(L * 1000) / 1000;
+  const chroma = Math.round(C * 1000) / 1000;
+  const hue = Math.round(H * 100) / 100;
+
+  // Return OKLCH format
+  if (chroma < 0.001) {
+    return `oklch(${lightness} 0 0)`;
+  }
+  return `oklch(${lightness} ${chroma} ${hue})`;
+}
+
+// Register OKLCH transform
+StyleDictionary.registerTransform({
+  name: 'color/oklch',
+  type: 'value',
+  transitive: true,
+  filter: (token) => token.type === 'color' && token.value && token.value.startsWith('#'),
+  transform: (token) => hexToOklch(token.value)
+});
 
 // Helper to build tokens object for Tailwind
 function buildTailwindTokens(dictionary) {
@@ -139,7 +202,56 @@ StyleDictionary.registerFormat({
   }
 });
 
-// Custom format for CSS variables
+// Custom format for CSS variables with dark mode support
+StyleDictionary.registerFormat({
+  name: 'css/variables-with-dark',
+  format: ({ dictionary }) => {
+    const lightTokens = [];
+    const darkTokens = [];
+
+    dictionary.allTokens.forEach(token => {
+      const name = token.path.join('-');
+
+      // Separate dark mode tokens
+      if (token.path[0] === 'dark') {
+        const darkName = token.path.slice(1).join('-');
+        darkTokens.push({ name: darkName, value: token.value });
+      } else {
+        lightTokens.push({ name, value: token.value });
+      }
+    });
+
+    let css = `/**
+ * CSS Custom Properties with Dark Mode Support
+ * Auto-generated from design tokens using OKLCH color space
+ * DO NOT EDIT DIRECTLY
+ */
+
+@layer base {
+  :root {
+`;
+
+    lightTokens.forEach(({ name, value }) => {
+      css += `    --${name}: ${value};\n`;
+    });
+
+    css += `  }
+
+  .dark {
+`;
+
+    darkTokens.forEach(({ name, value }) => {
+      css += `    --${name}: ${value};\n`;
+    });
+
+    css += `  }
+}
+`;
+    return css;
+  }
+});
+
+// Custom format for CSS variables (legacy, no dark mode)
 StyleDictionary.registerFormat({
   name: 'css/variables-flat',
   format: ({ dictionary }) => {
@@ -165,7 +277,9 @@ StyleDictionary.registerFormat({
 StyleDictionary.registerFormat({
   name: 'typescript/tokens',
   format: ({ dictionary }) => {
-    const tokenNames = dictionary.allTokens.map(token => `'${token.path.join('-')}'`);
+    const tokenNames = dictionary.allTokens
+      .filter(token => token.path[0] !== 'dark')
+      .map(token => `'${token.path.join('-')}'`);
 
     return `/**
  * Design Token Types
@@ -196,14 +310,14 @@ function setNestedValue(obj, path, value) {
   current[path[path.length - 1]] = value;
 }
 
-// Configure Style Dictionary
+// Configure Style Dictionary with OKLCH transform
 const sd = new StyleDictionary({
   source: [
     'tokens/**/*.json'
   ],
   platforms: {
     tailwind: {
-      transformGroup: 'web',
+      transforms: ['attribute/cti', 'name/kebab', 'color/oklch'],
       buildPath: 'src/styles/generated/',
       files: [
         {
@@ -217,12 +331,12 @@ const sd = new StyleDictionary({
       ]
     },
     css: {
-      transformGroup: 'css',
+      transforms: ['attribute/cti', 'name/kebab', 'color/oklch'],
       buildPath: 'src/styles/generated/',
       files: [
         {
           destination: 'variables.css',
-          format: 'css/variables-flat'
+          format: 'css/variables-with-dark'
         }
       ]
     },
@@ -246,8 +360,9 @@ try {
   console.log('Generated files:');
   console.log('  - src/styles/generated/tailwind.preset.js');
   console.log('  - src/styles/generated/theme.json');
-  console.log('  - src/styles/generated/variables.css');
+  console.log('  - src/styles/generated/variables.css (with dark mode)');
   console.log('  - src/styles/generated/tokens.d.ts');
+  console.log('\n🎨 Colors converted to OKLCH format for better perception');
 } catch (error) {
   console.error('❌ Error building tokens:', error);
   process.exit(1);
