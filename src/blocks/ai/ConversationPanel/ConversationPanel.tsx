@@ -82,6 +82,7 @@ const SparkleIcon: React.FC<{ className?: string }> = ({ className }) => (
     fill="none"
     stroke="currentColor"
     strokeWidth={1.5}
+    aria-hidden="true"
   >
     <path
       strokeLinecap="round"
@@ -153,7 +154,7 @@ const SuggestionCard: React.FC<{
         'group-hover:from-blue-500/20 group-hover:to-violet-500/20',
         'transition-colors duration-200'
       )}>
-        <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
           {icons[index % icons.length]}
         </svg>
       </div>
@@ -165,7 +166,7 @@ const SuggestionCard: React.FC<{
           <span className="text-xs text-slate-500 dark:text-slate-400">{suggestion.category}</span>
         )}
       </div>
-      <svg className="w-4 h-4 text-slate-400 group-hover:text-blue-500 transition-colors flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <svg className="w-4 h-4 text-slate-400 group-hover:text-blue-500 transition-colors flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
       </svg>
     </button>
@@ -342,7 +343,7 @@ export function ConversationPanel({
             {messages.length === 1 && messages[0].role === 'user' && (
               <div className="text-center py-4 animate-in fade-in duration-500">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-xs text-slate-500 dark:text-slate-400">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>Conversation started</span>
@@ -394,7 +395,7 @@ export function ConversationPanel({
             )}
             aria-label="Scroll to bottom"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
             <span className="text-sm font-medium">New messages</span>
@@ -438,7 +439,7 @@ export function ConversationPanel({
 
         {/* Footer hint */}
         <div className="mt-3 flex items-center justify-center gap-1 text-xs text-slate-400 dark:text-slate-500">
-          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <span>AI may produce inaccurate information</span>

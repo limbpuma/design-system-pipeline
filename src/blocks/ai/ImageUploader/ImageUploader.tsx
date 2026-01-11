@@ -102,6 +102,7 @@ const UploadIcon: React.FC<{ isActive?: boolean }> = ({ isActive }) => (
       viewBox="0 0 24 24"
       stroke="currentColor"
       strokeWidth={1.5}
+      aria-hidden="true"
     >
       <path
         strokeLinecap="round"
@@ -123,7 +124,7 @@ const ProgressRing: React.FC<{ progress: number; size?: number }> = ({ progress,
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <svg width={size} height={size} className="transform -rotate-90">
+    <svg width={size} height={size} className="transform -rotate-90" aria-hidden="true">
       <circle
         cx={size / 2}
         cy={size / 2}
@@ -355,6 +356,7 @@ export function ImageUploader({
             viewBox="0 0 24 24"
             stroke="currentColor"
             strokeWidth={2}
+            aria-hidden="true"
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
@@ -380,7 +382,7 @@ export function ImageUploader({
             >
               <img
                 src={image.preview}
-                alt=""
+                alt="Uploaded file preview"
                 className="w-full h-full object-cover"
               />
 
@@ -395,7 +397,7 @@ export function ImageUploader({
               {/* Error overlay */}
               {image.status === 'error' && (
                 <div className="absolute inset-0 bg-red-500/90 backdrop-blur-sm flex flex-col items-center justify-center p-3">
-                  <svg className="w-8 h-8 text-white mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-8 h-8 text-white mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                   </svg>
                   <p className="text-white text-xs text-center font-medium">{image.error || 'Upload failed'}</p>
@@ -410,7 +412,7 @@ export function ImageUploader({
                   'flex items-center justify-center',
                   'animate-in zoom-in duration-300'
                 )}>
-                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
@@ -433,7 +435,7 @@ export function ImageUploader({
                 )}
                 aria-label="Remove image"
               >
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -484,6 +486,7 @@ export function ImageUploader({
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth={2}
+                  aria-hidden="true"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                 </svg>
