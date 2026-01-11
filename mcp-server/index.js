@@ -227,14 +227,14 @@ const TOOLS = [
   },
   {
     name: "validate_accessibility",
-    description: "Get accessibility checklist for a component type",
+    description: "Get accessibility checklist for a component type, including AI-specific interfaces",
     inputSchema: {
       type: "object",
       properties: {
         componentType: {
           type: "string",
-          enum: ["button", "dialog", "tabs", "combobox", "form", "navigation"],
-          description: "Type of component to get accessibility requirements for",
+          enum: ["button", "dialog", "tabs", "combobox", "form", "navigation", "ai-chat", "ai-progress", "ai-results"],
+          description: "Type of component to get accessibility requirements for. Use ai-chat, ai-progress, or ai-results for AI-specific components.",
         },
       },
       required: ["componentType"],
@@ -264,14 +264,14 @@ const TOOLS = [
   // ============================================
   {
     name: "list_blocks",
-    description: "List available UI blocks (page sections) with optional filtering",
+    description: "List available UI blocks (page sections) with optional filtering. Includes AI-specific blocks for analysis workflows, chat interfaces, and AI results display.",
     inputSchema: {
       type: "object",
       properties: {
         category: {
           type: "string",
-          enum: ["marketing", "application", "ecommerce", "authentication", "common"],
-          description: "Filter by block category",
+          enum: ["marketing", "application", "ecommerce", "authentication", "common", "ai"],
+          description: "Filter by block category. Use 'ai' for AI-specific blocks like ImageUploader, AnalysisProgress, ConversationPanel, AIResultsCard.",
         },
         tags: {
           type: "array",
@@ -349,14 +349,14 @@ const TOOLS = [
   // ============================================
   {
     name: "list_templates",
-    description: "List available page templates with optional filtering",
+    description: "List available page templates with optional filtering. Includes AI-first templates for analysis workflows and conversational interfaces.",
     inputSchema: {
       type: "object",
       properties: {
         category: {
           type: "string",
-          enum: ["marketing", "authentication", "dashboard", "ecommerce"],
-          description: "Filter by template category",
+          enum: ["marketing", "authentication", "dashboard", "ecommerce", "ai"],
+          description: "Filter by template category. Use 'ai' for AI-specific templates like AIAnalysisPage and ChatInterface.",
         },
         layout: {
           type: "string",
@@ -599,6 +599,83 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 - aria-label="Main navigation"
 - aria-current="page" on current link
 - aria-expanded on mobile toggle
+`,
+        "ai-chat": `
+## AI Chat Interface Accessibility Checklist
+
+- [ ] Chat container has role="log" with aria-live="polite"
+- [ ] Messages are properly labeled (user vs assistant)
+- [ ] Streaming text updates announced to screen readers
+- [ ] Loading/typing indicators have aria-label
+- [ ] Input field has proper label
+- [ ] Send button is keyboard accessible
+- [ ] Voice input button has aria-label and state
+- [ ] Error messages announced with role="alert"
+- [ ] Message timestamps accessible
+- [ ] Skip to latest message option
+
+### Required ARIA
+- role="log" on message container
+- aria-live="polite" for new messages
+- aria-busy="true" during AI response
+- role="status" for typing indicator
+
+### AI-Specific Considerations
+- Announce when AI starts/stops responding
+- Provide text alternatives for voice input
+- Allow users to pause streaming responses
+- Offer transcript/history download
+`,
+        "ai-progress": `
+## AI Analysis Progress Accessibility Checklist
+
+- [ ] Progress uses role="progressbar" or role="status"
+- [ ] aria-valuenow, aria-valuemin, aria-valuemax set
+- [ ] Step status changes announced
+- [ ] Current step clearly identified
+- [ ] Estimated time remaining announced
+- [ ] Error states have role="alert"
+- [ ] Cancel button accessible
+- [ ] Non-visual indication of progress
+
+### Required ARIA
+- role="progressbar" for deterministic progress
+- role="status" for step-based progress
+- aria-valuenow="{percent}"
+- aria-valuemin="0"
+- aria-valuemax="100"
+- aria-label="Analysis progress"
+
+### AI-Specific Considerations
+- Announce each analysis phase completion
+- Provide abort/cancel functionality
+- Explain what AI is doing in plain language
+- Allow users to skip progress animation
+`,
+        "ai-results": `
+## AI Results Card Accessibility Checklist
+
+- [ ] Results container has appropriate landmark
+- [ ] Score announced with context (e.g., "75 out of 100")
+- [ ] Findings list uses semantic markup (ul/li)
+- [ ] Severity levels color-independent (icons + text)
+- [ ] Export/Share buttons keyboard accessible
+- [ ] Expandable sections use aria-expanded
+- [ ] Cost estimates properly formatted
+- [ ] Images have meaningful alt text
+
+### Required ARIA
+- aria-labelledby on results section
+- role="list" on findings container
+- aria-expanded on collapsible sections
+- aria-describedby for additional context
+
+### AI-Specific Considerations
+- Explain confidence levels in plain language
+- Provide text alternative to visual score gauge
+- Link findings to relevant documentation
+- Allow findings to be filtered/sorted accessibly
+- Offer results in multiple formats (PDF, text)
 `,
       };
 

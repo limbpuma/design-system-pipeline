@@ -25,6 +25,38 @@
       "category": "application",
       "metadata": null,
       "tags": ["stats", "metrics", "kpi", "dashboard"]
+    },
+    {
+      "id": "image-uploader",
+      "name": "Image Uploader",
+      "path": "blocks/ai/ImageUploader",
+      "category": "ai",
+      "metadata": null,
+      "tags": ["ai", "upload", "images", "drag-drop", "preview", "analysis"]
+    },
+    {
+      "id": "analysis-progress",
+      "name": "Analysis Progress",
+      "path": "blocks/ai/AnalysisProgress",
+      "category": "ai",
+      "metadata": null,
+      "tags": ["ai", "progress", "steps", "workflow", "status"]
+    },
+    {
+      "id": "conversation-panel",
+      "name": "Conversation Panel",
+      "path": "blocks/ai/ConversationPanel",
+      "category": "ai",
+      "metadata": null,
+      "tags": ["ai", "chat", "conversation", "messages", "assistant"]
+    },
+    {
+      "id": "ai-results-card",
+      "name": "AI Results Card",
+      "path": "blocks/ai/AIResultsCard",
+      "category": "ai",
+      "metadata": null,
+      "tags": ["ai", "results", "score", "findings", "analysis", "report"]
     }
   ]
 }

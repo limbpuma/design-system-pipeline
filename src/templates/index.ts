@@ -6,3 +6,16 @@ export { DashboardOverview, type DashboardOverviewProps, type Activity } from '.
 
 // Marketing Templates
 export { LandingPage, type LandingPageProps, type Testimonial } from './marketing/LandingPage';
+
+// AI Templates
+export {
+  AIAnalysisPage,
+  type AIAnalysisPageProps,
+  type AnalysisPhase,
+  type AnalysisResult,
+} from './ai/AIAnalysisPage';
+export {
+  ChatInterface,
+  type ChatInterfaceProps,
+  type ChatContext,
+} from './ai/ChatInterface';

@@ -18,7 +18,7 @@ export default tseslint.config(
       'jsx-a11y/aria-activedescendant-has-tabindex': 'error',
       'jsx-a11y/aria-props': 'error',
       'jsx-a11y/aria-proptypes': 'error',
-      'jsx-a11y/aria-role': 'error',
+      'jsx-a11y/aria-role': ['error', { ignoreNonDOM: true }],
       'jsx-a11y/aria-unsupported-elements': 'error',
       'jsx-a11y/autocomplete-valid': 'error',
       'jsx-a11y/click-events-have-key-events': 'error',

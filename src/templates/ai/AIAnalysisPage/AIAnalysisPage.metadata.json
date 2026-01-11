@@ -1,0 +1,42 @@
+{
+  "id": "ai-analysis-page",
+  "name": "AI Analysis Page",
+  "category": "ai",
+  "version": "1.0.0",
+  "description": "Complete page template for AI-powered analysis workflows. Handles upload, processing, and results display.",
+  "useCase": [
+    "image-analysis",
+    "ai-workflows",
+    "inspection-tools",
+    "diagnostic-apps"
+  ],
+  "layout": "AppShell",
+  "blocks": [
+    { "id": "image-uploader", "props": { "variant": "elevated", "size": "lg" } },
+    { "id": "analysis-progress", "props": { "showDetails": true } },
+    { "id": "ai-results-card", "props": { "variant": "elevated" } }
+  ],
+  "components": [
+    "AIStatusIndicator",
+    "Button"
+  ],
+  "variants": {
+    "domain": ["home-inspection", "skin-analysis", "car-inspection", "crop-analysis"],
+    "branding": ["default", "branded"]
+  },
+  "props": {
+    "phase": { "type": "enum", "values": ["upload", "analyzing", "results", "error"], "required": true },
+    "images": { "type": "array", "required": true },
+    "onFilesSelected": { "type": "function", "required": true },
+    "onRemoveImage": { "type": "function", "required": true },
+    "onStartAnalysis": { "type": "function", "required": true },
+    "results": { "type": "object", "required": false },
+    "sidebar": { "type": "ReactNode", "required": true }
+  },
+  "accessibility": {
+    "wcag": "AA",
+    "landmarks": ["main", "navigation"],
+    "announcements": ["status-changes", "phase-transitions"]
+  },
+  "tags": ["ai", "analysis", "upload", "workflow", "inspection", "results"]
+}

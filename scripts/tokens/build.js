@@ -177,6 +177,10 @@ StyleDictionary.registerFormat({
   format: ({ dictionary }) => {
     const tokens = buildTailwindTokens(dictionary);
 
+    // Convert JSON to valid JS object notation, keeping quotes for keys starting with numbers
+    const jsObject = JSON.stringify(tokens, null, 4)
+      .replace(/"([a-zA-Z_][a-zA-Z0-9_]*)":/g, '$1:'); // Only unquote valid JS identifiers
+
     return `/**
  * Tailwind CSS Preset
  * Auto-generated from design tokens
@@ -186,7 +190,7 @@ StyleDictionary.registerFormat({
 /** @type {import('tailwindcss').Config} */
 export default {
   theme: {
-    extend: ${JSON.stringify(tokens, null, 4).replace(/"([^"]+)":/g, '$1:')}
+    extend: ${jsObject}
   }
 };
 `;

@@ -1,0 +1,38 @@
+{
+  "id": "chat-interface",
+  "name": "Chat Interface",
+  "category": "ai",
+  "version": "1.0.0",
+  "description": "Full-page conversational AI interface with optional context panel. Ideal for search refinement, AI assistants, and customer support.",
+  "useCase": [
+    "ai-chat",
+    "search-refinement",
+    "customer-support",
+    "conversational-ui"
+  ],
+  "layout": "AppShell",
+  "blocks": [
+    { "id": "conversation-panel", "props": {} }
+  ],
+  "components": [
+    "ChatMessage",
+    "PromptInput"
+  ],
+  "variants": {
+    "layout": ["chat-only", "chat-with-context"],
+    "features": ["voice", "attachments", "suggestions"]
+  },
+  "props": {
+    "messages": { "type": "array", "required": true },
+    "inputValue": { "type": "string", "required": true },
+    "onInputChange": { "type": "function", "required": true },
+    "onSubmit": { "type": "function", "required": true },
+    "sidebar": { "type": "ReactNode", "required": true }
+  },
+  "accessibility": {
+    "wcag": "AA",
+    "landmarks": ["main", "navigation", "complementary"],
+    "announcements": ["new-messages", "typing-indicator"]
+  },
+  "tags": ["ai", "chat", "conversation", "assistant", "search"]
+}

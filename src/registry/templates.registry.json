@@ -31,6 +31,26 @@
       "blocks": ["HeroSection", "FeatureGrid"],
       "tags": ["marketing", "landing-page", "hero", "features", "testimonials", "cta", "complete-page"],
       "description": "Complete marketing landing page with hero section, feature grid, testimonials, and CTA"
+    },
+    {
+      "id": "ai-analysis-page",
+      "name": "AI Analysis Page",
+      "path": "templates/ai/AIAnalysisPage",
+      "category": "ai",
+      "layout": "AppShell",
+      "blocks": ["ImageUploader", "AnalysisProgress", "AIResultsCard"],
+      "tags": ["ai", "analysis", "upload", "workflow", "inspection", "results", "complete-page"],
+      "description": "Complete AI analysis workflow page with image upload, processing progress, and results display. Perfect for HomeCheck AI, SkinCheck AI, and similar applications."
+    },
+    {
+      "id": "chat-interface",
+      "name": "Chat Interface",
+      "path": "templates/ai/ChatInterface",
+      "category": "ai",
+      "layout": "AppShell",
+      "blocks": ["ConversationPanel"],
+      "tags": ["ai", "chat", "conversation", "assistant", "search", "complete-page"],
+      "description": "Full-page conversational AI interface with message history, suggestions, voice input, and optional context panel. Ideal for search refinement and AI assistants."
     }
   ]
 }

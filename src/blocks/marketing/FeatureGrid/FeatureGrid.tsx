@@ -137,10 +137,7 @@ export function FeatureGrid({
         )}
 
         {/* Features Grid */}
-        <ul
-          className={cn(gridVariants({ columns, gap }))}
-          role="list"
-        >
+        <ul className={cn(gridVariants({ columns, gap }))}>
           {features.map((feature) => (
             <li key={feature.id}>
               <FeatureCard

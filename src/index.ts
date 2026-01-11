@@ -1,4 +1,8 @@
-// Components
+// ============================================
+// COMPONENTS
+// ============================================
+
+// Button
 export { Button, buttonVariants } from './components/Button';
 export type { ButtonProps } from './components/Button';
 
@@ -37,7 +41,26 @@ export type { SearchBarProps, SearchSuggestion } from './components/SearchBar';
 export { AuthenticityBadge, AuthenticityScore, badgeVariants } from './components/AuthenticityBadge';
 export type { AuthenticityBadgeProps, AuthenticityIndicator } from './components/AuthenticityBadge';
 
-// Utilities
+// ============================================
+// AI COMPONENTS
+// ============================================
+
+// AIStatusIndicator
+export { AIStatusIndicator } from './components/AIStatusIndicator';
+export type { AIStatusIndicatorProps, AIStatus } from './components/AIStatusIndicator';
+
+// ChatMessage
+export { ChatMessage } from './components/ChatMessage';
+export type { ChatMessageProps, MessageRole } from './components/ChatMessage';
+
+// PromptInput
+export { PromptInput } from './components/PromptInput';
+export type { PromptInputProps, PromptSuggestion } from './components/PromptInput';
+
+// ============================================
+// UTILITIES
+// ============================================
+
 export { cn } from './lib/utils';
 
 // ============================================
@@ -50,6 +73,29 @@ export { FeatureGrid, type FeatureGridProps, type Feature } from './blocks/marke
 
 // Application Blocks
 export { StatsCards, type StatsCardsProps, type Stat } from './blocks/application/StatsCards';
+
+// AI Blocks
+export {
+  ImageUploader,
+  type ImageUploaderProps,
+  type UploadedImage,
+} from './blocks/ai/ImageUploader';
+export {
+  AnalysisProgress,
+  type AnalysisProgressProps,
+  type AnalysisStep,
+} from './blocks/ai/AnalysisProgress';
+export {
+  ConversationPanel,
+  type ConversationPanelProps,
+  type Message,
+} from './blocks/ai/ConversationPanel';
+export {
+  AIResultsCard,
+  type AIResultsCardProps,
+  type Finding,
+  type FindingSeverity,
+} from './blocks/ai/AIResultsCard';
 
 // ============================================
 // LAYOUTS
@@ -71,6 +117,19 @@ export { DashboardOverview, type DashboardOverviewProps, type Activity } from '.
 
 // Marketing Templates
 export { LandingPage, type LandingPageProps, type Testimonial } from './templates/marketing/LandingPage';
+
+// AI Templates
+export {
+  AIAnalysisPage,
+  type AIAnalysisPageProps,
+  type AnalysisPhase,
+  type AnalysisResult,
+} from './templates/ai/AIAnalysisPage';
+export {
+  ChatInterface,
+  type ChatInterfaceProps,
+  type ChatContext,
+} from './templates/ai/ChatInterface';
 
 // ============================================
 // REGISTRY (for MCP/AI consumption)

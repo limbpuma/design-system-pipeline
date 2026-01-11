@@ -147,7 +147,7 @@ export function DashboardOverview({
               Recent Activity
             </h2>
             {activities.length > 0 ? (
-              <ul className="space-y-4" role="list" aria-label="Recent activity">
+              <ul className="space-y-4" aria-label="Recent activity">
                 {activities.map((activity) => (
                   <li key={activity.id} className="flex gap-3">
                     {activity.icon ? (

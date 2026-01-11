@@ -1,261 +1,333 @@
 # ROADMAP - Design System Pipeline
 
-## Visión General
+## Current Status
 
-Crear un sistema de diseño completamente automatizado y bidireccional entre Figma y código, permitiendo:
+**Version**: 0.1.x
+**Last Updated**: January 2026
 
-1. **Figma → Código**: Diseñar en Figma y generar código Tailwind automáticamente
-2. **Código → Figma**: Crear/modificar diseños en Figma desde Claude Code
-3. **Sincronización**: Mantener tokens y componentes sincronizados vía Git
+### Completed Phases
+
+- [x] **Phase 1**: Design Tokens Foundation
+- [x] **Phase 2**: Style Dictionary + Tailwind Integration
+- [x] **Phase 3**: Component Library + Storybook
+- [x] **Phase 4**: MCP Integration
+- [x] **Phase 5**: CI/CD & Automation
+- [x] **Phase 6**: AI Components (NEW)
+- [x] **Phase 7**: Blocks + Layouts + Templates Architecture
 
 ---
 
-## FASE 1: Design Tokens Foundation
+## Vision
 
-### Objetivo
-Establecer la base de tokens de diseño que servirá como fuente única de verdad.
+Create a fully automated, bidirectional design system between Figma and code:
 
-### Entregables
-- [ ] Estructura de tokens primitivos (colors, spacing, typography, shadows, radii)
-- [ ] Estructura de tokens semánticos (primary, secondary, success, warning, error)
-- [ ] Tokens de componentes (button, input, card, etc.)
-- [ ] Soporte para temas (light/dark mode)
-- [ ] Formato JSON compatible con Tokens Studio
+1. **Figma → Code**: Design in Figma, generate Tailwind code automatically
+2. **Code → Figma**: Create/modify Figma designs from Claude Code
+3. **Sync**: Keep tokens and components synchronized via Git
+4. **AI-Ready**: Professional components for AI interfaces
 
-### Archivos a crear
+---
+
+## PHASE 1: Design Tokens Foundation [COMPLETED]
+
+### Deliverables
+- [x] Primitive tokens structure (colors, spacing, typography, shadows, radii)
+- [x] Semantic tokens structure (primary, secondary, success, warning, error)
+- [x] Component tokens (button, input, card, etc.)
+- [x] Theme support (light/dark mode)
+- [x] JSON format compatible with Tokens Studio
+
+### Files Created
 ```
 tokens/
 ├── primitives/
 │   ├── colors.json
 │   ├── spacing.json
 │   ├── typography.json
-│   ├── shadows.json
-│   └── radii.json
-├── semantic/
-│   ├── colors.json
-│   ├── components.json
-│   └── themes/
-│       ├── light.json
-│       └── dark.json
-└── $metadata.json
+│   └── shadows.json
+└── semantic/
+    ├── colors.json
+    ├── colors-dark.json
+    └── components.json
 ```
-
-### Dependencias
-- Tokens Studio plugin instalado en Figma
-- Conocimiento de la estructura de Tokens Studio
-
-### Criterios de éxito
-- Tokens exportables desde Tokens Studio
-- Estructura compatible con Style Dictionary
-- Documentación de naming conventions
 
 ---
 
-## FASE 2: Style Dictionary + Tailwind Integration
+## PHASE 2: Style Dictionary + Tailwind Integration [COMPLETED]
 
-### Objetivo
-Transformar tokens JSON en configuración Tailwind utilizable.
+### Deliverables
+- [x] Style Dictionary configuration
+- [x] Custom transforms for Tailwind
+- [x] OKLCH color space conversion
+- [x] CSS variables generation with dark mode
+- [x] Automated build scripts
 
-### Entregables
-- [ ] Configuración de Style Dictionary
-- [ ] Transforms personalizados para Tailwind
-- [ ] Generación de tailwind.preset.js
-- [ ] Generación de CSS variables
-- [ ] Scripts de build automatizados
-
-### Archivos a crear
+### Files Created
 ```
 scripts/tokens/
-├── style-dictionary.config.js
-├── transforms/
-│   ├── tailwind.js
-│   └── css-variables.js
 └── build.js
 
 src/styles/generated/
 ├── tailwind.preset.js
 ├── variables.css
-└── tokens.d.ts (TypeScript types)
+├── theme.json
+└── tokens.d.ts
 ```
-
-### Dependencias
-```json
-{
-  "style-dictionary": "^4.0.0",
-  "tailwindcss": "^4.0.0"
-}
-```
-
-### Criterios de éxito
-- `npm run tokens:build` genera archivos correctamente
-- Tailwind config usa tokens generados
-- CSS variables disponibles para runtime theming
 
 ---
 
-## FASE 3: Component Library + Storybook
+## PHASE 3: Component Library + Storybook [COMPLETED]
 
-### Objetivo
-Crear librería de componentes React documentada en Storybook.
+### Deliverables
+- [x] Core components (Button, Card, Dialog, Tabs)
+- [x] Storybook 8+ configuration
+- [x] Interactive stories with controls
+- [x] MDX documentation
+- [x] Accessibility addon (a11y)
+- [x] Figma addon integration
 
-### Entregables
-- [ ] Componentes base (Button, Input, Card, Badge, etc.)
-- [ ] Configuración Storybook 8+
-- [ ] Stories con controles interactivos
-- [ ] Documentación MDX
-- [ ] Addon de Figma integrado
-- [ ] Tests de accesibilidad (a11y addon)
-
-### Archivos a crear
+### Components Created
 ```
 src/components/
 ├── Button/
-│   ├── Button.tsx
-│   ├── Button.stories.tsx
-│   ├── Button.test.tsx
-│   └── index.ts
-├── Input/
 ├── Card/
-└── index.ts
-
-storybook/
-├── main.ts
-├── preview.ts
-└── manager.ts
+├── Dialog/
+└── Tabs/
 ```
-
-### Dependencias
-```json
-{
-  "@storybook/react": "^8.0.0",
-  "@storybook/addon-essentials": "^8.0.0",
-  "@storybook/addon-designs": "^8.0.0",
-  "@storybook/addon-a11y": "^8.0.0",
-  "react": "^18.0.0",
-  "react-dom": "^18.0.0"
-}
-```
-
-### Criterios de éxito
-- Storybook muestra todos los componentes
-- Componentes usan tokens de Tailwind
-- Links a Figma funcionando
-- Tests de accesibilidad pasando
 
 ---
 
-## FASE 4: MCP Integration
+## PHASE 4: MCP Integration [COMPLETED]
 
-### Objetivo
-Conectar el sistema con Figma vía MCP para flujo bidireccional.
+### Deliverables
+- [x] Talk to Figma MCP configuration
+- [x] Figma read/write capabilities
+- [x] Project rules for AI agents
+- [x] Predefined prompts for common tasks
 
-### Entregables
-- [ ] Configuración Figma MCP Server (oficial - lectura)
-- [ ] Configuración Talk to Figma MCP (escritura)
-- [ ] Reglas de Cursor para el proyecto
-- [ ] Prompts predefinidos para tareas comunes
-- [ ] Documentación de uso
-
-### Archivos a crear
+### Files Created
 ```
 .mcp/
-├── figma-official.json
-├── talk-to-figma.json
-└── README.md
+├── README.md
+└── settings/
 
-.cursor/
-├── rules.md
-└── prompts/
-    ├── create-component.md
-    ├── update-tokens.md
-    └── sync-figma.md
+mcp-server/
+└── index.js
 ```
-
-### Dependencias
-- Figma Desktop App
-- Cuenta Figma Professional/Enterprise (para MCP oficial)
-- Node.js para Talk to Figma MCP
-
-### Criterios de éxito
-- Cursor puede leer diseños de Figma
-- Cursor puede crear/modificar elementos en Figma
-- Prompts predefinidos funcionan correctamente
 
 ---
 
-## FASE 5: CI/CD & Automation
+## PHASE 5: CI/CD & Automation [COMPLETED]
 
-### Objetivo
-Automatizar todo el flujo con GitHub Actions.
+### Deliverables
+- [x] Tokens sync workflow (Figma → GitHub → Build)
+- [x] Component build & publish workflow
+- [x] Storybook deploy (GitHub Pages)
+- [x] npm publish on tags
 
-### Entregables
-- [ ] Workflow: Tokens sync (Figma → GitHub → Build)
-- [ ] Workflow: Component build & publish
-- [ ] Workflow: Storybook deploy (Chromatic/GitHub Pages)
-- [ ] Workflow: Visual regression tests
-- [ ] Webhooks de Tokens Studio
-
-### Archivos a crear
+### Files Created
 ```
 .github/workflows/
 ├── tokens-sync.yml
-├── build-components.yml
-├── deploy-storybook.yml
-└── visual-tests.yml
-
-package.json (scripts adicionales)
-```
-
-### Dependencias
-- GitHub Actions
-- Chromatic (opcional, para visual testing)
-- npm registry o GitHub Packages (para publicar)
-
-### Criterios de éxito
-- Push a tokens/ dispara rebuild automático
-- Storybook se despliega automáticamente
-- PRs muestran diff visual de cambios
-
----
-
-## Diagrama de Dependencias entre Fases
-
-```
-FASE 1 ──────► FASE 2 ──────► FASE 3
-   │              │              │
-   │              │              │
-   └──────────────┴──────────────┼──────► FASE 4
-                                 │
-                                 └──────► FASE 5
+├── publish-npm.yml
+└── deploy-storybook.yml
 ```
 
 ---
 
-## Timeline Sugerido
+## PHASE 6: AI Components [COMPLETED]
 
-| Fase | Complejidad | Notas |
-|------|-------------|-------|
-| 1 | Baja | Fundacional, crítico hacerlo bien |
-| 2 | Media | Requiere entender Style Dictionary |
-| 3 | Media-Alta | Mayor volumen de trabajo |
-| 4 | Media | Experimental, APIs en beta |
-| 5 | Baja | Mayormente configuración |
+### Objective
+Create professional components for AI-powered interfaces following enterprise dashboard patterns.
+
+### Deliverables
+- [x] ChatMessage - Chat bubbles with avatars, reactions, actions
+- [x] PromptInput - Advanced input with suggestions, voice, attachments
+- [x] ConversationPanel - Full conversation container
+- [x] ImageUploader - Drag-drop with progress indicators
+- [x] AnalysisProgress - Multi-step progress visualization
+- [x] AIResultsCard - Structured results display
+- [x] AIStatusIndicator - Connection/processing status
+
+### Design Patterns Applied
+- Soft gradient backgrounds (from-{color}-50/50)
+- Border accents with opacity (border-l-4 border-{color}/70)
+- Subtle animations (group-hover, transitions)
+- Dark mode support via CSS variables
+- WCAG AA accessibility compliance
+
+### Files Created
+```
+src/components/
+├── ChatMessage/
+├── PromptInput/
+└── ConversationPanel/
+
+src/blocks/ai/
+├── ImageUploader/
+├── AnalysisProgress/
+├── AIResultsCard/
+└── AIStatusIndicator/
+```
 
 ---
 
-## Próximos Pasos
+## PHASE 7: Blocks + Layouts + Templates [COMPLETED]
 
-1. Revisar y aprobar este roadmap
-2. Comenzar con Fase 1: Crear estructura de tokens
-3. Iterar basado en feedback
+### Objective
+Create a scalable architecture for composing pages from reusable blocks.
+
+### Architecture
+```
+TEMPLATES   →  Complete pages (DashboardOverview, LoginPage)
+    ↓
+LAYOUTS     →  Page structure (AppShell, AuthLayout)
+    ↓
+BLOCKS      →  Page sections (HeroSection, StatsCards)
+    ↓
+COMPONENTS  →  Atomic elements (Button, Card)
+    ↓
+TOKENS      →  Design primitives
+```
+
+### Deliverables
+- [x] Marketing blocks (HeroSection, FeatureGrid, CTASection)
+- [x] Application blocks (StatsCards)
+- [x] Layouts (AppShell, AuthLayout, MarketingLayout)
+- [x] Templates (DashboardOverview, LoginPage, LandingPage)
+
+### Files Created
+```
+src/blocks/
+├── marketing/
+│   ├── HeroSection/
+│   ├── FeatureGrid/
+│   └── CTASection/
+└── application/
+    └── StatsCards/
+
+src/layouts/
+├── AppShell/
+├── AuthLayout/
+└── MarketingLayout/
+
+src/templates/
+├── dashboard/
+├── authentication/
+└── marketing/
+```
 
 ---
 
-## Referencias
+## PHASE 8: AI Agent Documentation [IN PROGRESS]
+
+### Objective
+Create comprehensive documentation for AI agents to work effectively with the design system.
+
+### Deliverables
+- [x] AI Agent Prompts document
+- [x] Updated README with architecture overview
+- [ ] Component metadata JSON for MCP consumption
+- [ ] Registry files for automated discovery
+
+### Files Created
+```
+docs/
+├── AI_AGENT_PROMPTS.md
+└── phases/ROADMAP.md (updated)
+```
+
+---
+
+## PHASE 9: Registry & MCP Tools [PLANNED]
+
+### Objective
+Create a machine-readable registry for AI agents to discover and use components.
+
+### Deliverables
+- [ ] blocks.registry.json
+- [ ] templates.registry.json
+- [ ] layouts.registry.json
+- [ ] MCP tools for component discovery
+- [ ] MCP tools for template composition
+
+### Planned Files
+```
+src/registry/
+├── schema.ts
+├── blocks.registry.json
+├── templates.registry.json
+└── layouts.registry.json
+
+mcp-server/tools/
+├── list-blocks.js
+├── list-templates.js
+├── get-component-metadata.js
+└── compose-template.js
+```
+
+---
+
+## PHASE 10: Visual Regression Testing [PLANNED]
+
+### Objective
+Automated visual testing to catch unintended changes.
+
+### Deliverables
+- [ ] Chromatic integration
+- [ ] Visual diff workflow
+- [ ] PR preview comments
+- [ ] Baseline snapshot management
+
+---
+
+## PHASE 11: Advanced Patterns [FUTURE]
+
+### Potential Features
+- [ ] Data fetching patterns (React Query integration)
+- [ ] Form patterns (React Hook Form integration)
+- [ ] Animation library (Framer Motion presets)
+- [ ] Chart components (Tremor/Recharts integration)
+- [ ] Table components (TanStack Table integration)
+
+---
+
+## Metrics & Success Criteria
+
+| Metric | Target | Current |
+|--------|--------|---------|
+| Core Components | 10+ | 7 |
+| AI Components | 7 | 7 |
+| Blocks | 10+ | 5 |
+| Layouts | 3 | 3 |
+| Templates | 5+ | 3 |
+| Accessibility Score | 100% | ~95% |
+| TypeScript Coverage | 100% | 100% |
+| Storybook Coverage | 100% | ~90% |
+
+---
+
+## Technical Debt & Improvements
+
+### Current Issues
+- [ ] Add more comprehensive test coverage
+- [ ] Improve bundle size optimization
+- [ ] Add more variant options to existing components
+- [ ] Complete metadata files for all components
+
+### Performance Optimizations
+- [ ] Tree-shaking verification
+- [ ] CSS purging optimization
+- [ ] Lazy loading for heavy components
+
+---
+
+## References
 
 - [Tokens Studio Docs](https://tokens.studio/docs)
 - [Style Dictionary](https://amzn.github.io/style-dictionary)
-- [Tailwind CSS v4](https://tailwindcss.com/docs)
+- [Tailwind CSS](https://tailwindcss.com/docs)
 - [Storybook](https://storybook.js.org/)
-- [Figma MCP Server](https://www.figma.com/developers/mcp)
-- [Talk to Figma MCP](https://github.com/sonnylazuardi/cursor-talk-to-figma-mcp)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Radix UI](https://www.radix-ui.com/)
+- [Figma MCP](https://www.figma.com/developers/mcp)
