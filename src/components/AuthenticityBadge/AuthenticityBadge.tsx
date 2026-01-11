@@ -212,17 +212,19 @@ export function AuthenticityBadge({
           {isAIGenerated && (
             <span
               className="flex items-center justify-center w-4 h-4 bg-purple-500 rounded-full"
-              title="Possibly AI-generated"
+              role="img"
+              aria-label="Possibly AI-generated"
             >
-              <SparklesIcon className="h-2.5 w-2.5 text-white" />
+              <SparklesIcon className="h-2.5 w-2.5 text-white" aria-hidden="true" />
             </span>
           )}
           {isEdited && (
             <span
               className="flex items-center justify-center w-4 h-4 bg-orange-500 rounded-full"
-              title="Digitally edited"
+              role="img"
+              aria-label="Digitally edited"
             >
-              <PencilIcon className="h-2.5 w-2.5 text-white" />
+              <PencilIcon className="h-2.5 w-2.5 text-white" aria-hidden="true" />
             </span>
           )}
         </div>

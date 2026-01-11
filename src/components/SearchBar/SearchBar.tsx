@@ -324,13 +324,14 @@ export function SearchBar({
   const paddingLeft = size === 'lg' ? 'pl-14' : size === 'sm' ? 'pl-10' : 'pl-12';
 
   const shouldShowSuggestions = showSuggestions && isFocused && suggestions.length > 0;
+  const suggestionsId = React.useId();
 
   return (
     <div ref={containerRef} className={cn('relative w-full', containerClassName)}>
       {/* Main search bar */}
       <div className={cn(searchBarVariants({ variant, size }), className)}>
         {/* Left icon */}
-        <div className="absolute left-4 flex items-center pointer-events-none">
+        <div className="absolute left-4 flex items-center pointer-events-none" aria-hidden="true">
           {isLoading ? (
             <LoaderIcon className={cn(iconSize, 'text-[var(--semantic-color-muted-foreground)]')} />
           ) : (
@@ -342,6 +343,7 @@ export function SearchBar({
         <input
           ref={inputRef}
           type="text"
+          role="combobox"
           value={currentValue}
           onChange={handleChange}
           onFocus={() => setIsFocused(true)}
@@ -356,6 +358,10 @@ export function SearchBar({
             isListening && 'placeholder:text-[var(--semantic-color-primary-default)]'
           )}
           aria-label="Search"
+          aria-expanded={shouldShowSuggestions}
+          aria-haspopup="listbox"
+          aria-controls={shouldShowSuggestions ? suggestionsId : undefined}
+          aria-autocomplete="list"
           {...props}
         />
 
@@ -424,6 +430,7 @@ export function SearchBar({
       {/* Suggestions dropdown */}
       {shouldShowSuggestions && (
         <div
+          id={suggestionsId}
           className={cn(
             'absolute z-50 w-full mt-2',
             'bg-[var(--semantic-color-popover-default)]',

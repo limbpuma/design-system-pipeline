@@ -95,10 +95,12 @@ export function Button({
     <button
       className={cn(buttonVariants({ variant, size }), className)}
       disabled={disabled || isLoading}
+      aria-busy={isLoading}
+      aria-disabled={disabled || isLoading}
       {...props}
     >
       {isLoading ? (
-        <span className="mr-2">
+        <span className="mr-2" aria-hidden="true">
           <svg
             className="animate-spin h-4 w-4"
             xmlns="http://www.w3.org/2000/svg"
@@ -121,6 +123,7 @@ export function Button({
           </svg>
         </span>
       ) : null}
+      {isLoading && <span className="sr-only">Loading...</span>}
       {children}
     </button>
   );
