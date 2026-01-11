@@ -195,10 +195,11 @@ export function AuthenticityBadge({
     <div className="relative inline-block" ref={tooltipRef}>
       <BadgeElement
         type={isInteractive ? 'button' : undefined}
+        role={isInteractive ? undefined : 'img'}
         onClick={isInteractive ? handleClick : undefined}
         className={cn(badgeVariants({ status, size, interactive: isInteractive }), className)}
         aria-label={`Authenticity score: ${score}%`}
-        aria-expanded={showDetails ? isTooltipOpen : undefined}
+        aria-expanded={isInteractive && showDetails ? isTooltipOpen : undefined}
       >
         <config.Icon className={iconSize} />
         <span>{score}%</span>
