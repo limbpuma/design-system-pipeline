@@ -72,25 +72,28 @@ export interface ChatMessageProps extends VariantProps<typeof messageVariants> {
 
 // Typing indicator with staggered bounce animation
 const TypingIndicator: React.FC = () => (
-  <div className="flex items-center gap-1.5 py-1" aria-label="Typing...">
+  <div className="flex items-center gap-1.5 py-1" role="status" aria-label="Assistant is typing">
     <span
       className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-500 animate-bounce"
       style={{ animationDelay: '0ms', animationDuration: '600ms' }}
+      aria-hidden="true"
     />
     <span
       className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-500 animate-bounce"
       style={{ animationDelay: '150ms', animationDuration: '600ms' }}
+      aria-hidden="true"
     />
     <span
       className="w-2 h-2 rounded-full bg-slate-400 dark:bg-slate-500 animate-bounce"
       style={{ animationDelay: '300ms', animationDuration: '600ms' }}
+      aria-hidden="true"
     />
   </div>
 );
 
 // Streaming cursor animation
 const StreamingCursor: React.FC = () => (
-  <span className="inline-flex items-center ml-0.5">
+  <span className="inline-flex items-center ml-0.5" aria-hidden="true">
     <span className="w-0.5 h-4 bg-current animate-pulse rounded-full" />
   </span>
 );
@@ -189,6 +192,7 @@ const StatusAvatar: React.FC<StatusAvatarProps> = ({ avatar, role, senderName, s
             'absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-white dark:border-slate-900',
             statusColors[status]
           )}
+          role="img"
           aria-label={`Status: ${status}`}
         />
       )}
@@ -244,7 +248,7 @@ const Reactions: React.FC<ReactionsProps> = ({ reactions, onReactionClick }) => 
   if (!reactions || reactions.length === 0) return null;
 
   return (
-    <div className="flex flex-wrap gap-1 mt-2">
+    <div className="flex flex-wrap gap-1 mt-2" role="group" aria-label="Message reactions">
       {reactions.map(({ emoji, count, reacted }) => (
         <button
           key={emoji}
@@ -256,9 +260,11 @@ const Reactions: React.FC<ReactionsProps> = ({ reactions, onReactionClick }) => 
               ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/30 dark:border-blue-700 dark:text-blue-300'
               : 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400'
           )}
+          aria-label={`${reacted ? 'Remove' : 'Add'} ${emoji} reaction, ${count} ${count === 1 ? 'reaction' : 'reactions'}`}
+          aria-pressed={reacted}
         >
-          <span>{emoji}</span>
-          <span>{count}</span>
+          <span aria-hidden="true">{emoji}</span>
+          <span aria-hidden="true">{count}</span>
         </button>
       ))}
     </div>
