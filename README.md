@@ -1,431 +1,198 @@
-# Design System Pipeline
+# @limbpuma/design-system
 
-[![Tokens Sync](https://github.com/YOUR_USER/design-system-pipeline/actions/workflows/tokens-sync.yml/badge.svg)](https://github.com/YOUR_USER/design-system-pipeline/actions/workflows/tokens-sync.yml)
-[![Deploy Storybook](https://github.com/YOUR_USER/design-system-pipeline/actions/workflows/deploy-storybook.yml/badge.svg)](https://github.com/YOUR_USER/design-system-pipeline/actions/workflows/deploy-storybook.yml)
+Scalable Design System Pipeline: **Figma → Tokens → Tailwind → React → Storybook**
 
-> Sistema de diseño automatizado y bidireccional: **Figma ↔ Design Tokens ↔ Tailwind CSS ↔ React ↔ Storybook ↔ MCP**
+[![npm version](https://img.shields.io/npm/v/@limbpuma/design-system.svg)](https://www.npmjs.com/package/@limbpuma/design-system)
+[![Storybook](https://img.shields.io/badge/storybook-deployed-ff4785)](https://limbpuma.github.io/design-system-pipeline)
+[![Tokens Sync](https://github.com/limbpuma/design-system-pipeline/actions/workflows/tokens-sync.yml/badge.svg)](https://github.com/limbpuma/design-system-pipeline/actions/workflows/tokens-sync.yml)
 
-## Visión General
+## Installation
 
-Este proyecto implementa un flujo de trabajo moderno para design systems que permite:
-
-- **Diseñar en Figma** → Código Tailwind generado automáticamente
-- **Crear desde código** → Sincronizar componentes a Figma
-- **Versionado en Git** → Historial completo de cambios de diseño
-- **AI-assisted** → Usar Claude Code/Cursor con contexto de diseño via MCP
-
+```bash
+npm install @limbpuma/design-system
 ```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                        ARQUITECTURA DEL SISTEMA                         │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                         │
-│   FIGMA (Source of Truth)                                               │
-│     │                                                                   │
-│     ├──► Tokens Studio Plugin                                           │
-│     │         │                                                         │
-│     │         ▼                                                         │
-│     │    tokens/*.json ◄────────────────────┐                          │
-│     │         │                              │                          │
-│     │         ▼                              │                          │
-│     │    Style Dictionary                    │                          │
-│     │         │                              │                          │
-│     │    ┌────┴────┐                         │                          │
-│     │    ▼         ▼                         │                          │
-│     │  CSS      Tailwind                     │                          │
-│     │  Vars     Preset                       │                          │
-│     │    │         │                         │                          │
-│     │    └────┬────┘                         │                          │
-│     │         ▼                              │                          │
-│     │    React Components                    │                          │
-│     │         │                              │                          │
-│     │         ▼                              │                          │
-│     │    Storybook ──────────────────────────┤                          │
-│     │         │                              │                          │
-│     │         ▼                              │                          │
-│     └──► Figma MCP ◄─────── Claude Code / Cursor                       │
-│                                                                         │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
-## Características
-
-| Característica | Descripción |
-|----------------|-------------|
-| **Design Tokens** | Tokens primitivos y semánticos en JSON |
-| **Auto-generación** | Style Dictionary → Tailwind + CSS Variables |
-| **Componentes React** | Librería con CVA para variantes |
-| **Storybook** | Documentación interactiva con Figma addon |
-| **MCP Ready** | Configuración para Figma MCP bidireccional |
-| **CI/CD** | GitHub Actions para sync y deploy automático |
-| **TypeScript** | Tipado completo incluyendo tokens |
 
 ## Quick Start
 
-### Prerrequisitos
-
-- Node.js 18+
-- npm o pnpm
-- (Opcional) Figma con Tokens Studio plugin
-- (Opcional) Cursor/VS Code con MCP support
-
-### Instalación
-
-```bash
-# Clonar el repositorio
-git clone https://github.com/YOUR_USER/design-system-pipeline.git
-cd design-system-pipeline
-
-# Instalar dependencias
-npm install
-
-# Generar tokens (IMPORTANTE: ejecutar primero)
-npm run tokens:build
-
-# Iniciar Storybook
-npm run storybook
-```
-
-Abre http://localhost:6006 para ver la documentación de componentes.
-
-## Comandos Disponibles
-
-| Comando | Descripción |
-|---------|-------------|
-| `npm run tokens:build` | Genera Tailwind preset y CSS variables desde tokens |
-| `npm run tokens:watch` | Watch mode para desarrollo de tokens |
-| `npm run storybook` | Inicia Storybook en modo desarrollo |
-| `npm run build:storybook` | Build estático de Storybook |
-| `npm run build` | Build completo (tokens + componentes) |
-| `npm run test` | Ejecuta tests unitarios |
-| `npm run test:e2e` | Ejecuta tests end-to-end |
-| `npm run lint` | Linting del código |
-
-## Estructura del Proyecto
-
-```
-design-system-pipeline/
-│
-├── .cursor/                    # Reglas para Cursor AI
-│   └── rules.md
-│
-├── .github/workflows/          # CI/CD
-│   ├── tokens-sync.yml         # Auto-sync cuando cambian tokens
-│   └── deploy-storybook.yml    # Deploy a GitHub Pages
-│
-├── .mcp/                       # Configuración MCP
-│   └── README.md               # Guía de setup
-│
-├── .storybook/                 # Configuración Storybook
-│   ├── main.ts
-│   └── preview.ts
-│
-├── docs/
-│   └── phases/
-│       └── ROADMAP.md          # Roadmap detallado
-│
-├── scripts/
-│   └── tokens/
-│       └── build.js            # Script de Style Dictionary
-│
-├── src/
-│   ├── components/             # Componentes React
-│   │   └── Button/
-│   │       ├── Button.tsx
-│   │       ├── Button.stories.tsx
-│   │       ├── Button.test.tsx
-│   │       └── index.ts
-│   │
-│   ├── stories/                # Stories adicionales
-│   │
-│   ├── styles/
-│   │   ├── generated/          # ⚡ AUTO-GENERADO
-│   │   │   ├── tailwind.preset.js
-│   │   │   ├── variables.css
-│   │   │   └── tokens.d.ts
-│   │   └── globals.css
-│   │
-│   └── index.ts                # Entry point
-│
-├── tokens/                     # 🎨 DESIGN TOKENS
-│   ├── primitives/             # Tokens base
-│   │   ├── colors.json
-│   │   ├── spacing.json
-│   │   ├── typography.json
-│   │   ├── shadows.json
-│   │   └── radii.json
-│   │
-│   └── semantic/               # Tokens semánticos
-│       ├── colors.json         # primary, secondary, danger...
-│       └── components.json     # button, input, card...
-│
-├── tests/
-│   └── e2e/                    # Tests end-to-end
-│
-├── package.json
-├── tailwind.config.js
-├── tsconfig.json
-└── README.md
-```
-
-## Design Tokens
-
-### Estructura de Tokens
-
-Los tokens siguen una arquitectura de 3 niveles:
-
-```
-PRIMITIVOS          SEMÁNTICOS           COMPONENTES
-────────────        ──────────           ───────────
-color.blue.600  →   primary.default  →   button.background
-spacing.4       →   spacing.md       →   button.padding
-```
-
-### Tokens Primitivos
-
-Valores base sin contexto semántico:
-
-```json
-// tokens/primitives/colors.json
-{
-  "color": {
-    "blue": {
-      "500": { "value": "#3b82f6", "type": "color" },
-      "600": { "value": "#2563eb", "type": "color" }
-    }
-  }
-}
-```
-
-### Tokens Semánticos
-
-Valores con significado de uso:
-
-```json
-// tokens/semantic/colors.json
-{
-  "semantic": {
-    "color": {
-      "primary": {
-        "default": { "value": "{color.blue.600}", "type": "color" },
-        "hover": { "value": "{color.blue.700}", "type": "color" }
-      }
-    }
-  }
-}
-```
-
-### Salida Generada
-
-Después de `npm run tokens:build`:
-
-**tailwind.preset.js**
-```javascript
-export default {
-  theme: {
-    extend: {
-      colors: {
-        color: {
-          blue: {
-            500: "#3b82f6",
-            600: "#2563eb"
-          }
-        }
-      }
-    }
-  }
-};
-```
-
-**variables.css**
-```css
-:root {
-  --color-blue-500: #3b82f6;
-  --color-blue-600: #2563eb;
-  --semantic-color-primary-default: #2563eb;
-}
-```
-
-## Componentes
-
-### Crear un Nuevo Componente
-
-```bash
-# Estructura recomendada
-src/components/
-└── MyComponent/
-    ├── MyComponent.tsx        # Componente
-    ├── MyComponent.stories.tsx # Stories
-    ├── MyComponent.test.tsx   # Tests
-    └── index.ts               # Exports
-```
-
-### Ejemplo: Button
+### 1. Import Components
 
 ```tsx
-// src/components/Button/Button.tsx
-import { cva, type VariantProps } from 'class-variance-authority';
+import { Button } from '@limbpuma/design-system';
 
-const buttonVariants = cva(
-  'inline-flex items-center justify-center font-medium transition-colors',
-  {
-    variants: {
-      variant: {
-        primary: 'bg-blue-600 text-white hover:bg-blue-700',
-        secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
-      },
-      size: {
-        sm: 'h-8 px-3 text-sm',
-        md: 'h-10 px-4 text-base',
-        lg: 'h-12 px-6 text-lg',
-      },
-    },
-    defaultVariants: {
-      variant: 'primary',
-      size: 'md',
-    },
-  }
-);
-
-export function Button({ variant, size, children, ...props }) {
+function App() {
   return (
-    <button className={buttonVariants({ variant, size })} {...props}>
-      {children}
-    </button>
+    <Button variant="primary" size="md">
+      Click me
+    </Button>
   );
 }
 ```
 
-## Integración con Figma
-
-> **NOTA**: NO se requiere Figma Dev Mode (plan pago). Solo necesitas cuenta gratuita + API token.
-
-### 1. Tokens Studio (Figma ↔ GitHub)
-
-La forma más robusta de sincronizar tokens:
-
-1. Instala [Tokens Studio](https://www.figma.com/community/plugin/843461159747178978) en Figma
-2. Configura sync con GitHub:
-   - Settings → Sync → Provider: GitHub
-   - Repository: `tu-usuario/design-system-pipeline`
-   - File path: `tokens`
-3. Los cambios en Figma se sincronizan automáticamente a GitHub
-4. GitHub Actions regenera los archivos de estilo
-
-### 2. Framelink MCP (Leer diseños - Recomendado)
-
-No requiere Dev Mode, solo API token gratuito:
-
-```json
-// Cursor settings o ~/.claude/mcp.json
-{
-  "mcpServers": {
-    "figma": {
-      "command": "npx",
-      "args": ["-y", "figma-developer-mcp", "--figma-api-key=YOUR_TOKEN", "--stdio"]
-    }
-  }
-}
-```
-
-### 3. Talk to Figma MCP (Crear/Modificar diseños)
-
-Flujo bidireccional - crear componentes en Figma desde código:
-
-```bash
-git clone https://github.com/sonnylazuardi/cursor-talk-to-figma-mcp
-cd cursor-talk-to-figma-mcp && npm install && npm run build
-```
-
-Ver [.mcp/README.md](./.mcp/README.md) para configuración detallada y ejemplos de prompts.
-
-## Testing
-
-### Tests Unitarios
-
-```bash
-npm run test
-```
-
-### Tests End-to-End
-
-```bash
-# Ejecutar pipeline completo
-npm run test:e2e
-```
-
-Los tests E2E verifican:
-- ✅ Build de tokens genera archivos correctos
-- ✅ Tailwind preset es válido
-- ✅ CSS variables son correctas
-- ✅ Storybook compila sin errores
-- ✅ Componentes renderizan correctamente
-
-## CI/CD
-
-### Tokens Sync (`.github/workflows/tokens-sync.yml`)
-
-Se ejecuta cuando cambian archivos en `tokens/`:
-1. Build de tokens con Style Dictionary
-2. Commit automático de archivos generados
-
-### Deploy Storybook (`.github/workflows/deploy-storybook.yml`)
-
-Se ejecuta en push a `main`:
-1. Build de tokens
-2. Build de Storybook
-3. Deploy a GitHub Pages
-
-## Uso como Paquete NPM
-
-### Instalación
-
-```bash
-npm install @ai-first/design-system
-```
-
-### Uso
+### 2. Import CSS Styles
 
 ```tsx
-import { Button } from '@ai-first/design-system';
-import '@ai-first/design-system/styles';
-
-function App() {
-  return <Button variant="primary">Click me</Button>;
-}
+// In your main file (app.tsx, main.tsx, etc.)
+import '@limbpuma/design-system/styles';
 ```
 
-### Tailwind Preset
+### 3. Use with Tailwind CSS
 
-```javascript
+```js
 // tailwind.config.js
-import preset from '@ai-first/design-system/tailwind-preset';
+import designSystemPreset from '@limbpuma/design-system/tailwind-preset';
 
 export default {
-  presets: [preset],
-  // ...
+  presets: [designSystemPreset],
+  content: [
+    './src/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@limbpuma/design-system/dist/**/*.js'
+  ],
 };
 ```
 
-## Roadmap
+### 4. Use CSS Variables
 
-Ver [ROADMAP.md](./docs/phases/ROADMAP.md) para el plan detallado.
+```css
+.my-component {
+  background-color: var(--color-blue-600);
+  padding: var(--spacing-4);
+  border-radius: var(--radius-md);
+}
+```
 
-| Fase | Estado | Descripción |
-|------|--------|-------------|
-| 1. Design Tokens | ✅ Completo | Estructura de tokens |
-| 2. Style Dictionary | ✅ Completo | Transformación automática |
-| 3. Componentes | ✅ Completo | React + Storybook |
-| 4. MCP Integration | ✅ Completo | Configuración Figma MCP |
-| 5. CI/CD | ✅ Completo | GitHub Actions |
+## Architecture
 
-## Contribuir
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                                                                         │
+│   FIGMA                    GITHUB                     YOUR PROJECT      │
+│   ─────                    ──────                     ────────────      │
+│                                                                         │
+│   Tokens Studio  ────────► design-system-pipeline ────► npm install     │
+│   (designer)               (this repo)                  @limbpuma/      │
+│                                   │                     design-system   │
+│                                   │                                     │
+│                                   ▼                                     │
+│                            npm publish (auto)                           │
+│                                   │                                     │
+│                                   ▼                                     │
+│                            @limbpuma/design-system                      │
+│                            (public npm package)                         │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
 
-1. Fork el repositorio
-2. Crea una rama: `git checkout -b feature/mi-feature`
-3. Commit: `git commit -m 'Add mi feature'`
-4. Push: `git push origin feature/mi-feature`
-5. Abre un Pull Request
+## Project Structure
 
-## Licencia
+```
+design-system-pipeline/
+├── tokens/                    # Design tokens (source of truth)
+│   ├── primitives/            # Base values
+│   │   ├── colors.json
+│   │   ├── spacing.json
+│   │   └── typography.json
+│   └── semantic/              # Semantic tokens
+│       ├── colors.json
+│       └── components.json
+│
+├── src/
+│   ├── components/            # React components
+│   │   └── Button/
+│   ├── styles/generated/      # Generated files (DO NOT edit)
+│   │   ├── variables.css
+│   │   ├── theme.json
+│   │   └── tailwind.preset.js
+│   └── stories/               # Storybook stories
+│
+├── .github/workflows/         # CI/CD
+│   ├── tokens-sync.yml        # Auto-build on token changes
+│   └── publish-npm.yml        # Publish to npm on tags
+│
+└── dist/                      # Production build
+```
 
-MIT © 2025
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run tokens:build` | Generate files from JSON tokens |
+| `npm run storybook` | Start Storybook at localhost:6006 |
+| `npm run build` | Full build (tokens + components) |
+| `npm run test:e2e` | Run end-to-end pipeline tests |
+
+## Workflow
+
+### For Designers (Figma)
+
+1. Open **Tokens Studio** in Figma
+2. Modify tokens (colors, spacing, etc.)
+3. Click **"Push to GitHub"**
+4. Changes propagate automatically
+
+### For Developers
+
+1. Tokens update via GitHub Actions
+2. New version publishes to npm automatically
+3. In your project: `npm update @limbpuma/design-system`
+
+### Publish New Version
+
+```bash
+# Bump version
+npm version patch  # or minor, major
+
+# Push with tags
+git push && git push --tags
+
+# GitHub Actions publishes to npm automatically
+```
+
+## Available Components
+
+| Component | Variants |
+|-----------|----------|
+| `Button` | primary, secondary, outline, ghost, danger, success |
+| `Input` | (coming soon) |
+| `Card` | (coming soon) |
+| `Modal` | (coming soon) |
+
+## Available Tokens
+
+### Colors
+- `color.blue.50` - `color.blue.950`
+- `color.gray.50` - `color.gray.950`
+- `color.green`, `color.red`, `color.yellow`, `color.purple`
+- `semantic.color.primary`, `secondary`, `danger`, `success`
+
+### Spacing
+- `spacing.1` (4px) to `spacing.16` (64px)
+
+### Typography
+- `fontFamily.sans`, `fontFamily.mono`
+- `fontSize.xs` to `fontSize.5xl`
+
+### Shadows & Radii
+- `shadow.sm`, `shadow.md`, `shadow.lg`
+- `radius.sm`, `radius.md`, `radius.lg`, `radius.full`
+
+## Figma Integration
+
+This system uses **Tokens Studio** to sync design ↔ code:
+
+1. Install [Tokens Studio](https://www.figma.com/community/plugin/843461159747178978) in Figma
+2. Connect with GitHub (Settings → Sync → GitHub)
+3. Repository: `limbpuma/design-system-pipeline`
+4. File path: `tokens`
+
+## MCP Integration (AI Assistants)
+
+This design system supports bidirectional AI integration:
+
+- **Read designs**: Use Framelink MCP to read Figma files
+- **Create designs**: Use Talk to Figma MCP to create from code
+
+See [.mcp/README.md](./.mcp/README.md) for setup instructions.
+
+## License
+
+MIT © limbpuma

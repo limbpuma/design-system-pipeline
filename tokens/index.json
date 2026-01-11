@@ -1,0 +1,14 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "name": "@limbpuma/design-system tokens",
+  "version": "0.1.0",
+  "sources": [
+    "./primitives/colors.json",
+    "./primitives/spacing.json",
+    "./primitives/typography.json",
+    "./primitives/shadows.json",
+    "./primitives/radii.json",
+    "./semantic/colors.json",
+    "./semantic/components.json"
+  ]
+}

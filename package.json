@@ -1,17 +1,36 @@
 {
-  "name": "@ai-first/design-system",
+  "name": "@limbpuma/design-system",
   "version": "0.1.0",
   "description": "Design System Pipeline: Figma → Tokens → Tailwind → Storybook → MCP",
   "type": "module",
   "main": "dist/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src/styles/generated",
+    "tokens"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
     "./styles": "./src/styles/generated/variables.css",
-    "./tailwind-preset": "./src/styles/generated/tailwind.preset.js"
+    "./tailwind-preset": "./src/styles/generated/tailwind.preset.js",
+    "./theme": "./src/styles/generated/theme.json",
+    "./tokens": "./tokens/index.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/limbpuma/design-system-pipeline.git"
+  },
+  "homepage": "https://github.com/limbpuma/design-system-pipeline#readme",
+  "bugs": {
+    "url": "https://github.com/limbpuma/design-system-pipeline/issues"
   },
   "scripts": {
     "tokens:transform": "node scripts/tokens/transform.js",
