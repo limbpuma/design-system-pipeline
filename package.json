@@ -1,0 +1,79 @@
+{
+  "name": "@ai-first/design-system",
+  "version": "0.1.0",
+  "description": "Design System Pipeline: Figma → Tokens → Tailwind → Storybook → MCP",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./styles": "./src/styles/generated/variables.css",
+    "./tailwind-preset": "./src/styles/generated/tailwind.preset.js"
+  },
+  "scripts": {
+    "tokens:transform": "node scripts/tokens/transform.js",
+    "tokens:build": "node scripts/tokens/build.js",
+    "tokens:watch": "node scripts/tokens/watch.js",
+    "dev": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006",
+    "build:storybook": "storybook build",
+    "build:components": "tsup src/index.ts --format esm --dts",
+    "build": "npm run tokens:build && npm run build:components",
+    "lint": "eslint src/",
+    "test": "vitest",
+    "test:e2e": "node tests/e2e/pipeline.test.js",
+    "test:a11y": "storybook build && test-storybook",
+    "pipeline:check": "npm run tokens:build && npm run build:storybook && echo '✅ Pipeline OK'"
+  },
+  "keywords": [
+    "design-system",
+    "tailwindcss",
+    "figma",
+    "storybook",
+    "mcp",
+    "design-tokens"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@storybook/addon-a11y": "^8.4.0",
+    "@storybook/addon-designs": "^8.0.0",
+    "@storybook/addon-essentials": "^8.4.0",
+    "@storybook/addon-interactions": "^8.4.0",
+    "@storybook/addon-links": "^8.4.0",
+    "@storybook/blocks": "^8.4.0",
+    "@storybook/react": "^8.4.0",
+    "@storybook/react-vite": "^8.4.0",
+    "@storybook/test": "^8.4.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.0",
+    "chokidar": "^3.6.0",
+    "eslint": "^9.0.0",
+    "postcss": "^8.4.0",
+    "storybook": "^8.4.0",
+    "style-dictionary": "^4.2.0",
+    "tailwindcss": "^3.4.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0",
+    "vitest": "^2.0.0"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "tailwind-merge": "^2.5.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
