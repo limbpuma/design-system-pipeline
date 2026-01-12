@@ -1,0 +1,36 @@
+{
+  "name": "@design-system/a11y-validator",
+  "version": "1.0.0",
+  "description": "Accessibility validator with detailed feedback for design system components",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "a11y-validate": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "validate": "node dist/cli.js"
+  },
+  "dependencies": {
+    "axe-core": "^4.8.4",
+    "chalk": "^5.3.0",
+    "glob": "^10.3.10",
+    "jsdom": "^24.0.0",
+    "ora": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^27.0.0",
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "wcag",
+    "validator",
+    "design-system"
+  ]
+}

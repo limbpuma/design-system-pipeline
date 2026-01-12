@@ -45,6 +45,10 @@
     "test": "vitest",
     "test:e2e": "node tests/e2e/pipeline.test.js",
     "test:a11y": "storybook build && test-storybook",
+    "a11y:validate": "npx tsx tools/a11y-validator/src/cli.ts \"src/**/*.stories.tsx\"",
+    "a11y:validate:json": "npx tsx tools/a11y-validator/src/cli.ts \"src/**/*.stories.tsx\" --format json",
+    "a11y:report": "npx tsx tools/a11y-validator/src/cli.ts \"src/**/*.stories.tsx\" --format html --output reports/a11y-report.html",
+    "prepare": "husky install",
     "pipeline:check": "npm run tokens:build && npm run build:storybook && echo '✅ Pipeline OK'"
   },
   "keywords": [
@@ -59,6 +63,11 @@
   "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "concurrently": "^8.2.0",
+    "husky": "^9.0.0",
+    "http-server": "^14.1.0",
+    "tsx": "^4.7.0",
+    "wait-on": "^7.2.0",
     "@storybook/addon-a11y": "^8.4.0",
     "@storybook/test-runner": "^0.21.0",
     "@testing-library/jest-dom": "^6.6.0",

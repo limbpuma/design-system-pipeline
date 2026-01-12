@@ -1,0 +1,39 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running accessibility validation on staged files..."
+
+# Get staged .tsx files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(tsx)$' | tr '\n' ' ')
+
+if [ -z "$STAGED_FILES" ]; then
+  echo "✅ No TSX files to validate"
+  exit 0
+fi
+
+# Run a11y validation
+echo "Validating: $STAGED_FILES"
+
+# Check if validator is built
+if [ ! -d "tools/a11y-validator/dist" ]; then
+  echo "⚠️ Building a11y-validator..."
+  cd tools/a11y-validator && npm run build && cd ../..
+fi
+
+# Run validation
+npx tsx tools/a11y-validator/src/cli.ts $STAGED_FILES --threshold error
+
+RESULT=$?
+
+if [ $RESULT -ne 0 ]; then
+  echo ""
+  echo "❌ COMMIT BLOQUEADO: Errores de accesibilidad críticos/serios encontrados"
+  echo ""
+  echo "Por favor corrige los errores antes de hacer commit."
+  echo "Ejecuta 'npm run a11y:validate' para ver el reporte completo."
+  echo ""
+  exit 1
+fi
+
+echo "✅ Accessibility validation passed"
+exit 0

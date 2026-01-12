@@ -1,0 +1,188 @@
+name: Accessibility Validation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'src/**/*.tsx'
+      - 'src/**/*.ts'
+      - 'tools/a11y-validator/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'src/**/*.tsx'
+      - 'src/**/*.ts'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  a11y-validation:
+    name: WCAG 2.1 AA Compliance Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build a11y-validator
+        working-directory: tools/a11y-validator
+        run: |
+          npm ci
+          npm run build
+
+      - name: Run Accessibility Validation
+        id: a11y
+        run: |
+          # Create output directory
+          mkdir -p reports/a11y
+
+          # Run validator on all story files
+          npx tsx tools/a11y-validator/src/cli.ts \
+            "src/**/*.stories.tsx" \
+            --format json \
+            --output reports/a11y/results.json \
+            --threshold warning || echo "VALIDATION_FAILED=true" >> $GITHUB_ENV
+
+          # Generate HTML report
+          npx tsx tools/a11y-validator/src/cli.ts \
+            "src/**/*.stories.tsx" \
+            --format html \
+            --output reports/a11y/report.html || true
+
+      - name: Upload Accessibility Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a11y-report
+          path: reports/a11y/
+          retention-days: 30
+
+      - name: Comment PR with Results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            let report = '## ♿ Accessibility Validation Report\n\n';
+
+            try {
+              const results = JSON.parse(fs.readFileSync('reports/a11y/results.json', 'utf8'));
+
+              if (results.status === 'BLOCKED') {
+                report += '### ❌ SUBMIT BLOQUEADO\n\n';
+                report += `Se encontraron **${results.summary.critical} errores críticos** y **${results.summary.serious} errores serios** que deben corregirse.\n\n`;
+              } else if (results.status === 'WARNING') {
+                report += '### ⚠️ Warnings Encontrados\n\n';
+                report += `Se encontraron **${results.summary.moderate + results.summary.minor} advertencias** que deberían revisarse.\n\n`;
+              } else {
+                report += '### ✅ Sin Errores de Accesibilidad\n\n';
+                report += 'El componente cumple con WCAG 2.1 AA.\n\n';
+              }
+
+              // Error summary
+              if (results.errors && results.errors.length > 0) {
+                report += '### Errores Encontrados\n\n';
+                report += '| Severidad | Regla | Mensaje |\n';
+                report += '|-----------|-------|--------|\n';
+
+                results.errors.slice(0, 10).forEach(error => {
+                  const severity = error.severity === 'critical' ? '🚫 Crítico' :
+                                   error.severity === 'serious' ? '⚠️ Serio' :
+                                   error.severity === 'moderate' ? '📋 Moderado' : '💡 Menor';
+                  report += `| ${severity} | \`${error.rule}\` | ${error.message.substring(0, 60)}... |\n`;
+                });
+
+                if (results.errors.length > 10) {
+                  report += `\n*...y ${results.errors.length - 10} errores más. Ver reporte completo en artifacts.*\n`;
+                }
+
+                // Fix suggestions
+                report += '\n### 💡 Cómo Corregir\n\n';
+                report += 'Descarga el reporte HTML de los artifacts para ver sugerencias detalladas de corrección.\n\n';
+                report += '**Errores comunes:**\n';
+                report += '- **Color Contrast**: Usar `text-slate-500 dark:text-slate-400` en lugar de `dark:text-slate-500`\n';
+                report += '- **Landmarks**: Envolver contenido en `<main>`, `<nav>`, `<aside>`\n';
+                report += '- **Button Names**: Agregar `aria-label` a botones con solo iconos\n';
+              }
+
+            } catch (e) {
+              report += '⚠️ No se pudo generar el reporte. Revisa los logs del workflow.\n';
+            }
+
+            report += '\n---\n*Generado automáticamente por el Design System A11y Validator*';
+
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Accessibility Validation Report')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: report
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: report
+              });
+            }
+
+      - name: Fail if blocked
+        if: env.VALIDATION_FAILED == 'true'
+        run: |
+          echo "❌ Accessibility validation failed!"
+          echo "Por favor corrige los errores críticos/serios antes de hacer merge."
+          exit 1
+
+  storybook-a11y:
+    name: Storybook A11y Addon Tests
+    runs-on: ubuntu-latest
+    needs: a11y-validation
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Storybook
+        run: npm run build-storybook
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
+
+      - name: Run Storybook Tests
+        run: |
+          npx concurrently -k -s first -n "SB,TEST" \
+            "npx http-server storybook-static --port 6006 --silent" \
+            "npx wait-on tcp:6006 && npx test-storybook --url http://localhost:6006"
