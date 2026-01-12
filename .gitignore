@@ -30,6 +30,14 @@ Thumbs.db
 # Temp
 *.tmp
 *.temp
+tmpclaude-*
+nul
+
+# Claude/AI agent temp files
+.opencode/
 
 # Test coverage
 coverage/
+
+# Reports (regenerated)
+reports/
