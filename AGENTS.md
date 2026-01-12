@@ -329,15 +329,48 @@ Create a new Avatar component following existing patterns:
 ## Integration with Google Tools
 
 ### Stitch → Jules Flow
-1. Stitch generates UI with design system context
-2. Export to GitHub creates branch/PR
-3. CI runs a11y validation
-4. If fails, Jules receives auto-fix task
-5. Jules applies fixes following this guide
-6. PR updated and ready for review
 
-### Context for Stitch
-See `docs/STITCH-SYSTEM-PROMPT.md` for design system rules to use in Stitch prompts.
+Stitch genera diseños de UI que se exportan a Jules para convertir en código.
+
+```
+STITCH (diseño) → JULES (código + prompt) → GITHUB (PR) → CI/CD (a11y) → DEPLOY
+```
+
+**Proceso:**
+1. En Stitch, genera el diseño de UI con contexto del Design System
+2. Click **Export → Jules**
+3. Selecciona repo: `limbpuma/design-system-pipeline`
+4. **Escribe un prompt** explicando a Jules qué hacer (ver templates abajo)
+5. Jules lee AGENTS.md + tu prompt
+6. Jules implementa el código siguiendo los patrones del proyecto
+7. Jules crea PR en GitHub
+8. CI/CD ejecuta `npm run a11y:validate`
+9. Si falla, agregar label `jules` para auto-fix
+
+### Prompt Templates para Stitch → Jules
+
+Ver `docs/prompts/STITCH-JULES-TEMPLATES.md` para templates completos.
+
+**Template básico:**
+```
+Convierte este diseño en un componente React para el Design System.
+
+REPOSITORIO: limbpuma/design-system-pipeline
+BRANCH: feature/[nombre]
+
+INSTRUCCIONES:
+1. Lee AGENTS.md para patrones del proyecto
+2. Usa CVA para variantes
+3. Sigue reglas de accesibilidad de A11Y-ERROR-GUIDE.md
+4. Crea stories con withA11yStoryWrapper
+
+VALIDACIÓN: npm run a11y:validate debe pasar
+```
+
+### Documentación Completa
+- `docs/GOOGLE-AI-ECOSYSTEM.md` - Guía completa del ecosistema
+- `docs/prompts/STITCH-JULES-TEMPLATES.md` - Templates de prompts
+- `docs/STITCH-SYSTEM-PROMPT.md` - Contexto para Stitch
 
 ---
 
