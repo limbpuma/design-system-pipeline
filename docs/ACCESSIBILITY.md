@@ -378,7 +378,10 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
 <button aria-label="Close dialog">X</button>
 ```
 
-### 4. Decorative Icons Read Aloud
+### 4. Decorative Icons/SVGs Read Aloud (CRITICAL)
+
+**EVERY decorative SVG MUST have `aria-hidden="true"`**
+
 ```tsx
 // WRONG - icon read by screen reader
 <button>
@@ -389,6 +392,51 @@ const handleKeyDown = (e: React.KeyboardEvent) => {
 <button>
   <SearchIcon aria-hidden="true" /> Search
 </button>
+```
+
+#### Mandatory SVG Patterns
+
+**Pattern 1: Inline SVG**
+```tsx
+<svg
+  className="w-4 h-4"
+  fill="none"
+  viewBox="0 0 24 24"
+  stroke="currentColor"
+  aria-hidden="true"  // ← ALWAYS REQUIRED
+>
+  <path strokeLinecap="round" strokeLinejoin="round" d="..." />
+</svg>
+```
+
+**Pattern 2: Icon Component**
+```tsx
+const CheckIcon = ({ className }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"  // ← ALWAYS REQUIRED
+  >
+    <path d="..." />
+  </svg>
+);
+```
+
+**Pattern 3: Single-line SVG**
+```tsx
+<svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+  <path d="..." />
+</svg>
+```
+
+#### Verification
+
+Before committing, verify all SVGs have aria-hidden:
+```bash
+# Check for SVGs missing aria-hidden
+grep -r "<svg" src/components/YourComponent --include="*.tsx" | grep -v "aria-hidden"
+# Should return NO results
 ```
 
 ### 5. Color-Only Indication

@@ -54,21 +54,21 @@ export const WithForm: Story = {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="name">Name</label>
+          <label className="text-sm font-medium text-[var(--semantic-color-foreground-default)]" htmlFor="name">Name</label>
           <input
             id="name"
             type="text"
             placeholder="John Doe"
-            className="w-full px-3 py-2 border rounded-md"
+            className="w-full px-3 py-2 rounded-md border border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-background-default)] text-[var(--semantic-color-foreground-default)] placeholder:text-[var(--semantic-color-foreground-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--semantic-color-ring-default)] focus:border-transparent"
           />
         </div>
         <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="email">Email</label>
+          <label className="text-sm font-medium text-[var(--semantic-color-foreground-default)]" htmlFor="email">Email</label>
           <input
             id="email"
             type="email"
             placeholder="john@example.com"
-            className="w-full px-3 py-2 border rounded-md"
+            className="w-full px-3 py-2 rounded-md border border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-background-default)] text-[var(--semantic-color-foreground-default)] placeholder:text-[var(--semantic-color-foreground-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--semantic-color-ring-default)] focus:border-transparent"
           />
         </div>
       </CardContent>
@@ -84,13 +84,13 @@ export const WithForm: Story = {
 export const WithImage: Story = {
   render: () => (
     <Card className="w-[350px] overflow-hidden">
-      <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600" />
+      <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600" aria-hidden="true" />
       <CardHeader>
         <CardTitle>Beautiful Gradient</CardTitle>
         <CardDescription>A card with a decorative header.</CardDescription>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-[var(--semantic-color-foreground-muted)]">
           Cards can contain any content including images, gradients, or other media.
         </p>
       </CardContent>
@@ -119,7 +119,7 @@ export const Stats: Story = {
           <CardTitle className="text-3xl">$45,231</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-xs text-green-600">+20.1% from last month</p>
+          <p className="text-xs text-[var(--semantic-color-success-default)]">+20.1% from last month</p>
         </CardContent>
       </Card>
       <Card className="w-[200px]">
@@ -128,7 +128,7 @@ export const Stats: Story = {
           <CardTitle className="text-3xl">2,350</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-xs text-green-600">+180 new this week</p>
+          <p className="text-xs text-[var(--semantic-color-success-default)]">+180 new this week</p>
         </CardContent>
       </Card>
     </div>

@@ -9,9 +9,11 @@ import { cn } from '../../../lib/utils';
  * Features animated score gauge, expandable findings, and action buttons.
  *
  * @accessibility
- * - Color-independent score indication
- * - Screen reader friendly findings list
- * - Keyboard accessible actions
+ * - Score gauge with aria-label describing the score
+ * - Expandable findings with aria-expanded and aria-controls
+ * - All interactive elements have accessible names
+ * - Color-independent severity indication via labels
+ * - Images have descriptive alt text
  */
 
 const cardVariants = cva(
@@ -61,6 +63,8 @@ export interface AIResultsCardProps extends VariantProps<typeof cardVariants> {
   summary?: string;
   /** Image preview */
   image?: string;
+  /** Image alt text for accessibility */
+  imageAlt?: string;
   /** Actions */
   actions?: React.ReactNode;
   /** Show export button */
@@ -145,14 +149,19 @@ const getSeverityStyles = (severity: FindingSeverity) => {
   }
 };
 
-// Animated score gauge
+// Animated score gauge with accessibility
 const ScoreGauge: React.FC<{ score: number; label: string }> = ({ score, label }) => {
   const colors = getScoreColor(score);
   const circumference = 2 * Math.PI * 45;
   const progress = (score / 100) * circumference;
+  const scoreDescription = `${label}: ${score} out of 100, rated as ${getScoreLabel(score)}`;
 
   return (
-    <div className="relative flex flex-col items-center">
+    <div
+      className="relative flex flex-col items-center"
+      role="img"
+      aria-label={scoreDescription}
+    >
       <div className="relative w-28 h-28">
         <svg className="w-28 h-28 transform -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
           {/* Background circle */}
@@ -179,12 +188,12 @@ const ScoreGauge: React.FC<{ score: number; label: string }> = ({ score, label }
             cy="50"
           />
         </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center" aria-hidden="true">
           <span className={cn('text-3xl font-bold', colors.text)}>{score}</span>
           <span className="text-xs text-slate-400">/ 100</span>
         </div>
       </div>
-      <div className="mt-2 text-center">
+      <div className="mt-2 text-center" aria-hidden="true">
         <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
         <p className={cn('text-sm font-semibold', colors.text)}>{getScoreLabel(score)}</p>
       </div>
@@ -192,13 +201,14 @@ const ScoreGauge: React.FC<{ score: number; label: string }> = ({ score, label }
   );
 };
 
-// Finding card component
+// Finding card component with accessibility
 const FindingCard: React.FC<{
   finding: Finding;
   expanded?: boolean;
   onToggle?: () => void;
 }> = ({ finding, expanded = false, onToggle }) => {
   const styles = getSeverityStyles(finding.severity);
+  const contentId = `finding-content-${finding.id}`;
 
   const formatCurrency = (amount: number, currency = 'USD'): string => {
     return new Intl.NumberFormat('default', {
@@ -217,12 +227,16 @@ const FindingCard: React.FC<{
         'hover:shadow-md',
         expanded && 'ring-1 ring-slate-200 dark:ring-slate-700'
       )}
+      role="listitem"
     >
       <button
         onClick={onToggle}
-        className="w-full px-4 py-3 flex items-start gap-3 text-left"
+        className="w-full px-4 py-3 flex items-start gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset rounded-xl"
+        aria-expanded={expanded}
+        aria-controls={contentId}
+        aria-label={`${finding.title}, ${finding.severity} severity${finding.category ? `, ${finding.category}` : ''}. Click to ${expanded ? 'collapse' : 'expand'} details.`}
       >
-        <span className={cn('w-2 h-2 rounded-full mt-2 flex-shrink-0', styles.dot)} />
+        <span className={cn('w-2 h-2 rounded-full mt-2 flex-shrink-0', styles.dot)} aria-hidden="true" />
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2">
             <h5 className="font-medium text-slate-900 dark:text-white truncate">
@@ -257,8 +271,15 @@ const FindingCard: React.FC<{
         </svg>
       </button>
 
-      {expanded && (
-        <div className="px-4 pb-4 pt-0 animate-in slide-in-from-top-2 duration-200">
+      <div
+        id={contentId}
+        className={cn(
+          'overflow-hidden transition-all duration-200',
+          expanded ? 'max-h-96' : 'max-h-0'
+        )}
+        aria-hidden={!expanded}
+      >
+        <div className="px-4 pb-4 pt-0">
           {finding.description && (
             <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 pl-5">
               {finding.description}
@@ -274,7 +295,7 @@ const FindingCard: React.FC<{
             </div>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
@@ -289,6 +310,7 @@ export function AIResultsCard({
   maxVisibleFindings = 3,
   summary,
   image,
+  imageAlt,
   actions,
   showExport = true,
   onExport,
@@ -318,7 +340,10 @@ export function AIResultsCard({
   }, [timestamp]);
 
   return (
-    <div className={cn(cardVariants({ variant }), className)}>
+    <article
+      className={cn(cardVariants({ variant }), className)}
+      aria-labelledby="results-title"
+    >
       {/* Header */}
       <div className="relative p-6 bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/50 dark:to-slate-900">
         <div className="flex items-start gap-6">
@@ -327,7 +352,7 @@ export function AIResultsCard({
 
           {/* Title and info */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+            <h3 id="results-title" className="text-xl font-bold text-slate-900 dark:text-white">
               {title}
             </h3>
             {subtitle && (
@@ -340,15 +365,15 @@ export function AIResultsCard({
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                {formattedTime}
+                <time dateTime={timestamp?.toString()}>{formattedTime}</time>
               </p>
             )}
 
             {/* Summary stats */}
-            <div className="flex items-center gap-3 mt-4 flex-wrap">
+            <div className="flex items-center gap-3 mt-4 flex-wrap" role="group" aria-label="Findings summary">
               {criticalCount > 0 && (
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-900/30">
-                  <span className="w-2 h-2 rounded-full bg-red-500" />
+                  <span className="w-2 h-2 rounded-full bg-red-500" aria-hidden="true" />
                   <span className="text-xs font-medium text-red-700 dark:text-red-300">
                     {criticalCount} Critical
                   </span>
@@ -356,7 +381,7 @@ export function AIResultsCard({
               )}
               {moderateCount > 0 && (
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-900/30">
-                  <span className="w-2 h-2 rounded-full bg-amber-500" />
+                  <span className="w-2 h-2 rounded-full bg-amber-500" aria-hidden="true" />
                   <span className="text-xs font-medium text-amber-700 dark:text-amber-300">
                     {moderateCount} Moderate
                   </span>
@@ -364,7 +389,7 @@ export function AIResultsCard({
               )}
               {minorCount > 0 && (
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30">
-                  <span className="w-2 h-2 rounded-full bg-blue-500" />
+                  <span className="w-2 h-2 rounded-full bg-blue-500" aria-hidden="true" />
                   <span className="text-xs font-medium text-blue-700 dark:text-blue-300">
                     {minorCount} Minor
                   </span>
@@ -378,7 +403,7 @@ export function AIResultsCard({
             <div className="flex-shrink-0">
               <img
                 src={image}
-                alt=""
+                alt={imageAlt || `Preview image for ${title}`}
                 className="w-24 h-24 rounded-xl object-cover ring-1 ring-slate-200 dark:ring-slate-700"
               />
             </div>
@@ -390,8 +415,8 @@ export function AIResultsCard({
       {summary && (
         <div className="px-6 py-4 border-t border-slate-100 dark:border-slate-800">
           <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
-              <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0" aria-hidden="true">
+              <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
@@ -412,14 +437,15 @@ export function AIResultsCard({
             {findings.length > maxVisibleFindings && (
               <button
                 onClick={() => setShowAllFindings(!showAllFindings)}
-                className="text-sm text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                className="text-sm text-blue-600 dark:text-blue-400 hover:underline font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded"
+                aria-expanded={showAllFindings}
               >
                 {showAllFindings ? 'Show less' : `Show all ${findings.length}`}
               </button>
             )}
           </div>
 
-          <div className="space-y-2" role="list">
+          <ul className="space-y-2" aria-label="Analysis findings">
             {visibleFindings.map((finding) => (
               <FindingCard
                 key={finding.id}
@@ -430,15 +456,15 @@ export function AIResultsCard({
                 )}
               />
             ))}
-          </div>
+          </ul>
         </div>
       )}
 
       {/* No findings */}
       {findings.length === 0 && (
         <div className="px-6 py-8 border-t border-slate-100 dark:border-slate-800 text-center">
-          <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mx-auto mb-3">
-            <svg className="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+          <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mx-auto mb-3" aria-hidden="true">
+            <svg className="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -450,7 +476,7 @@ export function AIResultsCard({
       {/* Actions */}
       <div className="px-6 py-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
         <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" role="group" aria-label="Report actions">
             {showExport && onExport && (
               <button
                 onClick={onExport}
@@ -461,8 +487,10 @@ export function AIResultsCard({
                   'text-slate-700 dark:text-slate-200',
                   'hover:bg-slate-50 dark:hover:bg-slate-700',
                   'hover:shadow-md',
-                  'active:scale-95'
+                  'active:scale-95',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
                 )}
+                aria-label="Export analysis report as PDF"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -478,8 +506,10 @@ export function AIResultsCard({
                   'text-slate-500 dark:text-slate-400',
                   'hover:bg-white dark:hover:bg-slate-800',
                   'hover:text-slate-700 dark:hover:text-slate-200',
-                  'active:scale-95'
+                  'active:scale-95',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2'
                 )}
+                aria-label="Share analysis report"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -491,7 +521,7 @@ export function AIResultsCard({
           {actions}
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 

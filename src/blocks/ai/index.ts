@@ -4,3 +4,4 @@ export { ImageUploader, type ImageUploaderProps, type UploadedImage } from './Im
 export { AnalysisProgress, type AnalysisProgressProps, type AnalysisStep } from './AnalysisProgress';
 export { ConversationPanel, type ConversationPanelProps, type Message } from './ConversationPanel';
 export { AIResultsCard, type AIResultsCardProps, type Finding, type FindingSeverity } from './AIResultsCard';
+export { PromptLibrary, type PromptLibraryProps, type Prompt } from './PromptLibrary';

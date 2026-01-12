@@ -52,17 +52,32 @@ const formatTime = (seconds: number): string => {
   return secs > 0 ? `${mins}m ${secs}s` : `${mins}m`;
 };
 
+// Status labels for screen readers
+const statusLabels: Record<AnalysisStep['status'], string> = {
+  pending: 'Pending',
+  active: 'In progress',
+  complete: 'Completed',
+  error: 'Failed',
+};
+
 // Animated step icon with status
-const StepIcon: React.FC<{ status: AnalysisStep['status']; index: number }> = ({
+const StepIcon: React.FC<{ status: AnalysisStep['status']; index: number; label: string }> = ({
   status,
   index,
+  label,
 }) => {
   const baseClass = 'relative w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold transition-all duration-300';
+
+  const ariaLabel = `Step ${index + 1}: ${label} - ${statusLabels[status]}`;
 
   switch (status) {
     case 'complete':
       return (
-        <div className={cn(baseClass, 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30')}>
+        <div
+          className={cn(baseClass, 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30')}
+          role="img"
+          aria-label={ariaLabel}
+        >
           <svg className="w-5 h-5 animate-in zoom-in duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
@@ -70,18 +85,26 @@ const StepIcon: React.FC<{ status: AnalysisStep['status']; index: number }> = ({
       );
     case 'active':
       return (
-        <div className={cn(baseClass, 'bg-gradient-to-br from-blue-500 to-violet-500 text-white shadow-lg shadow-blue-500/30')}>
+        <div
+          className={cn(baseClass, 'bg-gradient-to-br from-blue-500 to-violet-500 text-white shadow-lg shadow-blue-500/30')}
+          role="img"
+          aria-label={ariaLabel}
+        >
           <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth={4} />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
           {/* Pulsing ring */}
-          <span className="absolute inset-0 rounded-xl bg-blue-500/30 animate-ping" />
+          <span className="absolute inset-0 rounded-xl bg-blue-500/30 animate-ping" aria-hidden="true" />
         </div>
       );
     case 'error':
       return (
-        <div className={cn(baseClass, 'bg-red-500 text-white shadow-lg shadow-red-500/30')}>
+        <div
+          className={cn(baseClass, 'bg-red-500 text-white shadow-lg shadow-red-500/30')}
+          role="img"
+          aria-label={ariaLabel}
+        >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -89,13 +112,17 @@ const StepIcon: React.FC<{ status: AnalysisStep['status']; index: number }> = ({
       );
     default:
       return (
-        <div className={cn(
-          baseClass,
-          'bg-slate-100 dark:bg-slate-800',
-          'text-slate-400 dark:text-slate-500',
-          'border-2 border-slate-200 dark:border-slate-700'
-        )}>
-          {index + 1}
+        <div
+          className={cn(
+            baseClass,
+            'bg-slate-100 dark:bg-slate-800',
+            'text-slate-400 dark:text-slate-500',
+            'border-2 border-slate-200 dark:border-slate-700'
+          )}
+          role="img"
+          aria-label={ariaLabel}
+        >
+          <span aria-hidden="true">{index + 1}</span>
         </div>
       );
   }
@@ -220,7 +247,7 @@ export function AnalysisProgress({
             >
               {/* Step indicator column */}
               <div className="flex flex-col items-center">
-                <StepIcon status={step.status} index={index} />
+                <StepIcon status={step.status} index={index} label={step.label} />
                 {index < steps.length - 1 && (
                   <StepConnector status={step.status} />
                 )}
@@ -281,6 +308,11 @@ export function AnalysisProgress({
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-blue-500 to-violet-500 transition-all duration-300"
                       style={{ width: `${step.progress}%` }}
+                      role="progressbar"
+                      aria-valuenow={step.progress}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-label={`${step.label} progress`}
                     />
                   </div>
                 )}
@@ -292,7 +324,7 @@ export function AnalysisProgress({
 
       {/* Compact view */}
       {!showDetails && (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" role="list" aria-label="Analysis steps compact view">
           {steps.map((step, index) => (
             <React.Fragment key={step.id}>
               <div
@@ -306,7 +338,8 @@ export function AnalysisProgress({
                     ? 'bg-red-500 shadow-lg shadow-red-500/50'
                     : 'bg-slate-200 dark:bg-slate-700'
                 )}
-                title={step.label}
+                role="listitem"
+                aria-label={`Step ${index + 1}: ${step.label} - ${statusLabels[step.status]}`}
               />
               {index < steps.length - 1 && (
                 <div
@@ -316,6 +349,7 @@ export function AnalysisProgress({
                       ? 'bg-emerald-500'
                       : 'bg-slate-200 dark:bg-slate-700'
                   )}
+                  aria-hidden="true"
                 />
               )}
             </React.Fragment>

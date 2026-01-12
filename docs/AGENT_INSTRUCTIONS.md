@@ -156,11 +156,36 @@ export function Component({ variant, size, className, children }: ComponentProps
 ```tsx
 // Required for all components:
 - aria-label for icon-only buttons
-- aria-hidden="true" for decorative SVGs
+- aria-hidden="true" for ALL decorative SVGs (CRITICAL)
 - role="status" aria-live="polite" for dynamic content
 - Semantic HTML (button, nav, main, article)
 - Focus visible states: focus-visible:ring-2
 ```
+
+#### SVG Icon Pattern (MANDATORY)
+
+Every SVG icon MUST have `aria-hidden="true"`:
+
+```tsx
+// ✅ CORRECT - Inline SVG
+<svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+  <path ... />
+</svg>
+
+// ✅ CORRECT - Icon component
+const SearchIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" aria-hidden="true">
+    <path ... />
+  </svg>
+);
+
+// ❌ WRONG - Missing aria-hidden
+<svg className="w-4 h-4" fill="none" viewBox="0 0 24 24">
+  <path ... />
+</svg>
+```
+
+**Why?** Screen readers will try to announce SVGs without aria-hidden, causing confusing announcements for users with disabilities.
 
 ### Step 6: Export Component
 
@@ -179,17 +204,17 @@ export { ComponentName } from './blocks/{category}/{ComponentName}';
 ## Blocks to Create (Roadmap)
 
 ### Marketing Blocks
-- [ ] PricingCards - Pricing tier comparison
+- [x] PricingCards - Pricing tier comparison ✅ COMPLETED
 - [ ] Testimonials - Customer testimonials carousel
-- [ ] FAQ - Frequently asked questions accordion
+- [x] FAQ - Frequently asked questions accordion ✅ COMPLETED
 - [ ] Newsletter - Email signup section
 - [ ] Footer - Site footer with links
 
 ### Application Blocks
-- [ ] DataTable - Sortable, filterable table
+- [x] DataTable - Sortable, filterable table ✅ COMPLETED
 - [ ] ChartSection - Chart container with controls
-- [ ] ActivityFeed - Recent activity list
-- [ ] NotificationList - Notification center
+- [x] ActivityFeed - Recent activity list ✅ COMPLETED
+- [x] NotificationList - Notification center ✅ COMPLETED
 - [ ] UserProfile - User info card
 
 ### E-commerce Blocks
@@ -197,6 +222,12 @@ export { ComponentName } from './blocks/{category}/{ComponentName}';
 - [ ] CartSummary - Shopping cart summary
 - [ ] CheckoutForm - Multi-step checkout
 - [ ] OrderHistory - Order list view
+
+### AI Blocks (COMPLETED)
+- [x] ImageUploader - Drag & drop image upload with preview
+- [x] AnalysisProgress - Multi-step progress indicator
+- [x] AIResultsCard - Analysis results with score ring
+- [x] ConversationPanel - Chat message list with input
 
 ---
 
@@ -216,7 +247,23 @@ npm run tokens:build
 
 # 4. Run Storybook to verify visually
 npm run storybook
+
+# 5. Accessibility check for SVGs (CRITICAL)
+# Every SVG must have aria-hidden="true"
+grep -r "<svg" src/your-component --include="*.tsx" | grep -v "aria-hidden"
+# If this returns results, fix them!
 ```
+
+### Accessibility Verification
+
+**BEFORE committing, verify all SVGs have aria-hidden:**
+
+```bash
+# Check for SVGs missing aria-hidden in your new component
+grep -Pzo '(?s)<svg[^>]*>' src/your-component/*.tsx | grep -v "aria-hidden"
+```
+
+If any SVGs are found without `aria-hidden="true"`, add it before committing.
 
 ---
 

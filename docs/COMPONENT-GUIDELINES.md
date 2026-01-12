@@ -408,6 +408,7 @@ Before submitting a component:
 - [ ] Screen reader announces correctly
 - [ ] Color contrast passes (4.5:1 text, 3:1 UI)
 - [ ] Touch targets are 44x44px minimum
+- [ ] **ALL SVGs have `aria-hidden="true"`** (CRITICAL)
 
 ### Storybook
 - [ ] All stories render without errors
@@ -501,6 +502,62 @@ export { Card, type CardProps } from './components/Card';
 
 // Utilities
 export { cn } from './utils/cn';
+```
+
+## SVG Icon Guidelines
+
+### Mandatory: aria-hidden for All Decorative SVGs
+
+Every SVG icon in the design system MUST include `aria-hidden="true"` to prevent screen readers from announcing decorative content.
+
+### Icon Component Pattern
+
+```tsx
+// CORRECT: Icon component with aria-hidden
+const SearchIcon = ({ className }: { className?: string }) => (
+  <svg
+    className={cn('w-4 h-4', className)}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    aria-hidden="true"  // ← REQUIRED
+  >
+    <circle cx="11" cy="11" r="8" />
+    <path d="m21 21-4.35-4.35" />
+  </svg>
+);
+
+// Usage in a button
+<button aria-label="Search">
+  <SearchIcon />
+</button>
+```
+
+### Inline SVG Pattern
+
+```tsx
+// CORRECT: Inline SVG with aria-hidden
+<button aria-label="Close">
+  <svg
+    className="w-4 h-4"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    aria-hidden="true"  // ← REQUIRED
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  </svg>
+</button>
+```
+
+### Verification Command
+
+```bash
+# Check for SVGs missing aria-hidden
+grep -r "<svg" src/components/YourComponent --include="*.tsx" | grep -v "aria-hidden"
+# Should return NO results
 ```
 
 ## Version Compatibility

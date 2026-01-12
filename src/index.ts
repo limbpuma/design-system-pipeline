@@ -42,6 +42,42 @@ export { AuthenticityBadge, AuthenticityScore, badgeVariants } from './component
 export type { AuthenticityBadgeProps, AuthenticityIndicator } from './components/AuthenticityBadge';
 
 // ============================================
+// FORM COMPONENTS
+// ============================================
+
+// Input
+export { Input, inputVariants } from './components/Input';
+export type { InputProps } from './components/Input';
+
+// Select
+export { Select, selectVariants } from './components/Select';
+export type { SelectProps, SelectOption } from './components/Select';
+
+// Checkbox
+export { Checkbox, checkboxVariants } from './components/Checkbox';
+export type { CheckboxProps } from './components/Checkbox';
+
+// Switch
+export { Switch, switchVariants } from './components/Switch';
+export type { SwitchProps } from './components/Switch';
+
+// Textarea
+export { Textarea, textareaVariants } from './components/Textarea';
+export type { TextareaProps } from './components/Textarea';
+
+// Slider
+export { Slider, sliderVariants } from './components/Slider';
+export type { SliderProps } from './components/Slider';
+
+// ============================================
+// THEME
+// ============================================
+
+// ThemeToggle
+export { ThemeToggle, themeToggleVariants, useTheme } from './components/ThemeToggle';
+export type { ThemeToggleProps, Theme, ResolvedTheme, UseThemeReturn } from './components/ThemeToggle';
+
+// ============================================
 // AI COMPONENTS
 // ============================================
 
@@ -56,6 +92,34 @@ export type { ChatMessageProps, MessageRole } from './components/ChatMessage';
 // PromptInput
 export { PromptInput } from './components/PromptInput';
 export type { PromptInputProps, PromptSuggestion } from './components/PromptInput';
+
+// ModelSelector
+export { ModelSelector, modelSelectorVariants } from './components/ModelSelector';
+export type { ModelSelectorProps, AIModel } from './components/ModelSelector';
+
+// TokenCounter
+export { TokenCounter, tokenCounterVariants } from './components/TokenCounter';
+export type { TokenCounterProps } from './components/TokenCounter';
+
+// StreamingText
+export { StreamingText } from './components/StreamingText';
+export type { StreamingTextProps } from './components/StreamingText';
+
+// CodeBlock
+export { CodeBlock, codeBlockVariants } from './components/CodeBlock';
+export type { CodeBlockProps } from './components/CodeBlock';
+
+// ============================================
+// FEEDBACK COMPONENTS
+// ============================================
+
+// Alert
+export { Alert, alertVariants } from './components/Alert';
+export type { AlertProps } from './components/Alert';
+
+// Skeleton
+export { Skeleton, SkeletonCard, SkeletonListItem, SkeletonTable, skeletonVariants } from './components/Skeleton';
+export type { SkeletonProps, SkeletonCardProps, SkeletonListItemProps, SkeletonTableProps } from './components/Skeleton';
 
 // ============================================
 // UTILITIES
@@ -73,6 +137,9 @@ export { FeatureGrid, type FeatureGridProps, type Feature } from './blocks/marke
 
 // Application Blocks
 export { StatsCards, type StatsCardsProps, type Stat } from './blocks/application/StatsCards';
+export { Sidebar, sidebarVariants, type SidebarProps, type NavItem } from './blocks/application/Sidebar';
+export { CommandPalette, type CommandPaletteProps, type CommandItem } from './blocks/application/CommandPalette';
+export { Toast, ToastProvider, useToast, toastVariants, type ToastData } from './blocks/application/Toast';
 
 // AI Blocks
 export {
@@ -96,6 +163,17 @@ export {
   type Finding,
   type FindingSeverity,
 } from './blocks/ai/AIResultsCard';
+export {
+  PromptLibrary,
+  type PromptLibraryProps,
+  type Prompt,
+} from './blocks/ai/PromptLibrary';
+export {
+  AgentConfigPanel,
+  type AgentConfigPanelProps,
+  type AgentConfig,
+  type AgentParameter,
+} from './blocks/ai/AgentConfigPanel';
 
 // ============================================
 // LAYOUTS

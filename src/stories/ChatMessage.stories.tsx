@@ -23,7 +23,7 @@ const ChatContainer: React.FC<{
         <div className="flex items-center gap-3 px-5 py-4 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-b border-slate-200 dark:border-slate-700">
           <div className="relative">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center shadow-lg">
-              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
               </svg>
             </div>
@@ -38,7 +38,7 @@ const ChatContainer: React.FC<{
           </div>
           <div className="flex items-center gap-2">
             <button className="p-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors" aria-label="Settings">
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
               </svg>
             </button>
@@ -105,7 +105,7 @@ A professional chat message component designed for AI-powered conversational int
       options: ['sm', 'md', 'lg'],
       description: 'Size variant of the message',
     },
-    status: {
+    onlineStatus: {
       control: 'select',
       options: ['online', 'offline', 'away', 'busy'],
       description: 'Online status indicator for avatar',
@@ -170,7 +170,7 @@ export const UserMessage: Story = {
     content: 'Can you analyze this image of my house roof for potential damage?',
     timestamp: new Date(),
     senderName: 'John',
-    status: 'online',
+    onlineStatus: 'online',
   },
 };
 
@@ -188,7 +188,7 @@ export const AssistantMessage: Story = {
     content: "I've analyzed the image of your roof. I found 3 areas of concern:\n\n1. **Missing shingles** in the northeast corner\n2. **Moss growth** along the ridge line\n3. **Potential water damage** near the chimney flashing\n\nI recommend getting a professional inspection within the next 30 days.",
     timestamp: new Date(),
     senderName: 'AI Assistant',
-    status: 'online',
+    onlineStatus: 'online',
   },
 };
 
@@ -272,7 +272,7 @@ export const WithAvatar: Story = {
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=user123',
     senderName: 'Sarah',
     timestamp: new Date(),
-    status: 'online',
+    onlineStatus: 'online',
   },
 };
 
@@ -398,7 +398,7 @@ export const StatusAway: Story = {
     content: "I'll check back later for the results.",
     timestamp: new Date(),
     senderName: 'Alex',
-    status: 'away',
+    onlineStatus: 'away',
   },
 };
 
@@ -416,7 +416,7 @@ export const StatusBusy: Story = {
     content: 'Please prioritize the roof inspection.',
     timestamp: new Date(),
     senderName: 'Chris',
-    status: 'busy',
+    onlineStatus: 'busy',
   },
 };
 
@@ -435,7 +435,7 @@ export const Conversation: Story = {
         content="I'd like to check the condition of my roof. Here's a photo I took yesterday."
         timestamp={new Date(Date.now() - 120000)}
         senderName="John"
-        status="online"
+        onlineStatus="online"
       />
       <ChatMessage
         role="assistant"
@@ -454,7 +454,7 @@ export const Conversation: Story = {
         content="Can you estimate the repair cost?"
         timestamp={new Date()}
         senderName="John"
-        status="online"
+        onlineStatus="online"
       />
       <ChatMessage
         role="assistant"
@@ -476,7 +476,7 @@ export const LongMessage: Story = {
         content="Generate a full inspection report for my property."
         timestamp={new Date(Date.now() - 30000)}
         senderName="Client"
-        status="online"
+        onlineStatus="online"
       />
       <ChatMessage {...args} />
     </ChatContainer>
@@ -576,13 +576,13 @@ export const RolesComparison: Story = {
           role="user"
           content="This is a user message - aligned to the right with blue background."
           senderName="User"
-          status="online"
+          onlineStatus="online"
         />
         <ChatMessage
           role="assistant"
           content="This is an assistant message - aligned to the left with neutral background and AI avatar."
           senderName="AI Assistant"
-          status="online"
+          onlineStatus="online"
         />
         <ChatMessage
           role="system"
