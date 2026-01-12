@@ -116,7 +116,7 @@ const StepIcon: React.FC<{ status: AnalysisStep['status']; index: number; label:
           className={cn(
             baseClass,
             'bg-slate-100 dark:bg-slate-800',
-            'text-slate-400 dark:text-slate-500',
+            'text-slate-500 dark:text-slate-400',
             'border-2 border-slate-200 dark:border-slate-700'
           )}
           role="img"
@@ -269,7 +269,7 @@ export function AnalysisProgress({
                           ? 'text-emerald-600 dark:text-emerald-400'
                           : step.status === 'error'
                           ? 'text-red-600 dark:text-red-400'
-                          : 'text-slate-400 dark:text-slate-500'
+                          : 'text-slate-500 dark:text-slate-400'
                       )}
                     >
                       {step.label}

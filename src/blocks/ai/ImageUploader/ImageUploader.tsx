@@ -100,7 +100,7 @@ const UploadIcon: React.FC<{ isActive?: boolean; className?: string }> = ({ isAc
     'relative w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300',
     isActive
       ? 'bg-gradient-to-br from-blue-500 to-violet-600 text-white scale-110 shadow-xl shadow-blue-500/30'
-      : 'bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 text-slate-400 dark:text-slate-500',
+      : 'bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 text-slate-500 dark:text-slate-400',
     className
   )}>
     <svg
@@ -422,7 +422,7 @@ export function ImageUploader({
                 </div>
 
                 {/* Limits */}
-                <p className="text-xs text-slate-400 dark:text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   Max {formatFileSize(maxFileSize)} per file · Up to {maxImages} images
                 </p>
 

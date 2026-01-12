@@ -361,7 +361,7 @@ export function AIResultsCard({
               </p>
             )}
             {formattedTime && (
-              <p className="text-xs text-slate-400 dark:text-slate-500 mt-2 flex items-center gap-1.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 flex items-center gap-1.5">
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>

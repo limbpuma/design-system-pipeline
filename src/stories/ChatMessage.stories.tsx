@@ -16,13 +16,13 @@ const ChatContainer: React.FC<{
   subtitle?: string;
   showHeader?: boolean;
 }> = ({ children, title = 'AI Assistant', subtitle = 'Online', showHeader = true }) => (
-  <div className="w-full max-w-2xl mx-auto">
+  <main className="w-full max-w-2xl mx-auto" role="main" aria-label="Chat conversation">
     <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
       {/* Chat Header */}
       {showHeader && (
-        <div className="flex items-center gap-3 px-5 py-4 bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-b border-slate-200 dark:border-slate-700">
+        <div className="flex items-center gap-3 px-5 py-4 bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
           <div className="relative">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center shadow-lg">
               <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
               </svg>
@@ -31,8 +31,8 @@ const ChatContainer: React.FC<{
           </div>
           <div className="flex-1">
             <h3 className="font-semibold text-slate-900 dark:text-white">{title}</h3>
-            <p className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <p className="text-xs text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" aria-hidden="true" />
               {subtitle}
             </p>
           </div>
@@ -45,23 +45,35 @@ const ChatContainer: React.FC<{
           </div>
         </div>
       )}
-      {/* Messages Area */}
-      <div className="p-5 bg-gradient-to-b from-slate-50/50 to-white dark:from-slate-900/50 dark:to-slate-900 min-h-[200px] max-h-[500px] overflow-y-auto">
+      {/* Messages Area - tabIndex required for WCAG scrollable-region-focusable */}
+      {/* eslint-disable jsx-a11y/no-noninteractive-tabindex */}
+      <div
+        className="p-5 bg-white dark:bg-slate-900 min-h-[200px] max-h-[500px] overflow-y-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
+        tabIndex={0}
+        role="log"
+        aria-label="Chat messages"
+        aria-live="polite"
+      >
+        {/* eslint-enable jsx-a11y/no-noninteractive-tabindex */}
         <div className="flex flex-col gap-4">
           {children}
         </div>
       </div>
     </div>
-  </div>
+  </main>
 );
 
 // Simple message wrapper for single message stories
 const SingleMessageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="w-full max-w-2xl mx-auto p-6 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 rounded-2xl min-h-[150px] flex items-center">
+  <main
+    className="w-full max-w-2xl mx-auto p-6 bg-slate-50 dark:bg-slate-900 rounded-2xl min-h-[150px] flex items-center"
+    role="main"
+    aria-label="Chat message preview"
+  >
     <div className="w-full flex flex-col gap-4">
       {children}
     </div>
-  </div>
+  </main>
 );
 
 const meta: Meta<typeof ChatMessage> = {

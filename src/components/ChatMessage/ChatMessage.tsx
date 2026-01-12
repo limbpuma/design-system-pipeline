@@ -38,7 +38,7 @@ const bubbleVariants = cva(
     variants: {
       role: {
         user: [
-          'bg-gradient-to-br from-blue-600 to-blue-700',
+          'bg-blue-600',
           'text-white',
           'rounded-br-md',
           'shadow-lg shadow-blue-500/20',
@@ -131,7 +131,7 @@ const StreamingCursor: React.FC = () => (
 const AIAvatar: React.FC<{ className?: string }> = ({ className }) => (
   <div className={cn(
     'w-10 h-10 rounded-xl',
-    'bg-gradient-to-br from-violet-500 to-blue-600',
+    'bg-violet-600',
     'flex items-center justify-center',
     'shadow-lg shadow-violet-500/30',
     className
@@ -410,7 +410,7 @@ export function ChatMessage({
               <span className="font-medium text-slate-700 dark:text-slate-300">{senderName}</span>
             )}
             {formattedTime && (
-              <time dateTime={timestamp?.toString()} className="text-slate-400 dark:text-slate-500">
+              <time dateTime={timestamp?.toString()} className="text-slate-500 dark:text-slate-400">
                 {formattedTime}
               </time>
             )}
@@ -466,7 +466,7 @@ export function ChatMessage({
         {isUser && status && (
           <div className="flex items-center gap-1 px-1">
             <StatusIcon status={status} />
-            <span className="text-[10px] text-slate-400 dark:text-slate-500 capitalize">
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 capitalize">
               {status === 'read' ? 'Seen' : status}
             </span>
           </div>

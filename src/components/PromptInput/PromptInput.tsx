@@ -273,7 +273,7 @@ export function PromptInput({
               disabled={disabled || isLoading}
               className={cn(
                 'flex-shrink-0 p-2.5 rounded-xl transition-all duration-200',
-                'text-slate-400 dark:text-slate-500',
+                'text-slate-500 dark:text-slate-400',
                 'hover:bg-slate-100 dark:hover:bg-slate-800',
                 'hover:text-slate-600 dark:hover:text-slate-300',
                 'active:scale-95',
@@ -336,7 +336,7 @@ export function PromptInput({
                 isVoiceActive
                   ? 'bg-red-50 dark:bg-red-900/30'
                   : [
-                      'text-slate-400 dark:text-slate-500',
+                      'text-slate-500 dark:text-slate-400',
                       'hover:bg-slate-100 dark:hover:bg-slate-800',
                       'hover:text-slate-600 dark:hover:text-slate-300',
                     ],
@@ -402,7 +402,15 @@ export function PromptInput({
                 <span>Suggestions</span>
               </div>
             </div>
-            <ul className="max-h-60 overflow-y-auto">
+            <ul
+              className={cn(
+                'max-h-60 overflow-y-auto',
+                'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
+              )}
+              tabIndex={0}
+              role="listbox"
+              aria-label="Prompt suggestions"
+            >
               {suggestions.map((suggestion, index) => (
                 <li
                   key={suggestion.id}
@@ -476,7 +484,7 @@ export function PromptInput({
 
       {/* Hint text */}
       {!isFocused && !value && suggestions.length > 0 && (
-        <p className="mt-2 text-xs text-slate-400 dark:text-slate-500 text-center animate-in fade-in duration-500">
+        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400 text-center animate-in fade-in duration-500">
           Press <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-[10px]">↑</kbd> or <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-[10px]">↓</kbd> to browse suggestions
         </p>
       )}

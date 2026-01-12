@@ -96,7 +96,7 @@ const ConversationDemo = (args: React.ComponentProps<typeof ConversationPanel>) 
   };
 
   return (
-    <div className="h-[650px] max-w-3xl mx-auto">
+    <main className="h-[650px] max-w-3xl mx-auto" role="main" aria-label="Conversation panel demo">
       <ConversationPanel
         {...args}
         messages={messages}
@@ -106,7 +106,7 @@ const ConversationDemo = (args: React.ComponentProps<typeof ConversationPanel>) 
         isLoading={isLoading}
         showTypingIndicator={showTyping}
       />
-    </div>
+    </main>
   );
 };
 
@@ -275,12 +275,12 @@ export const CustomHeader: Story = {
     header: (
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold">
+          <div className="w-10 h-10 rounded-full bg-emerald-700 flex items-center justify-center text-white font-bold">
             HC
           </div>
           <div>
             <h2 className="font-semibold text-slate-900 dark:text-white">Custom Header</h2>
-            <p className="text-xs text-emerald-600 dark:text-emerald-400">Premium Plan</p>
+            <p className="text-xs text-emerald-700 dark:text-emerald-400">Premium Plan</p>
           </div>
         </div>
         <button className="px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
