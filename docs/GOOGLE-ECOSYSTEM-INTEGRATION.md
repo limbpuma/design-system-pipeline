@@ -247,17 +247,36 @@ npm run storybook
 
 ---
 
-## 6. Próximos Pasos
+## 6. Guía Completa de Integración AI Pro
+
+Para aprovechar al máximo tu suscripción Google AI Pro, consulta:
+
+📘 **[GOOGLE-AI-PRO-INTEGRATION.md](./GOOGLE-AI-PRO-INTEGRATION.md)**
+
+Incluye:
+- Configuración detallada de Jules con Scheduled Tasks
+- Flujo completo Stitch → GitHub → Jules
+- Setup de Gemini Code Assist en VS Code
+- Uso de Gemini CLI en terminal
+- Configuración de NotebookLM para documentación
+- Creación de agente personalizado en AI Studio
+- Scripts de automatización con Gemini API
+
+---
+
+## 7. Próximos Pasos
 
 1. **Accede al dashboard de Jules:**
    https://jules.google.com/repo/github/limbpuma/design-system-pipeline/
 
-2. **Crea tu primer Scheduled Task** (validación a11y semanal)
+2. **Crea tu primer Scheduled Task** (validación a11y diaria)
 
-3. **Prueba el flujo Stitch → GitHub → Jules:**
-   - Genera una UI en Stitch
+3. **Instala Gemini Code Assist en VS Code**
+
+4. **Prueba el flujo Stitch → GitHub → Jules:**
+   - Genera una UI en Stitch con contexto de `STITCH-SYSTEM-PROMPT.md`
    - Exporta al repo
    - Verifica que el workflow se ejecute
-   - Si hay errores, agrega label "jules"
+   - Si hay errores, Jules los corrige automáticamente
 
-4. **Opcional: Configura alertas en Slack/Discord via Jules API**
+5. **Opcional: Configura Gemini CLI para reviews locales**
