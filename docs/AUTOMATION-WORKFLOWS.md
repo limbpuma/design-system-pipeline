@@ -223,6 +223,89 @@ Monitorea y aplica resultados de tareas Jules.
 5. Monitorear y aplicar resultados
 ```
 
+### Workflow E: Delegación a Antigravity (Push + PR)
+
+**Ideal para:** Páginas completas, UI compleja, browser automation, generación de assets.
+
+**Flujo:** `Claude Code delega → Antigravity implementa → Push a branch → Crea PR → Claude Code revisa/merge`
+
+```
+1. Claude Code envía tarea via Agent Bridge MCP:
+   send_task(
+     from_agent="claude-code",
+     to_agent="antigravity",
+     title="Implementar Dashboard Page",
+     description="""
+     Crear página Dashboard siguiendo DESIGN-SYSTEM-RULES.
+
+     ## 🚀 ENTREGA: Push + PR (OBLIGATORIO)
+     1. Crear branch: feature/ag-<task_id>
+     2. Implementar en: src/blocks/application/Dashboard/
+     3. Ejecutar: npm run lint (DEBE pasar)
+     4. Commit con mensaje estructurado
+     5. Push y crear PR con gh CLI
+     6. Responder con URL del PR
+
+     ## ⚠️ REGLAS CRÍTICAS DE LINT
+     - NO declarar código sin usar
+     - NO usar role redundante (ul, nav, main)
+     - NO usar href="#" (usar button)
+     - SVG SIEMPRE con aria-hidden="true"
+     - Select DEBE tener aria-label
+     """,
+     task_type="page",
+     priority="high",
+     context={
+       "target_path": "src/blocks/application/Dashboard/",
+       "branch_name": "feature/ag-<task_id>",
+       "delivery_method": "push_pr"
+     }
+   )
+
+2. Antigravity recibe y reclama tarea:
+   list_tasks(agent_id="antigravity", status="pending")
+   claim_task(agent_id="antigravity", task_id="<id>")
+
+3. Antigravity prepara branch y trabaja:
+   git checkout main && git pull origin main
+   git checkout -b feature/ag-<task_id>
+   # Implementa cambios...
+   npm run lint  # DEBE pasar
+
+4. Antigravity hace commit, push y crea PR:
+   git add . && git commit -m "feat(dashboard): implement Dashboard page"
+   git push -u origin feature/ag-<task_id>
+   gh pr create --title "feat(dashboard): Dashboard page" --base main
+
+5. Antigravity responde con URL del PR:
+   submit_response(
+     agent_id="antigravity",
+     task_id="<id>",
+     content="✅ PR creado: https://github.com/...",
+     status="success",
+     metadata={"pr_url": "...", "branch": "feature/ag-<task_id>"}
+   )
+
+6. Claude Code revisa y hace merge:
+   gh pr view <pr_number>  # Revisar cambios
+   gh pr merge <pr_number> --squash  # Si todo OK
+```
+
+**MCP Tools disponibles:**
+- `send_task` - Enviar tarea a otro agente
+- `list_tasks` - Listar tareas pendientes
+- `claim_task` - Reclamar tarea para procesar
+- `submit_response` - Enviar respuesta con resultado
+- `get_response` - Obtener respuesta de tarea enviada
+- `bridge_status` - Ver estado del bridge
+
+**Ventajas del workflow Push + PR:**
+- ✅ CI/CD se ejecuta automáticamente
+- ✅ Code review documentado
+- ✅ Trazabilidad completa en GitHub
+- ✅ Rollback fácil si hay problemas
+- ✅ Sin copia manual de archivos
+
 ---
 
 ## División de Responsabilidades
@@ -239,6 +322,8 @@ Monitorea y aplica resultados de tareas Jules.
 | Research | NotebookLM → Gemini |
 | Análisis de issues | gemini-cli |
 | Tareas paralelas | Jules (--parallel) |
+| **Páginas completas UI** | **Claude Code → Antigravity (Agent Bridge)** |
+| **Browser automation** | **Antigravity** |
 
 ---
 
@@ -293,6 +378,6 @@ function cr { param($component) .\scripts\automation\component-review.ps1 -Compo
 ## Próximas Mejoras
 
 - [ ] Integración con Workspace Studio Flows
-- [ ] Configuración de Antigravity para multi-agente
+- [x] ~~Configuración de Antigravity para multi-agente~~ → **Agent Bridge MCP v1.0.1**
 - [ ] Webhooks para notificaciones de Jules completado
 - [ ] Dashboard local de métricas de productividad
