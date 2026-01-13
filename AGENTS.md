@@ -6,12 +6,47 @@ This file provides context for Google Jules and other AI agents working on this 
 
 **Name:** @limbpuma/design-system
 **Type:** Design System Pipeline
-**Stack:** React 18 + TypeScript + Tailwind CSS + Storybook
+**Stack:** React 19 + TypeScript + Tailwind CSS + Storybook
 **Repository:** https://github.com/limbpuma/design-system-pipeline
 
 ### Pipeline Flow
 ```
-Figma → Design Tokens → Tailwind Preset → React Components → Storybook
+Stitch (design) → Jules (code) → GitHub (PR) → CI/CD (a11y) → Deploy
+```
+
+---
+
+## ⚠️ DESIGN SYSTEM RULES - SOURCE OF TRUTH
+
+**CRITICAL: Before generating ANY code, read `docs/DESIGN-SYSTEM-RULES.md`**
+
+This file contains ALL design specifications:
+- Semantic colors (Light/Dark mode with exact hex values)
+- Contrast ratios (approved/prohibited combinations)
+- Typography scale and weights
+- Spacing system (4px base)
+- Border radius tokens
+- Shadow definitions
+- Accessibility requirements (SVG, focus, ARIA)
+- Premium patterns for Quality Score 70+
+
+### Quick Reference - MUST FOLLOW
+
+```tsx
+// ✅ APPROVED Contrast (Light Mode)
+text-gray-500 on white → 5.5:1 ✅
+text-white on bg-blue-600 → 4.7:1 ✅
+text-white on bg-green-700 → 5.4:1 ✅
+
+// ✅ APPROVED Contrast (Dark Mode)
+text-gray-400 on bg-gray-950 → 5.4:1 ✅
+text-gray-400 on bg-gray-900 → 4.9:1 ✅
+
+// ❌ PROHIBITED - NEVER USE
+text-gray-400 on white → 3.0:1 ❌
+text-gray-500 on bg-gray-900 → 3.75:1 ❌
+text-white on bg-green-600 → 3.76:1 ❌
+Gradients with text overlay → Not calculable ❌
 ```
 
 ---

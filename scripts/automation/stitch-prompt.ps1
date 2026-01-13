@@ -26,37 +26,94 @@ $ErrorActionPreference = "Stop"
 
 Write-Host "=== Stitch Prompt Generator ===" -ForegroundColor Cyan
 
-# Design System context
+# Design System context - FROM docs/DESIGN-SYSTEM-RULES.md
 $designSystemContext = @"
 DESIGN SYSTEM: Design System Pipeline
+SOURCE OF TRUTH: docs/DESIGN-SYSTEM-RULES.md
 
-SEMANTIC COLORS (use these names):
-- Background: surface, surface-alt, surface-elevated
-- Text: primary, secondary, muted, inverse
-- Brand: accent, accent-hover, accent-muted
-- Feedback: success, warning, error, info
-- Interactive: interactive, interactive-hover
+═══════════════════════════════════════════════════════════════
+COLORES SEMÁNTICOS (OBLIGATORIO usar estos valores exactos)
+═══════════════════════════════════════════════════════════════
 
-CONTRAST RATIOS:
-- Text on surface: min 4.5:1
-- Large text: min 3:1
-- Interactive elements: min 3:1
+LIGHT MODE:
+- Background: white (#ffffff)
+- Background subtle: gray-50 (#f9fafb)
+- Foreground: gray-900 (#111827)
+- Foreground muted: gray-500 (#6b7280) → Ratio 5.5:1 ✓
+- Primary: blue-600 (#2563eb)
+- Success: green-700 (#15803d) para texto blanco
+- Destructive: red-600 (#dc2626)
+- Warning: yellow-500 (#eab308) con texto OSCURO
+- Border: gray-200 (#e5e7eb)
 
-TYPOGRAPHY:
-- Font: Inter (sans-serif)
-- Sizes: xs(12), sm(14), base(16), lg(18), xl(20), 2xl(24), 3xl(30)
-- Weights: normal(400), medium(500), semibold(600), bold(700)
+DARK MODE:
+- Background: gray-950 (#030712)
+- Background subtle: gray-900 (#111827)
+- Foreground: gray-50 (#f9fafb)
+- Foreground muted: gray-400 (#9ca3af) → Ratio 5.4:1 ✓
+- Primary: blue-500 (#3b82f6)
+- Border: gray-800 (#1f2937)
 
-SPACING (4px base):
-- 1(4px), 2(8px), 3(12px), 4(16px), 5(20px), 6(24px), 8(32px)
+═══════════════════════════════════════════════════════════════
+CONTRASTE WCAG 2.1 AA (CRÍTICO)
+═══════════════════════════════════════════════════════════════
 
-BORDER RADIUS:
-- sm(4px), md(8px), lg(12px), xl(16px), full(9999px)
+APROBADO ✅:
+- text-gray-500 en fondo blanco (5.5:1)
+- text-gray-400 en fondo gray-900/950 (5.4:1)
+- text-white en bg-blue-600 (4.7:1)
+- text-white en bg-green-700 (5.4:1)
 
-SHADOWS:
-- sm: subtle elevation
-- md: cards, dropdowns
-- lg: modals, popovers
+PROHIBIDO ❌:
+- text-gray-400 en fondo blanco (3.0:1)
+- text-gray-500 en fondo gray-900 (3.75:1)
+- text-white en bg-green-600 (3.76:1)
+- Gradientes con texto superpuesto
+
+═══════════════════════════════════════════════════════════════
+TIPOGRAFÍA
+═══════════════════════════════════════════════════════════════
+
+Font Family: Inter, system-ui, sans-serif
+Font Mono: ui-monospace, SFMono-Regular, Menlo
+
+Sizes:
+- xs: 12px | sm: 14px | base: 16px | lg: 18px
+- xl: 20px | 2xl: 24px | 3xl: 30px | 4xl: 36px
+
+Weights: normal(400), medium(500), semibold(600), bold(700)
+
+═══════════════════════════════════════════════════════════════
+ESPACIADO (base 4px)
+═══════════════════════════════════════════════════════════════
+
+1: 4px | 2: 8px | 3: 12px | 4: 16px | 6: 24px | 8: 32px | 12: 48px
+
+═══════════════════════════════════════════════════════════════
+BORDER RADIUS
+═══════════════════════════════════════════════════════════════
+
+sm: 2px | base: 4px | md: 6px | lg: 8px | xl: 12px | 2xl: 16px | full: 9999px
+
+═══════════════════════════════════════════════════════════════
+ACCESIBILIDAD (OBLIGATORIO)
+═══════════════════════════════════════════════════════════════
+
+1. SVGs decorativos: aria-hidden="true" SIEMPRE
+2. Botones icon-only: aria-label="descripción" SIEMPRE
+3. Inputs: label asociado o aria-label SIEMPRE
+4. Focus visible: ring-2 ring-offset-2 SIEMPRE
+5. Touch targets: mínimo 44x44px
+
+═══════════════════════════════════════════════════════════════
+ESTADOS INTERACTIVOS (para score 70+)
+═══════════════════════════════════════════════════════════════
+
+transition-all duration-200 ease-out
+hover:-translate-y-0.5 hover:shadow-lg
+active:scale-[0.98]
+focus-visible:ring-2 focus-visible:ring-offset-2
+disabled:pointer-events-none disabled:opacity-50
 "@
 
 # Type-specific templates
