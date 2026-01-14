@@ -383,7 +383,7 @@ export function ThemeExporter({
               </button>
             </div>
           </div>
-          <pre className="mt-3 max-h-80 overflow-auto rounded-lg bg-gray-900 p-4 text-xs text-gray-100">
+          <pre className="mt-3 max-h-80 overflow-auto rounded-lg bg-[var(--semantic-color-background-inverse)] p-4 text-xs text-[var(--semantic-color-foreground-inverse)]">
             <code>{exportContent}</code>
           </pre>
         </div>

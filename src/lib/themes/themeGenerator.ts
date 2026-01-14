@@ -38,48 +38,61 @@ export interface ThemeGeneratorOptions {
 }
 
 /**
- * Convert hex color to OKLCH (approximate)
- * For accurate conversion, use a proper color library
+ * Convert sRGB component to linear RGB
+ * Formula: c <= 0.04045 ? c/12.92 : pow((c+0.055)/1.055, 2.4)
+ */
+function srgbToLinear(c: number): number {
+  return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+}
+
+/**
+ * Convert hex color to OKLCH using proper color science
+ * Pipeline: HEX -> sRGB -> Linear RGB -> XYZ (D65) -> OKLab -> OKLCH
  */
 function hexToOklch(hex: string): OklchColor {
   // Remove # if present
   const cleanHex = hex.replace('#', '');
 
-  // Parse RGB
-  const r = parseInt(cleanHex.slice(0, 2), 16) / 255;
-  const g = parseInt(cleanHex.slice(2, 4), 16) / 255;
-  const b = parseInt(cleanHex.slice(4, 6), 16) / 255;
+  // Parse sRGB values (0-1 range)
+  const sR = parseInt(cleanHex.slice(0, 2), 16) / 255;
+  const sG = parseInt(cleanHex.slice(2, 4), 16) / 255;
+  const sB = parseInt(cleanHex.slice(4, 6), 16) / 255;
 
-  // Simplified conversion to OKLCH
-  // For production, use a proper color conversion library
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  const l = (max + min) / 2;
+  // Convert sRGB to linear RGB
+  const linR = srgbToLinear(sR);
+  const linG = srgbToLinear(sG);
+  const linB = srgbToLinear(sB);
 
-  let h = 0;
-  let c = 0;
+  // Linear RGB to XYZ (D65 illuminant)
+  // Using sRGB to XYZ matrix
+  const x = 0.4124564 * linR + 0.3575761 * linG + 0.1804375 * linB;
+  const y = 0.2126729 * linR + 0.7151522 * linG + 0.0721750 * linB;
+  const z = 0.0193339 * linR + 0.1191920 * linG + 0.9503041 * linB;
 
-  if (max !== min) {
-    const d = max - min;
-    c = d * 0.4; // Approximate chroma
+  // XYZ to OKLab using the M1 matrix (XYZ to LMS cone response)
+  const l_ = 0.8189330101 * x + 0.3618667424 * y - 0.1288597137 * z;
+  const m_ = 0.0329845436 * x + 0.9293118715 * y + 0.0361456387 * z;
+  const s_ = 0.0482003018 * x + 0.2643662691 * y + 0.6338517070 * z;
 
-    switch (max) {
-      case r:
-        h = ((g - b) / d + (g < b ? 6 : 0)) * 60;
-        break;
-      case g:
-        h = ((b - r) / d + 2) * 60;
-        break;
-      case b:
-        h = ((r - g) / d + 4) * 60;
-        break;
-    }
-  }
+  // Apply cube root (non-linear response)
+  const l_cbrt = Math.cbrt(l_);
+  const m_cbrt = Math.cbrt(m_);
+  const s_cbrt = Math.cbrt(s_);
+
+  // LMS to OKLab using the M2 matrix
+  const L = 0.2104542553 * l_cbrt + 0.7936177850 * m_cbrt - 0.0040720468 * s_cbrt;
+  const a = 1.9779984951 * l_cbrt - 2.4285922050 * m_cbrt + 0.4505937099 * s_cbrt;
+  const b = 0.0259040371 * l_cbrt + 0.7827717662 * m_cbrt - 0.8086757660 * s_cbrt;
+
+  // OKLab to OKLCH
+  const C = Math.sqrt(a * a + b * b);
+  let H = Math.atan2(b, a) * (180 / Math.PI);
+  if (H < 0) H += 360;
 
   return {
-    l: Math.max(0.1, Math.min(0.9, l)),
-    c: Math.max(0.05, Math.min(0.35, c)),
-    h: h % 360,
+    l: Math.max(0, Math.min(1, L)),
+    c: Math.max(0, C),
+    h: H % 360,
   };
 }
 
@@ -118,18 +131,43 @@ function generateSecondaryColor(
 }
 
 /**
+ * Interpolate between two hue values, handling the 0/360 wrap-around correctly
+ * Returns the midpoint hue taking the shortest path around the color wheel
+ */
+function interpolateHue(h1: number, h2: number): number {
+  // Normalize hues to 0-360 range
+  const hue1 = ((h1 % 360) + 360) % 360;
+  const hue2 = ((h2 % 360) + 360) % 360;
+
+  // Calculate the difference
+  let diff = hue2 - hue1;
+
+  // Take the shortest path around the wheel
+  if (diff > 180) {
+    diff -= 360;
+  } else if (diff < -180) {
+    diff += 360;
+  }
+
+  // Calculate midpoint and normalize to 0-360
+  const midHue = hue1 + diff / 2;
+  return ((midHue % 360) + 360) % 360;
+}
+
+/**
  * Generate accent color
  */
 function generateAccentColor(
   primary: OklchColor,
   secondary: OklchColor
 ): OklchColor {
-  // Use a color between primary and secondary, shifted
-  const midHue = (primary.h + secondary.h) / 2;
+  // Use a color between primary and secondary, shifted by 90 degrees
+  // interpolateHue handles the 0/360 wrap-around correctly
+  const midHue = interpolateHue(primary.h, secondary.h);
   return {
     l: 0.65,
     c: Math.max(primary.c, secondary.c) * 0.8,
-    h: (midHue + 90) % 360,
+    h: ((midHue + 90) % 360 + 360) % 360,
   };
 }
 

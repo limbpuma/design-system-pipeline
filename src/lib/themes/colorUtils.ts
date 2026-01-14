@@ -139,32 +139,155 @@ export function generateColorScale(
 }
 
 /**
- * Calculate relative luminance for WCAG contrast
- * Approximate conversion from OKLCH
+ * Convert OKLCH to approximate sRGB values.
+ *
+ * This is an approximation that converts OKLCH -> OKLab -> Linear RGB -> sRGB.
+ * The conversion is not 100% accurate but provides much better WCAG compliance
+ * calculations than using OKLCH lightness directly.
+ *
+ * Note: Some colors may be slightly out of sRGB gamut; they are clamped to [0,1].
+ *
+ * @internal
  */
-export function getRelativeLuminance(color: OklchColor): number {
-  // Simplified: OKLCH lightness is already perceptually uniform
-  // For accurate WCAG, would need conversion to sRGB first
-  return color.l;
+function oklchToApproximateSrgb(color: OklchColor): { r: number; g: number; b: number } {
+  const { l, c, h } = color;
+
+  // Convert OKLCH to OKLab
+  // OKLab uses L (lightness), a (green-red), b (blue-yellow)
+  const hRad = (h * Math.PI) / 180;
+  const labL = l;
+  const labA = c * Math.cos(hRad);
+  const labB = c * Math.sin(hRad);
+
+  // Convert OKLab to linear RGB
+  // Using the OKLab to linear sRGB matrix transformation
+  // First, convert OKLab to LMS (cone responses)
+  const l_ = labL + 0.3963377774 * labA + 0.2158037573 * labB;
+  const m_ = labL - 0.1055613458 * labA - 0.0638541728 * labB;
+  const s_ = labL - 0.0894841775 * labA - 1.2914855480 * labB;
+
+  // Cube the values to get LMS
+  const lms_l = l_ * l_ * l_;
+  const lms_m = m_ * m_ * m_;
+  const lms_s = s_ * s_ * s_;
+
+  // Convert LMS to linear RGB using the inverse matrix
+  const linearR = +4.0767416621 * lms_l - 3.3077115913 * lms_m + 0.2309699292 * lms_s;
+  const linearG = -1.2684380046 * lms_l + 2.6097574011 * lms_m - 0.3413193965 * lms_s;
+  const linearB = -0.0041960863 * lms_l - 0.7034186147 * lms_m + 1.7076147010 * lms_s;
+
+  // Convert linear RGB to sRGB (gamma correction)
+  // sRGB transfer function: if linear <= 0.0031308, srgb = 12.92 * linear
+  // else srgb = 1.055 * linear^(1/2.4) - 0.055
+  const linearToSrgb = (linear: number): number => {
+    const clamped = Math.max(0, Math.min(1, linear));
+    if (clamped <= 0.0031308) {
+      return 12.92 * clamped;
+    }
+    return 1.055 * Math.pow(clamped, 1 / 2.4) - 0.055;
+  };
+
+  return {
+    r: Math.max(0, Math.min(1, linearToSrgb(linearR))),
+    g: Math.max(0, Math.min(1, linearToSrgb(linearG))),
+    b: Math.max(0, Math.min(1, linearToSrgb(linearB))),
+  };
 }
 
 /**
- * Calculate approximate contrast ratio between two colors
+ * Linearize an sRGB channel value for luminance calculation.
+ *
+ * Per WCAG 2.1 specification:
+ * - If sRGB <= 0.04045: linear = sRGB / 12.92
+ * - Else: linear = ((sRGB + 0.055) / 1.055) ^ 2.4
+ *
+ * @internal
+ */
+function linearizeSrgbChannel(channel: number): number {
+  if (channel <= 0.04045) {
+    return channel / 12.92;
+  }
+  return Math.pow((channel + 0.055) / 1.055, 2.4);
+}
+
+/**
+ * Calculate relative luminance for WCAG contrast calculations.
+ *
+ * Implements the WCAG 2.1 relative luminance formula:
+ * L = 0.2126 * R + 0.7152 * G + 0.0722 * B
+ *
+ * Where R, G, B are linearized sRGB values.
+ *
+ * This function first converts OKLCH to approximate sRGB, then calculates
+ * the relative luminance according to WCAG specifications.
+ *
+ * Note: This is an approximation due to the OKLCH -> sRGB conversion.
+ * For critical accessibility compliance, verify with actual sRGB/hex values.
+ *
+ * @see https://www.w3.org/WAI/GL/wiki/Relative_luminance
+ */
+export function getRelativeLuminance(color: OklchColor): number {
+  // Convert OKLCH to sRGB
+  const srgb = oklchToApproximateSrgb(color);
+
+  // Linearize sRGB channels
+  const rLinear = linearizeSrgbChannel(srgb.r);
+  const gLinear = linearizeSrgbChannel(srgb.g);
+  const bLinear = linearizeSrgbChannel(srgb.b);
+
+  // Calculate relative luminance using WCAG coefficients
+  // These coefficients represent the human eye's sensitivity to each color
+  return 0.2126 * rLinear + 0.7152 * gLinear + 0.0722 * bLinear;
+}
+
+/**
+ * Calculate contrast ratio between two colors per WCAG 2.1 specification.
+ *
+ * Formula: (L1 + 0.05) / (L2 + 0.05)
+ * Where L1 is the lighter color's luminance and L2 is the darker color's luminance.
+ *
+ * The result is a ratio from 1:1 (no contrast) to 21:1 (maximum contrast, black on white).
+ *
+ * WCAG Requirements:
+ * - AA Normal text: 4.5:1
+ * - AA Large text: 3:1
+ * - AAA Normal text: 7:1
+ * - AAA Large text: 4.5:1
+ *
+ * Note: Uses approximate OKLCH -> sRGB conversion. For critical compliance,
+ * verify with actual sRGB/hex color values.
+ *
+ * @see https://www.w3.org/WAI/GL/wiki/Contrast_ratio
  */
 export function getContrastRatio(
   color1: OklchColor,
   color2: OklchColor
 ): number {
-  const l1 = Math.max(color1.l, color2.l);
-  const l2 = Math.min(color1.l, color2.l);
+  const lum1 = getRelativeLuminance(color1);
+  const lum2 = getRelativeLuminance(color2);
 
-  // Simplified contrast calculation
-  // For accurate WCAG compliance, use proper luminance conversion
+  // L1 should be the lighter (higher luminance) value
+  const l1 = Math.max(lum1, lum2);
+  const l2 = Math.min(lum1, lum2);
+
+  // WCAG contrast ratio formula
   return (l1 + 0.05) / (l2 + 0.05);
 }
 
 /**
- * Check if contrast meets WCAG AA requirements
+ * Check if contrast meets WCAG AA requirements.
+ *
+ * WCAG 2.1 Level AA requirements:
+ * - Normal text (< 18pt or < 14pt bold): 4.5:1 minimum
+ * - Large text (>= 18pt or >= 14pt bold): 3:1 minimum
+ *
+ * Note: Uses approximate OKLCH -> sRGB conversion for luminance calculation.
+ * For critical accessibility compliance, verify with actual sRGB/hex values.
+ *
+ * @param foreground - The text or foreground color
+ * @param background - The background color
+ * @param isLargeText - True if text is >= 18pt (24px) or >= 14pt (18.5px) bold
+ * @returns True if the contrast ratio meets WCAG AA requirements
  */
 export function meetsContrastAA(
   foreground: OklchColor,

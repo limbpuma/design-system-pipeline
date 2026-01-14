@@ -134,7 +134,7 @@ function SavedThemeCard({
           className="text-lg transition-transform hover:scale-110"
           aria-label={stored.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
         >
-          {stored.isFavorite ? '★' : '☆'}
+          <span aria-hidden="true">{stored.isFavorite ? '★' : '☆'}</span>
         </button>
       </div>
 
@@ -157,7 +157,7 @@ function SavedThemeCard({
         <button
           type="button"
           onClick={onDelete}
-          className="rounded-md border border-red-300 px-3 py-1.5 text-xs font-medium text-red-600 transition-all hover:bg-red-50 active:scale-[0.98]"
+          className="rounded-md border border-[var(--semantic-color-destructive-default)] px-3 py-1.5 text-xs font-medium text-[var(--semantic-color-destructive-default)] transition-all hover:bg-[var(--semantic-color-destructive-default)]/10 active:scale-[0.98]"
         >
           Delete
         </button>
@@ -312,8 +312,9 @@ export function ThemeCustomizerAdvanced({
               type="button"
               onClick={toggleColorMode}
               className="flex items-center gap-2 rounded-md border border-[var(--semantic-color-border-default)] px-3 py-1.5 text-sm transition-all hover:bg-[var(--semantic-color-background-subtle)]"
+              aria-label={colorMode === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
             >
-              <span>{colorMode === 'light' ? '☀️' : '🌙'}</span>
+              <span aria-hidden="true">{colorMode === 'light' ? '☀️' : '🌙'}</span>
               <span>{colorMode === 'light' ? 'Light' : 'Dark'}</span>
             </button>
 
@@ -480,8 +481,8 @@ export function ThemeCustomizerAdvanced({
                   {/* Color grid */}
                   <div className="grid grid-cols-2 gap-4">
                     {/* Light mode */}
-                    <div className="rounded-md border bg-white p-4">
-                      <h4 className="mb-3 text-sm font-medium text-gray-900">Light Mode</h4>
+                    <div className="rounded-md border border-[var(--semantic-color-border-default)] p-4" style={{ backgroundColor: '#ffffff' }}>
+                      <h4 className="mb-3 text-sm font-medium" style={{ color: '#111827' }}>Light Mode</h4>
                       <div className="space-y-2">
                         <div className="flex gap-2">
                           <ColorSwatch color={generatedTheme.light.primary.default} label="Primary" />
@@ -497,8 +498,8 @@ export function ThemeCustomizerAdvanced({
                     </div>
 
                     {/* Dark mode */}
-                    <div className="rounded-md border border-gray-700 bg-gray-900 p-4">
-                      <h4 className="mb-3 text-sm font-medium text-gray-100">Dark Mode</h4>
+                    <div className="rounded-md border border-[var(--semantic-color-border-default)] p-4" style={{ backgroundColor: '#111827' }}>
+                      <h4 className="mb-3 text-sm font-medium" style={{ color: '#f9fafb' }}>Dark Mode</h4>
                       <div className="space-y-2">
                         <div className="flex gap-2">
                           <ColorSwatch color={generatedTheme.dark.primary.default} label="Primary" />

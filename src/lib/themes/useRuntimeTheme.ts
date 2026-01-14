@@ -136,9 +136,15 @@ export function useRuntimeTheme(
   // Refs
   const styleElementRef = useRef<HTMLStyleElement | null>(null);
 
-  // Get target element
-  const getTargetElement = useCallback((): HTMLElement => {
-    return targetElement ?? (typeof document !== 'undefined' ? document.documentElement : null) as HTMLElement;
+  // Get target element (returns null during SSR)
+  const getTargetElement = useCallback((): HTMLElement | null => {
+    if (targetElement) {
+      return targetElement;
+    }
+    if (typeof document !== 'undefined') {
+      return document.documentElement;
+    }
+    return null;
   }, [targetElement]);
 
   // Apply theme to element

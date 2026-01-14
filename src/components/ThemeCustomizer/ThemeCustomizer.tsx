@@ -362,10 +362,10 @@ export function ThemeCustomizer({
 
               {/* Color previews */}
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-md border border-[var(--semantic-color-border-default)] bg-white p-4">
+                <div className="rounded-md border border-[var(--semantic-color-border-default)] p-4" style={{ backgroundColor: '#ffffff' }}>
                   <ThemePreview theme={generatedTheme} mode="light" />
                 </div>
-                <div className="rounded-md border border-[var(--semantic-color-border-default)] bg-gray-900 p-4">
+                <div className="rounded-md border border-[var(--semantic-color-border-default)] p-4" style={{ backgroundColor: '#111827' }}>
                   <ThemePreview theme={generatedTheme} mode="dark" />
                 </div>
               </div>
@@ -389,7 +389,7 @@ export function ThemeCustomizer({
               {copied ? 'Copied!' : 'Copy CSS'}
             </button>
           </div>
-          <pre className="mt-3 max-h-64 overflow-auto rounded-md bg-gray-900 p-4 text-xs text-gray-100">
+          <pre className="mt-3 max-h-64 overflow-auto rounded-md bg-[var(--semantic-color-background-inverse)] p-4 text-xs text-[var(--semantic-color-foreground-inverse)]">
             <code>{generatedCss}</code>
           </pre>
         </div>

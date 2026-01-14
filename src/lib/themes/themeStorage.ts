@@ -5,6 +5,10 @@
  * Supports saving, loading, and managing multiple custom themes.
  */
 
+'use client';
+
+import { useCallback, useEffect, useState } from 'react';
+
 import type { ThemePreset } from './presets';
 
 /**
@@ -300,16 +304,123 @@ export const themeStorage = createThemeStorage();
 
 /**
  * React hook for theme storage (with state updates)
+ *
+ * Provides reactive state that updates when localStorage changes.
  */
 export function useThemeStorage() {
   const storage = createThemeStorage();
 
+  // Reactive state for themes
+  const [themes, setThemes] = useState<StoredTheme[]>(() => storage.getAll());
+  const [favorites, setFavorites] = useState<StoredTheme[]>(() => storage.getFavorites());
+  const [activeId, setActiveId] = useState<string | null>(() => storage.getActiveId());
+
+  // Refresh state from storage
+  const refresh = useCallback(() => {
+    setThemes(storage.getAll());
+    setFavorites(storage.getFavorites());
+    setActiveId(storage.getActiveId());
+  }, [storage]);
+
+  // Listen for storage events (cross-tab sync)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleStorageChange = (event: StorageEvent) => {
+      if (
+        event.key === STORAGE_KEYS.CUSTOM_THEMES ||
+        event.key === STORAGE_KEYS.ACTIVE_CUSTOM_THEME ||
+        event.key === STORAGE_KEYS.FAVORITES
+      ) {
+        refresh();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [refresh]);
+
+  // Wrapped methods that update state after mutation
+  const save = useCallback(
+    (theme: ThemePreset, tags?: string[]) => {
+      const result = storage.save(theme, tags);
+      refresh();
+      return result;
+    },
+    [storage, refresh]
+  );
+
+  const update = useCallback(
+    (id: string, theme: Partial<ThemePreset>, tags?: string[]) => {
+      const result = storage.update(id, theme, tags);
+      refresh();
+      return result;
+    },
+    [storage, refresh]
+  );
+
+  const deleteTheme = useCallback(
+    (id: string) => {
+      const result = storage.delete(id);
+      refresh();
+      return result;
+    },
+    [storage, refresh]
+  );
+
+  const setActive = useCallback(
+    (id: string | null) => {
+      storage.setActive(id);
+      setActiveId(id);
+    },
+    [storage]
+  );
+
+  const toggleFavorite = useCallback(
+    (id: string) => {
+      const result = storage.toggleFavorite(id);
+      refresh();
+      return result;
+    },
+    [storage, refresh]
+  );
+
+  const clearAll = useCallback(() => {
+    storage.clearAll();
+    refresh();
+  }, [storage, refresh]);
+
+  const importAll = useCallback(
+    (json: string) => {
+      const result = storage.importAll(json);
+      refresh();
+      return result;
+    },
+    [storage, refresh]
+  );
+
   return {
-    ...storage,
-    // Return fresh data on each call
-    themes: storage.getAll(),
-    favorites: storage.getFavorites(),
-    activeId: storage.getActiveId(),
+    // Reactive state
+    themes,
+    favorites,
+    activeId,
+    // Read-only methods (use storage directly)
+    get: storage.get,
+    getAll: storage.getAll,
+    exists: storage.exists,
+    getActiveId: storage.getActiveId,
+    getFavorites: storage.getFavorites,
+    exportAll: storage.exportAll,
+    // Wrapped methods that trigger re-renders
+    save,
+    update,
+    delete: deleteTheme,
+    setActive,
+    toggleFavorite,
+    clearAll,
+    importAll,
+    // Manual refresh if needed
+    refresh,
   };
 }
 
