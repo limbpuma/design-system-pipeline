@@ -1,0 +1,430 @@
+/**
+ * Design System Theme Presets
+ * Auto-generated CSS custom properties for industry-specific themes
+ *
+ * Usage:
+ *   Add theme class to root element: <html class="theme-finance">
+ *   For dark mode: <html class="theme-finance dark">
+ *
+ * Available themes:
+ *   - default: Default (Technology)
+ *   - finance: Finance (Finance & Banking)
+ *   - healthcare: Healthcare (Healthcare & Medical)
+ *   - salon: Salon (Beauty & Salon)
+ *   - florist: Florist (Florist & Nature)
+ *   - restaurant: Restaurant (Food & Restaurant)
+ */
+
+/* Theme: Default - Blue-based professional theme for tech and SaaS products */
+/* Industry: Technology */
+/* Psychology: Professional and reliable */
+
+.theme-default {
+    --semantic-color-primary-default: oklch(0.546 0.215 262.89);
+    --semantic-color-primary-hover: oklch(0.488 0.217 264.38);
+    --semantic-color-primary-active: oklch(0.424 0.181 265.64);
+    --semantic-color-primary-foreground: oklch(1 0 0);
+    --semantic-color-secondary-default: oklch(0.967 0.003 264.51);
+    --semantic-color-secondary-hover: oklch(0.928 0.006 264.52);
+    --semantic-color-secondary-active: oklch(0.872 0.009 258.38);
+    --semantic-color-secondary-foreground: oklch(0.21 0.032 264.67);
+    --semantic-color-accent-default: oklch(0.946 0.033 307.08);
+    --semantic-color-accent-hover: oklch(0.902 0.06 306.66);
+    --semantic-color-accent-foreground: oklch(0.381 0.166 304.98);
+    --semantic-color-background-default: oklch(1 0 0);
+    --semantic-color-background-subtle: oklch(0.985 0.002 248.57);
+    --semantic-color-background-muted: oklch(0.967 0.003 264.51);
+    --semantic-color-foreground-default: oklch(0.21 0.032 264.67);
+    --semantic-color-foreground-muted: oklch(0.551 0.023 264.37);
+    --semantic-color-foreground-subtle: oklch(0.714 0.019 261.34);
+    --semantic-color-border-default: oklch(0.928 0.006 264.52);
+    --semantic-color-border-strong: oklch(0.872 0.009 258.38);
+    --semantic-color-border-muted: oklch(0.967 0.003 264.51);
+    --semantic-color-card-default: oklch(1 0 0);
+    --semantic-color-card-foreground: oklch(0.21 0.032 264.67);
+    --semantic-color-popover-default: oklch(1 0 0);
+    --semantic-color-popover-foreground: oklch(0.21 0.032 264.67);
+    --semantic-color-muted-default: oklch(0.967 0.003 264.51);
+    --semantic-color-muted-foreground: oklch(0.551 0.023 264.37);
+    --semantic-color-input-default: oklch(0.928 0.006 264.52);
+    --semantic-color-input-focus: oklch(0.546 0.215 262.89);
+    --semantic-color-ring-default: oklch(0.546 0.215 262.89);
+}
+
+.theme-default.dark,
+.theme-default .dark {
+    --semantic-color-primary-default: oklch(0.623 0.188 259.82);
+    --semantic-color-primary-hover: oklch(0.714 0.143 254.63);
+    --semantic-color-primary-active: oklch(0.809 0.096 251.83);
+    --semantic-color-primary-foreground: oklch(0.13 0.027 261.7);
+    --semantic-color-secondary-default: oklch(0.278 0.03 256.86);
+    --semantic-color-secondary-hover: oklch(0.373 0.031 259.74);
+    --semantic-color-secondary-active: oklch(0.446 0.026 256.82);
+    --semantic-color-secondary-foreground: oklch(0.985 0.002 248.57);
+    --semantic-color-accent-default: oklch(0.381 0.166 304.98);
+    --semantic-color-accent-hover: oklch(0.438 0.198 303.72);
+    --semantic-color-accent-foreground: oklch(0.946 0.033 307.08);
+    --semantic-color-background-default: oklch(0.13 0.027 261.7);
+    --semantic-color-background-subtle: oklch(0.21 0.032 264.67);
+    --semantic-color-background-muted: oklch(0.278 0.03 256.86);
+    --semantic-color-foreground-default: oklch(0.985 0.002 248.57);
+    --semantic-color-foreground-muted: oklch(0.714 0.019 261.34);
+    --semantic-color-foreground-subtle: oklch(0.551 0.023 264.37);
+    --semantic-color-border-default: oklch(0.278 0.03 256.86);
+    --semantic-color-border-strong: oklch(0.373 0.031 259.74);
+    --semantic-color-border-muted: oklch(0.21 0.032 264.67);
+    --semantic-color-card-default: oklch(0.13 0.027 261.7);
+    --semantic-color-card-foreground: oklch(0.985 0.002 248.57);
+    --semantic-color-popover-default: oklch(0.13 0.027 261.7);
+    --semantic-color-popover-foreground: oklch(0.985 0.002 248.57);
+    --semantic-color-muted-default: oklch(0.278 0.03 256.86);
+    --semantic-color-muted-foreground: oklch(0.714 0.019 261.34);
+    --semantic-color-input-default: oklch(0.278 0.03 256.86);
+    --semantic-color-input-focus: oklch(0.623 0.188 259.82);
+    --semantic-color-ring-default: oklch(0.623 0.188 259.82);
+}
+
+/* Theme: Finance - Navy blue and gold palette for banking and financial applications */
+/* Industry: Finance & Banking */
+/* Psychology: Secure and established */
+
+.theme-finance {
+    --semantic-color-primary-default: oklch(0.35 0.08 250);
+    --semantic-color-primary-hover: oklch(0.30 0.09 250);
+    --semantic-color-primary-active: oklch(0.25 0.10 250);
+    --semantic-color-primary-foreground: oklch(1 0 0);
+    --semantic-color-secondary-default: oklch(0.75 0.12 85);
+    --semantic-color-secondary-hover: oklch(0.70 0.13 85);
+    --semantic-color-secondary-active: oklch(0.65 0.14 85);
+    --semantic-color-secondary-foreground: oklch(0.20 0.03 250);
+    --semantic-color-accent-default: oklch(0.65 0.15 155);
+    --semantic-color-accent-hover: oklch(0.60 0.16 155);
+    --semantic-color-accent-foreground: oklch(1 0 0);
+    --semantic-color-background-default: oklch(0.99 0.002 250);
+    --semantic-color-background-subtle: oklch(0.97 0.005 250);
+    --semantic-color-background-muted: oklch(0.95 0.008 250);
+    --semantic-color-foreground-default: oklch(0.20 0.03 250);
+    --semantic-color-foreground-muted: oklch(0.45 0.02 250);
+    --semantic-color-foreground-subtle: oklch(0.60 0.015 250);
+    --semantic-color-border-default: oklch(0.90 0.01 250);
+    --semantic-color-border-strong: oklch(0.85 0.015 250);
+    --semantic-color-border-muted: oklch(0.95 0.005 250);
+    --semantic-color-card-default: oklch(0.99 0.002 250);
+    --semantic-color-card-foreground: oklch(0.20 0.03 250);
+    --semantic-color-popover-default: oklch(0.99 0.002 250);
+    --semantic-color-popover-foreground: oklch(0.20 0.03 250);
+    --semantic-color-muted-default: oklch(0.95 0.008 250);
+    --semantic-color-muted-foreground: oklch(0.45 0.02 250);
+    --semantic-color-input-default: oklch(0.90 0.01 250);
+    --semantic-color-input-focus: oklch(0.35 0.08 250);
+    --semantic-color-ring-default: oklch(0.35 0.08 250);
+}
+
+.theme-finance.dark,
+.theme-finance .dark {
+    --semantic-color-primary-default: oklch(0.55 0.12 250);
+    --semantic-color-primary-hover: oklch(0.60 0.11 250);
+    --semantic-color-primary-active: oklch(0.65 0.10 250);
+    --semantic-color-primary-foreground: oklch(0.98 0.005 250);
+    --semantic-color-secondary-default: oklch(0.65 0.14 85);
+    --semantic-color-secondary-hover: oklch(0.70 0.13 85);
+    --semantic-color-secondary-active: oklch(0.75 0.12 85);
+    --semantic-color-secondary-foreground: oklch(0.15 0.02 250);
+    --semantic-color-accent-default: oklch(0.55 0.14 155);
+    --semantic-color-accent-hover: oklch(0.60 0.15 155);
+    --semantic-color-accent-foreground: oklch(0.98 0.005 250);
+    --semantic-color-background-default: oklch(0.15 0.02 250);
+    --semantic-color-background-subtle: oklch(0.20 0.025 250);
+    --semantic-color-background-muted: oklch(0.25 0.03 250);
+    --semantic-color-foreground-default: oklch(0.97 0.005 250);
+    --semantic-color-foreground-muted: oklch(0.75 0.015 250);
+    --semantic-color-foreground-subtle: oklch(0.60 0.02 250);
+    --semantic-color-border-default: oklch(0.30 0.03 250);
+    --semantic-color-border-strong: oklch(0.40 0.025 250);
+    --semantic-color-border-muted: oklch(0.20 0.02 250);
+    --semantic-color-card-default: oklch(0.15 0.02 250);
+    --semantic-color-card-foreground: oklch(0.97 0.005 250);
+    --semantic-color-popover-default: oklch(0.15 0.02 250);
+    --semantic-color-popover-foreground: oklch(0.97 0.005 250);
+    --semantic-color-muted-default: oklch(0.25 0.03 250);
+    --semantic-color-muted-foreground: oklch(0.75 0.015 250);
+    --semantic-color-input-default: oklch(0.30 0.03 250);
+    --semantic-color-input-focus: oklch(0.55 0.12 250);
+    --semantic-color-ring-default: oklch(0.55 0.12 250);
+}
+
+/* Theme: Healthcare - Teal and green palette for medical and wellness applications */
+/* Industry: Healthcare & Medical */
+/* Psychology: Clean and caring */
+
+.theme-healthcare {
+    --semantic-color-primary-default: oklch(0.60 0.15 195);
+    --semantic-color-primary-hover: oklch(0.55 0.16 195);
+    --semantic-color-primary-active: oklch(0.50 0.17 195);
+    --semantic-color-primary-foreground: oklch(1 0 0);
+    --semantic-color-secondary-default: oklch(0.65 0.16 155);
+    --semantic-color-secondary-hover: oklch(0.60 0.17 155);
+    --semantic-color-secondary-active: oklch(0.55 0.18 155);
+    --semantic-color-secondary-foreground: oklch(1 0 0);
+    --semantic-color-accent-default: oklch(0.55 0.12 260);
+    --semantic-color-accent-hover: oklch(0.50 0.13 260);
+    --semantic-color-accent-foreground: oklch(1 0 0);
+    --semantic-color-background-default: oklch(1 0 0);
+    --semantic-color-background-subtle: oklch(0.98 0.008 195);
+    --semantic-color-background-muted: oklch(0.96 0.012 195);
+    --semantic-color-foreground-default: oklch(0.25 0.02 195);
+    --semantic-color-foreground-muted: oklch(0.50 0.02 195);
+    --semantic-color-foreground-subtle: oklch(0.65 0.015 195);
+    --semantic-color-border-default: oklch(0.92 0.015 195);
+    --semantic-color-border-strong: oklch(0.88 0.02 195);
+    --semantic-color-border-muted: oklch(0.96 0.01 195);
+    --semantic-color-card-default: oklch(1 0 0);
+    --semantic-color-card-foreground: oklch(0.25 0.02 195);
+    --semantic-color-popover-default: oklch(1 0 0);
+    --semantic-color-popover-foreground: oklch(0.25 0.02 195);
+    --semantic-color-muted-default: oklch(0.96 0.012 195);
+    --semantic-color-muted-foreground: oklch(0.50 0.02 195);
+    --semantic-color-input-default: oklch(0.92 0.015 195);
+    --semantic-color-input-focus: oklch(0.60 0.15 195);
+    --semantic-color-ring-default: oklch(0.60 0.15 195);
+}
+
+.theme-healthcare.dark,
+.theme-healthcare .dark {
+    --semantic-color-primary-default: oklch(0.70 0.14 195);
+    --semantic-color-primary-hover: oklch(0.75 0.13 195);
+    --semantic-color-primary-active: oklch(0.80 0.12 195);
+    --semantic-color-primary-foreground: oklch(0.15 0.02 195);
+    --semantic-color-secondary-default: oklch(0.70 0.15 155);
+    --semantic-color-secondary-hover: oklch(0.75 0.14 155);
+    --semantic-color-secondary-active: oklch(0.80 0.13 155);
+    --semantic-color-secondary-foreground: oklch(0.15 0.02 155);
+    --semantic-color-accent-default: oklch(0.65 0.11 260);
+    --semantic-color-accent-hover: oklch(0.70 0.10 260);
+    --semantic-color-accent-foreground: oklch(0.15 0.02 260);
+    --semantic-color-background-default: oklch(0.15 0.02 195);
+    --semantic-color-background-subtle: oklch(0.20 0.025 195);
+    --semantic-color-background-muted: oklch(0.25 0.03 195);
+    --semantic-color-foreground-default: oklch(0.97 0.008 195);
+    --semantic-color-foreground-muted: oklch(0.75 0.015 195);
+    --semantic-color-foreground-subtle: oklch(0.60 0.02 195);
+    --semantic-color-border-default: oklch(0.30 0.03 195);
+    --semantic-color-border-strong: oklch(0.40 0.025 195);
+    --semantic-color-border-muted: oklch(0.20 0.02 195);
+    --semantic-color-card-default: oklch(0.15 0.02 195);
+    --semantic-color-card-foreground: oklch(0.97 0.008 195);
+    --semantic-color-popover-default: oklch(0.15 0.02 195);
+    --semantic-color-popover-foreground: oklch(0.97 0.008 195);
+    --semantic-color-muted-default: oklch(0.25 0.03 195);
+    --semantic-color-muted-foreground: oklch(0.75 0.015 195);
+    --semantic-color-input-default: oklch(0.30 0.03 195);
+    --semantic-color-input-focus: oklch(0.70 0.14 195);
+    --semantic-color-ring-default: oklch(0.70 0.14 195);
+}
+
+/* Theme: Salon - Black and gold palette for beauty and hair salon applications */
+/* Industry: Beauty & Salon */
+/* Psychology: Sophisticated and premium */
+
+.theme-salon {
+    --semantic-color-primary-default: oklch(0.20 0.01 0);
+    --semantic-color-primary-hover: oklch(0.25 0.01 0);
+    --semantic-color-primary-active: oklch(0.30 0.01 0);
+    --semantic-color-primary-foreground: oklch(1 0 0);
+    --semantic-color-secondary-default: oklch(0.75 0.12 85);
+    --semantic-color-secondary-hover: oklch(0.70 0.13 85);
+    --semantic-color-secondary-active: oklch(0.65 0.14 85);
+    --semantic-color-secondary-foreground: oklch(0.15 0.01 0);
+    --semantic-color-accent-default: oklch(0.75 0.10 350);
+    --semantic-color-accent-hover: oklch(0.70 0.11 350);
+    --semantic-color-accent-foreground: oklch(0.25 0.05 350);
+    --semantic-color-background-default: oklch(0.98 0.01 80);
+    --semantic-color-background-subtle: oklch(0.96 0.015 80);
+    --semantic-color-background-muted: oklch(0.94 0.02 80);
+    --semantic-color-foreground-default: oklch(0.15 0.01 0);
+    --semantic-color-foreground-muted: oklch(0.40 0.01 0);
+    --semantic-color-foreground-subtle: oklch(0.55 0.008 0);
+    --semantic-color-border-default: oklch(0.88 0.02 80);
+    --semantic-color-border-strong: oklch(0.80 0.025 80);
+    --semantic-color-border-muted: oklch(0.94 0.015 80);
+    --semantic-color-card-default: oklch(0.98 0.01 80);
+    --semantic-color-card-foreground: oklch(0.15 0.01 0);
+    --semantic-color-popover-default: oklch(0.98 0.01 80);
+    --semantic-color-popover-foreground: oklch(0.15 0.01 0);
+    --semantic-color-muted-default: oklch(0.94 0.02 80);
+    --semantic-color-muted-foreground: oklch(0.40 0.01 0);
+    --semantic-color-input-default: oklch(0.88 0.02 80);
+    --semantic-color-input-focus: oklch(0.20 0.01 0);
+    --semantic-color-ring-default: oklch(0.20 0.01 0);
+}
+
+.theme-salon.dark,
+.theme-salon .dark {
+    --semantic-color-primary-default: oklch(0.95 0.005 0);
+    --semantic-color-primary-hover: oklch(0.90 0.008 0);
+    --semantic-color-primary-active: oklch(0.85 0.01 0);
+    --semantic-color-primary-foreground: oklch(0.10 0.01 0);
+    --semantic-color-secondary-default: oklch(0.70 0.13 85);
+    --semantic-color-secondary-hover: oklch(0.75 0.12 85);
+    --semantic-color-secondary-active: oklch(0.80 0.11 85);
+    --semantic-color-secondary-foreground: oklch(0.10 0.01 0);
+    --semantic-color-accent-default: oklch(0.65 0.12 350);
+    --semantic-color-accent-hover: oklch(0.70 0.11 350);
+    --semantic-color-accent-foreground: oklch(0.95 0.01 350);
+    --semantic-color-background-default: oklch(0.10 0.008 0);
+    --semantic-color-background-subtle: oklch(0.15 0.01 0);
+    --semantic-color-background-muted: oklch(0.20 0.012 0);
+    --semantic-color-foreground-default: oklch(0.97 0.005 0);
+    --semantic-color-foreground-muted: oklch(0.75 0.01 0);
+    --semantic-color-foreground-subtle: oklch(0.55 0.012 0);
+    --semantic-color-border-default: oklch(0.25 0.015 0);
+    --semantic-color-border-strong: oklch(0.35 0.018 0);
+    --semantic-color-border-muted: oklch(0.18 0.012 0);
+    --semantic-color-card-default: oklch(0.10 0.008 0);
+    --semantic-color-card-foreground: oklch(0.97 0.005 0);
+    --semantic-color-popover-default: oklch(0.10 0.008 0);
+    --semantic-color-popover-foreground: oklch(0.97 0.005 0);
+    --semantic-color-muted-default: oklch(0.20 0.012 0);
+    --semantic-color-muted-foreground: oklch(0.75 0.01 0);
+    --semantic-color-input-default: oklch(0.25 0.015 0);
+    --semantic-color-input-focus: oklch(0.95 0.005 0);
+    --semantic-color-ring-default: oklch(0.95 0.005 0);
+}
+
+/* Theme: Florist - Green and pink palette for florist and nature applications */
+/* Industry: Florist & Nature */
+/* Psychology: Natural and vibrant */
+
+.theme-florist {
+    --semantic-color-primary-default: oklch(0.50 0.14 145);
+    --semantic-color-primary-hover: oklch(0.45 0.15 145);
+    --semantic-color-primary-active: oklch(0.40 0.16 145);
+    --semantic-color-primary-foreground: oklch(1 0 0);
+    --semantic-color-secondary-default: oklch(0.70 0.15 350);
+    --semantic-color-secondary-hover: oklch(0.65 0.16 350);
+    --semantic-color-secondary-active: oklch(0.60 0.17 350);
+    --semantic-color-secondary-foreground: oklch(0.20 0.05 350);
+    --semantic-color-accent-default: oklch(0.80 0.08 90);
+    --semantic-color-accent-hover: oklch(0.75 0.09 90);
+    --semantic-color-accent-foreground: oklch(0.30 0.08 90);
+    --semantic-color-background-default: oklch(0.98 0.015 90);
+    --semantic-color-background-subtle: oklch(0.96 0.02 90);
+    --semantic-color-background-muted: oklch(0.94 0.025 90);
+    --semantic-color-foreground-default: oklch(0.25 0.04 145);
+    --semantic-color-foreground-muted: oklch(0.45 0.03 145);
+    --semantic-color-foreground-subtle: oklch(0.60 0.02 145);
+    --semantic-color-border-default: oklch(0.90 0.025 145);
+    --semantic-color-border-strong: oklch(0.85 0.03 145);
+    --semantic-color-border-muted: oklch(0.94 0.02 145);
+    --semantic-color-card-default: oklch(0.98 0.015 90);
+    --semantic-color-card-foreground: oklch(0.25 0.04 145);
+    --semantic-color-popover-default: oklch(0.98 0.015 90);
+    --semantic-color-popover-foreground: oklch(0.25 0.04 145);
+    --semantic-color-muted-default: oklch(0.94 0.025 90);
+    --semantic-color-muted-foreground: oklch(0.45 0.03 145);
+    --semantic-color-input-default: oklch(0.90 0.025 145);
+    --semantic-color-input-focus: oklch(0.50 0.14 145);
+    --semantic-color-ring-default: oklch(0.50 0.14 145);
+}
+
+.theme-florist.dark,
+.theme-florist .dark {
+    --semantic-color-primary-default: oklch(0.65 0.13 145);
+    --semantic-color-primary-hover: oklch(0.70 0.12 145);
+    --semantic-color-primary-active: oklch(0.75 0.11 145);
+    --semantic-color-primary-foreground: oklch(0.15 0.03 145);
+    --semantic-color-secondary-default: oklch(0.65 0.14 350);
+    --semantic-color-secondary-hover: oklch(0.70 0.13 350);
+    --semantic-color-secondary-active: oklch(0.75 0.12 350);
+    --semantic-color-secondary-foreground: oklch(0.15 0.04 350);
+    --semantic-color-accent-default: oklch(0.70 0.10 90);
+    --semantic-color-accent-hover: oklch(0.75 0.09 90);
+    --semantic-color-accent-foreground: oklch(0.20 0.06 90);
+    --semantic-color-background-default: oklch(0.15 0.025 145);
+    --semantic-color-background-subtle: oklch(0.20 0.03 145);
+    --semantic-color-background-muted: oklch(0.25 0.035 145);
+    --semantic-color-foreground-default: oklch(0.96 0.015 90);
+    --semantic-color-foreground-muted: oklch(0.75 0.02 145);
+    --semantic-color-foreground-subtle: oklch(0.55 0.025 145);
+    --semantic-color-border-default: oklch(0.30 0.035 145);
+    --semantic-color-border-strong: oklch(0.40 0.04 145);
+    --semantic-color-border-muted: oklch(0.20 0.03 145);
+    --semantic-color-card-default: oklch(0.15 0.025 145);
+    --semantic-color-card-foreground: oklch(0.96 0.015 90);
+    --semantic-color-popover-default: oklch(0.15 0.025 145);
+    --semantic-color-popover-foreground: oklch(0.96 0.015 90);
+    --semantic-color-muted-default: oklch(0.25 0.035 145);
+    --semantic-color-muted-foreground: oklch(0.75 0.02 145);
+    --semantic-color-input-default: oklch(0.30 0.035 145);
+    --semantic-color-input-focus: oklch(0.65 0.13 145);
+    --semantic-color-ring-default: oklch(0.65 0.13 145);
+}
+
+/* Theme: Restaurant - Red and gold palette for restaurant and food applications */
+/* Industry: Food & Restaurant */
+/* Psychology: Inviting and appetizing */
+
+.theme-restaurant {
+    --semantic-color-primary-default: oklch(0.50 0.18 25);
+    --semantic-color-primary-hover: oklch(0.45 0.19 25);
+    --semantic-color-primary-active: oklch(0.40 0.20 25);
+    --semantic-color-primary-foreground: oklch(1 0 0);
+    --semantic-color-secondary-default: oklch(0.75 0.12 75);
+    --semantic-color-secondary-hover: oklch(0.70 0.13 75);
+    --semantic-color-secondary-active: oklch(0.65 0.14 75);
+    --semantic-color-secondary-foreground: oklch(0.20 0.03 25);
+    --semantic-color-accent-default: oklch(0.50 0.10 50);
+    --semantic-color-accent-hover: oklch(0.45 0.11 50);
+    --semantic-color-accent-foreground: oklch(1 0 0);
+    --semantic-color-background-default: oklch(0.98 0.01 50);
+    --semantic-color-background-subtle: oklch(0.96 0.015 50);
+    --semantic-color-background-muted: oklch(0.94 0.02 50);
+    --semantic-color-foreground-default: oklch(0.15 0.02 25);
+    --semantic-color-foreground-muted: oklch(0.40 0.02 25);
+    --semantic-color-foreground-subtle: oklch(0.55 0.015 25);
+    --semantic-color-border-default: oklch(0.90 0.02 50);
+    --semantic-color-border-strong: oklch(0.85 0.025 50);
+    --semantic-color-border-muted: oklch(0.94 0.015 50);
+    --semantic-color-card-default: oklch(0.98 0.01 50);
+    --semantic-color-card-foreground: oklch(0.15 0.02 25);
+    --semantic-color-popover-default: oklch(0.98 0.01 50);
+    --semantic-color-popover-foreground: oklch(0.15 0.02 25);
+    --semantic-color-muted-default: oklch(0.94 0.02 50);
+    --semantic-color-muted-foreground: oklch(0.40 0.02 25);
+    --semantic-color-input-default: oklch(0.90 0.02 50);
+    --semantic-color-input-focus: oklch(0.50 0.18 25);
+    --semantic-color-ring-default: oklch(0.50 0.18 25);
+}
+
+.theme-restaurant.dark,
+.theme-restaurant .dark {
+    --semantic-color-primary-default: oklch(0.60 0.17 25);
+    --semantic-color-primary-hover: oklch(0.65 0.16 25);
+    --semantic-color-primary-active: oklch(0.70 0.15 25);
+    --semantic-color-primary-foreground: oklch(0.98 0.005 0);
+    --semantic-color-secondary-default: oklch(0.70 0.13 75);
+    --semantic-color-secondary-hover: oklch(0.75 0.12 75);
+    --semantic-color-secondary-active: oklch(0.80 0.11 75);
+    --semantic-color-secondary-foreground: oklch(0.15 0.02 25);
+    --semantic-color-accent-default: oklch(0.55 0.11 50);
+    --semantic-color-accent-hover: oklch(0.60 0.10 50);
+    --semantic-color-accent-foreground: oklch(0.98 0.005 0);
+    --semantic-color-background-default: oklch(0.12 0.015 25);
+    --semantic-color-background-subtle: oklch(0.17 0.02 25);
+    --semantic-color-background-muted: oklch(0.22 0.025 25);
+    --semantic-color-foreground-default: oklch(0.97 0.01 50);
+    --semantic-color-foreground-muted: oklch(0.75 0.015 50);
+    --semantic-color-foreground-subtle: oklch(0.55 0.02 50);
+    --semantic-color-border-default: oklch(0.28 0.025 25);
+    --semantic-color-border-strong: oklch(0.38 0.03 25);
+    --semantic-color-border-muted: oklch(0.18 0.02 25);
+    --semantic-color-card-default: oklch(0.12 0.015 25);
+    --semantic-color-card-foreground: oklch(0.97 0.01 50);
+    --semantic-color-popover-default: oklch(0.12 0.015 25);
+    --semantic-color-popover-foreground: oklch(0.97 0.01 50);
+    --semantic-color-muted-default: oklch(0.22 0.025 25);
+    --semantic-color-muted-foreground: oklch(0.75 0.015 50);
+    --semantic-color-input-default: oklch(0.28 0.025 25);
+    --semantic-color-input-focus: oklch(0.60 0.17 25);
+    --semantic-color-ring-default: oklch(0.60 0.17 25);
+}

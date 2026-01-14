@@ -1,5 +1,7 @@
 import type { Preview } from '@storybook/react';
+import React from 'react';
 import '../src/styles/globals.css';
+import '../src/styles/themes.css';
 
 const preview: Preview = {
   parameters: {
@@ -61,17 +63,59 @@ const preview: Preview = {
     },
   },
   globalTypes: {
-    theme: {
-      description: 'Global theme for components',
+    colorMode: {
+      description: 'Color mode (light/dark)',
       defaultValue: 'light',
       toolbar: {
-        title: 'Theme',
+        title: 'Mode',
         icon: 'circlehollow',
-        items: ['light', 'dark'],
+        items: [
+          { value: 'light', title: 'Light Mode', icon: 'sun' },
+          { value: 'dark', title: 'Dark Mode', icon: 'moon' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+    industryTheme: {
+      description: 'Industry-specific color palette',
+      defaultValue: 'default',
+      toolbar: {
+        title: 'Industry Theme',
+        icon: 'paintbrush',
+        items: [
+          { value: 'default', title: 'Default (Tech/SaaS)', icon: 'browser' },
+          { value: 'finance', title: 'Finance & Banking', icon: 'credit' },
+          { value: 'healthcare', title: 'Healthcare & Medical', icon: 'heart' },
+          { value: 'salon', title: 'Beauty & Salon', icon: 'star' },
+          { value: 'florist', title: 'Florist & Nature', icon: 'grow' },
+          { value: 'restaurant', title: 'Food & Restaurant', icon: 'menu' },
+        ],
         dynamicTitle: true,
       },
     },
   },
+  decorators: [
+    // Theme decorator that applies both industry theme and color mode
+    (Story, context) => {
+      const industryTheme = context.globals.industryTheme || 'default';
+      const colorMode = context.globals.colorMode || 'light';
+
+      // Apply classes to the story container
+      return (
+        <div
+          className={`theme-${industryTheme} ${colorMode === 'dark' ? 'dark' : ''}`}
+          style={{
+            backgroundColor: 'var(--semantic-color-background-default)',
+            color: 'var(--semantic-color-foreground-default)',
+            padding: '1rem',
+            minHeight: '100%',
+          }}
+        >
+          <Story />
+        </div>
+      );
+    },
+  ],
 };
 
 export default preview;

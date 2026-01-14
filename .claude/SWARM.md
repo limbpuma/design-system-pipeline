@@ -18,19 +18,23 @@ Un equipo de 12 agentes especializados que trabajan coordinadamente.
    ┌────┴────┐      ┌────┴────┐      ┌────┴────┐
    │    │    │      │    │    │      │    │    │
   🖼️   🎯   🌈     ⚛️   🎨   🔧      ♿   🧪   📚
-       │                 │                 │
-      📖                🤖
+       │    │            │                 │
+      📖   🧠           🤖
+           │
+          🏢
 ```
 
-## The 12 Agents
+## The 14 Agents
 
-### 🎨 Design Layer (4)
+### 🎨 Design Layer (6)
 | Agent | ID | Role |
 |-------|-----|------|
 | 👑 | design-system-coordinator | Queen Agent - Coordination |
 | 🖼️ | visual-design-master | UI/UX Visual Design |
 | 🎯 | design-tokens-specialist | Token Architecture |
-| 🌈 | color-accessibility-expert | Color & A11y |
+| 🌈 | color-accessibility-expert | Color & A11y WCAG |
+| 🧠 | color-psychology-expert | Color Psychology & Emotions |
+| 🏢 | industry-brand-specialist | Industry-specific Palettes |
 
 ### 💻 Development Layer (4)
 | Agent | ID | Role |
@@ -65,6 +69,9 @@ Invoca al Queen Agent que coordina todo el equipo según la tarea.
 /swarm:a11y       → ♿ accessibility-specialist
 /swarm:tokens     → 🎯 design-tokens-specialist
 /swarm:test       → 🧪 test-engineer
+/swarm:color      → 🌈 color-accessibility-expert
+/swarm:psychology → 🧠 color-psychology-expert
+/swarm:industry   → 🏢 industry-brand-specialist
 ```
 
 ### 3. Layer Activation
@@ -193,12 +200,76 @@ Agents involved:
 
 | Metric | Target | Agent |
 |--------|--------|-------|
+| **Quality Score** | **≥70** | **👑 🖼️ ⚛️ 🎨** |
 | A11y Violations | 0 | ♿ |
 | TypeScript Coverage | 100% | ⚛️ |
 | Test Coverage | 80% | 🧪 |
 | Storybook Stories | All components | 📖 |
 | Color Contrast | WCAG AA | 🌈 |
 | SVG aria-hidden | 100% | ♿ |
+
+---
+
+## 🚨 QUALITY FRAMEWORK INTEGRATION
+
+### Minimum Score Requirement
+**TODOS los componentes DEBEN tener score ≥ 70/100**
+
+Componentes con score < 70 serán **RECHAZADOS** por `submit_component`.
+
+### Quality Validation Phase (NEW)
+```
+Phase 3.5: QUALITY VALIDATION
+Agents: 👑 + 🖼️ + ⚛️ + 🎨
+Tasks:
+- Run validate_design_quality on each component
+- Verify score >= 70
+- Fix issues if score < 70
+- Use suggest_design_improvements for guidance
+```
+
+### Required Premium Patterns
+```
+✅ MANDATORY (all components):
+├── hover: states
+├── focus-visible: ring
+├── disabled: opacity
+├── transition + duration + easing
+└── semantic tokens
+
+⭐ PREMIUM (required for 70+):
+├── active: scale-[0.98]
+├── hover: -translate-y-0.5
+├── shadow-lg shadow-*/25
+├── ring-1 ring-inset ring-white/20
+└── bg-gradient-to-b
+```
+
+### Quality Tools
+```json
+validate_design_quality   → Check compliance
+get_design_quality_score  → Get numeric score
+suggest_design_improvements → Get fix suggestions
+submit_component          → Auto-rejects if score < 70
+```
+
+### Component Upgrade Priority
+```
+Component   │ Current │ Target │ Priority
+────────────┼─────────┼────────┼──────────
+Select      │ ~35     │ 70+    │ 🔴 HIGH
+HeroSection │ ~35     │ 70+    │ 🔴 HIGH
+Input       │ ~45     │ 70+    │ 🔴 HIGH
+Dialog      │ ~55     │ 70+    │ 🟡 MEDIUM
+Card        │ ~60     │ 70+    │ 🟡 MEDIUM
+Tabs        │ ~65     │ 70+    │ 🟢 LOW
+Button      │ ~85     │ ✅     │ ✅ DONE
+```
+
+### Reference
+- `design://rules/quality` - MCP quality resource
+- `docs/DESIGN-QUALITY-FRAMEWORK.md` - Full framework
+- `docs/AI-AGENT-INSTRUCTIONS.md` - Agent instructions
 
 ---
 
