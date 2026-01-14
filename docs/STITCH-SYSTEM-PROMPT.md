@@ -8,48 +8,61 @@ Copia este contenido como contexto/instrucciones cuando uses Google Stitch para 
 
 Genera interfaces siguiendo estas reglas estrictas de mi Design System:
 
-### COLORES SEMÁNTICOS (OBLIGATORIO)
+### TOKENS SEMÁNTICOS CSS (OBLIGATORIO)
 
-Usa SOLO estos colores semánticos, NO colores arbitrarios:
+⚠️ **IMPORTANTE**: Usa variables CSS semánticas, NO clases directas de Tailwind.
 
+```tsx
+// ✅ CORRECTO - Tokens semánticos (dark mode automático)
+'bg-[var(--semantic-color-background-default)]'
+'bg-[var(--semantic-color-background-subtle)]'
+'text-[var(--semantic-color-foreground-default)]'
+'text-[var(--semantic-color-foreground-muted)]'
+'bg-[var(--semantic-color-primary-default)]'
+'text-[var(--semantic-color-primary-foreground)]'
+'border-[var(--semantic-color-border-default)]'
+
+// ❌ INCORRECTO - Clases directas (requiere dark: prefix)
+'bg-white dark:bg-gray-950'
+'text-gray-900 dark:text-gray-50'
+'text-gray-500 dark:text-gray-400'
 ```
-LIGHT MODE:
-- Background: white (#ffffff)
-- Background subtle: gray-50 (#f9fafb)
-- Foreground (texto): gray-900 (#111827)
-- Foreground muted: gray-500 (#6b7280) - RATIO 4.5:1 ✓
-- Primary: blue-600 (#2563eb)
-- Success: green-600 (#16a34a) - usar green-700 para texto blanco
-- Destructive: red-600 (#dc2626)
-- Warning: yellow-500 (#eab308) - texto OSCURO, no blanco
-- Border: gray-200 (#e5e7eb)
 
-DARK MODE:
-- Background: gray-950 (#030712)
-- Background subtle: gray-900 (#111827)
-- Foreground: gray-50 (#f9fafb)
-- Foreground muted: gray-400 (#9ca3af) - NO gray-500 (contraste insuficiente)
-- Primary: blue-500 (#3b82f6)
-- Border: gray-800 (#1f2937)
-```
+### VARIABLES CSS DISPONIBLES
+
+| Variable | Descripción |
+|----------|-------------|
+| `--semantic-color-background-default` | Fondo principal |
+| `--semantic-color-background-subtle` | Fondo secundario |
+| `--semantic-color-background-muted` | Fondo terciario |
+| `--semantic-color-foreground-default` | Texto principal |
+| `--semantic-color-foreground-muted` | Texto secundario |
+| `--semantic-color-foreground-subtle` | Texto terciario |
+| `--semantic-color-primary-default` | Color primario |
+| `--semantic-color-primary-hover` | Primario hover |
+| `--semantic-color-primary-foreground` | Texto sobre primario |
+| `--semantic-color-secondary-default` | Color secundario |
+| `--semantic-color-secondary-foreground` | Texto sobre secundario |
+| `--semantic-color-accent-default` | Color acento |
+| `--semantic-color-accent-foreground` | Texto sobre acento |
+| `--semantic-color-border-default` | Borde principal |
+| `--semantic-color-border-strong` | Borde fuerte |
+| `--semantic-color-border-muted` | Borde suave |
+| `--semantic-color-destructive-default` | Color destructivo |
+| `--semantic-color-destructive-foreground` | Texto sobre destructivo |
+| `--semantic-color-success-default` | Color éxito |
+| `--semantic-color-success-foreground` | Texto sobre éxito |
+| `--semantic-color-warning-default` | Color advertencia |
+| `--semantic-color-warning-foreground` | Texto sobre advertencia |
 
 ### REGLAS DE CONTRASTE (WCAG 2.1 AA)
 
 **OBLIGATORIO:** Ratio mínimo 4.5:1 para texto normal
 
-```
-✅ CORRECTO:
-- text-gray-500 en fondo blanco (5.5:1)
-- text-gray-400 en fondo gray-900 (5.4:1)
-- text-white en bg-blue-600 (4.5:1)
-- text-white en bg-green-700 (5.4:1)
-
-❌ INCORRECTO (NO USAR):
-- text-gray-400 en fondo blanco (3.0:1)
-- text-gray-500 en fondo gray-900 (3.75:1)
-- text-white en bg-green-600 (3.76:1)
-- text-white en bg-emerald-600 (3.76:1)
-```
+Los tokens semánticos ya están validados para contraste WCAG AA:
+- `foreground-default` sobre `background-default`: ✅ 4.5:1+
+- `foreground-muted` sobre `background-default`: ✅ 4.5:1+
+- `primary-foreground` sobre `primary-default`: ✅ 4.5:1+
 
 ### TIPOGRAFÍA
 
@@ -111,27 +124,48 @@ lg: 0 10px 15px -3px rgb(0 0 0 / 0.1)
 ### COMPONENTES ESTÁNDAR
 
 **Buttons:**
-```
-- Padding: px-4 py-2 (md), px-3 py-1.5 (sm), px-6 py-3 (lg)
-- Border radius: rounded-md (6px)
-- Font: font-medium
-- States: hover, focus-visible:ring-2, disabled:opacity-50
+```tsx
+// Botón primario con tokens semánticos
+<button
+  className="px-4 py-2
+             bg-[var(--semantic-color-primary-default)]
+             hover:bg-[var(--semantic-color-primary-hover)]
+             text-[var(--semantic-color-primary-foreground)]
+             font-medium rounded-md
+             focus-visible:ring-2 focus-visible:ring-offset-2
+             disabled:opacity-50 disabled:pointer-events-none
+             transition-all duration-200 ease-out"
+>
+  Guardar
+</button>
 ```
 
 **Inputs:**
-```
-- Padding: px-3 py-2
-- Border: border border-gray-200 dark:border-gray-700
-- Border radius: rounded-md
-- Focus: focus:ring-2 focus:ring-blue-500
+```tsx
+<input
+  className="px-3 py-2
+             bg-[var(--semantic-color-background-default)]
+             border border-[var(--semantic-color-border-default)]
+             text-[var(--semantic-color-foreground-default)]
+             placeholder:text-[var(--semantic-color-foreground-muted)]
+             rounded-md
+             focus:ring-2 focus:ring-[var(--semantic-color-primary-default)]"
+/>
 ```
 
 **Cards:**
-```
-- Padding: p-6
-- Border radius: rounded-lg (8px)
-- Shadow: shadow-md
-- Border: border border-gray-200 dark:border-gray-800
+```tsx
+<div className="p-6
+                bg-[var(--semantic-color-background-default)]
+                border border-[var(--semantic-color-border-default)]
+                rounded-lg shadow-md">
+  <h3 className="text-lg font-semibold text-[var(--semantic-color-foreground-default)]">
+    Título
+  </h3>
+  <p className="mt-2 text-[var(--semantic-color-foreground-muted)]">
+    Descripción
+  </p>
+</div>
 ```
 
 ### ACCESIBILIDAD (OBLIGATORIO)
@@ -145,31 +179,35 @@ lg: 0 10px 15px -3px rgb(0 0 0 / 0.1)
 ### EJEMPLO DE CÓDIGO CORRECTO
 
 ```tsx
-// Botón primario
+// Botón primario con tokens semánticos
 <button
-  className="px-4 py-2 bg-blue-600 hover:bg-blue-700
-             text-white font-medium rounded-md
-             focus-visible:ring-2 focus-visible:ring-blue-500
-             focus-visible:ring-offset-2
-             disabled:opacity-50 disabled:cursor-not-allowed
-             transition-colors"
+  className="px-4 py-2
+             bg-[var(--semantic-color-primary-default)]
+             hover:bg-[var(--semantic-color-primary-hover)]
+             text-[var(--semantic-color-primary-foreground)]
+             font-medium rounded-md
+             focus-visible:ring-2 focus-visible:ring-offset-2
+             disabled:opacity-50 disabled:pointer-events-none
+             transition-all duration-200 ease-out
+             active:scale-[0.98]"
 >
   Guardar
 </button>
 
-// Texto secundario (contraste correcto)
-<p className="text-gray-500 dark:text-gray-400 text-sm">
+// Texto secundario (tokens semánticos = contraste automático)
+<p className="text-[var(--semantic-color-foreground-muted)] text-sm">
   Última actualización hace 5 minutos
 </p>
 
-// Card
-<div className="p-6 bg-white dark:bg-gray-900
-                border border-gray-200 dark:border-gray-800
+// Card con tokens semánticos
+<div className="p-6
+                bg-[var(--semantic-color-background-default)]
+                border border-[var(--semantic-color-border-default)]
                 rounded-lg shadow-md">
-  <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
+  <h3 className="text-lg font-semibold text-[var(--semantic-color-foreground-default)]">
     Título
   </h3>
-  <p className="mt-2 text-gray-500 dark:text-gray-400">
+  <p className="mt-2 text-[var(--semantic-color-foreground-muted)]">
     Descripción
   </p>
 </div>
@@ -177,7 +215,9 @@ lg: 0 10px 15px -3px rgb(0 0 0 / 0.1)
 // Botón con solo icono
 <button
   aria-label="Cerrar modal"
-  className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+  className="p-2 rounded-md
+             hover:bg-[var(--semantic-color-secondary-default)]
+             transition-colors"
 >
   <svg aria-hidden="true" className="w-5 h-5">...</svg>
 </button>
@@ -186,8 +226,11 @@ lg: 0 10px 15px -3px rgb(0 0 0 / 0.1)
 ### NO USAR (ERRORES COMUNES)
 
 ```tsx
-// ❌ Contraste insuficiente en dark mode
-<p className="text-gray-500 dark:text-gray-500">
+// ❌ Clases directas de Tailwind (no usar)
+<p className="text-gray-500 dark:text-gray-400">
+
+// ✅ Tokens semánticos (usar siempre)
+<p className="text-[var(--semantic-color-foreground-muted)]">
 
 // ❌ Sin aria-label en botón icon-only
 <button><XIcon /></button>
@@ -195,11 +238,11 @@ lg: 0 10px 15px -3px rgb(0 0 0 / 0.1)
 // ❌ SVG sin aria-hidden
 <svg className="w-5 h-5">
 
-// ❌ Verde claro con texto blanco
-<div className="bg-green-600 text-white">
+// ❌ Fondo directo sin tokens
+<div className="bg-white dark:bg-gray-950">
 
-// ❌ Gradientes (contraste no calculable)
-<div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+// ✅ Fondo con tokens
+<div className="bg-[var(--semantic-color-background-default)]">
 ```
 
 ---
@@ -218,12 +261,18 @@ lg: 0 10px 15px -3px rgb(0 0 0 / 0.1)
 
 3. Ejemplo de prompt completo:
    ```
-   CONTEXTO: Usa mi Design System con colores semánticos,
-   contraste WCAG AA (4.5:1), y accesibilidad completa.
+   CONTEXTO: Usa mi Design System con tokens semánticos CSS
+   (var(--semantic-color-*)), contraste WCAG AA automático,
+   y accesibilidad completa.
 
    GENERA: Una interfaz de chat con:
    - Lista de mensajes con burbujas
    - Input de texto con botón enviar
-   - Modo claro y oscuro
+   - Usa tokens semánticos para todos los colores
    - Botones icon-only con aria-labels
+   - SVGs con aria-hidden="true"
    ```
+
+---
+
+*Actualizado: Enero 2026 - Migrado a tokens semánticos CSS*

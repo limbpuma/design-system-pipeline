@@ -26,14 +26,25 @@ BRANCH: feature/[nombre-componente]
 INSTRUCCIONES:
 1. Lee AGENTS.md para entender patrones del proyecto
 2. Usa CVA (class-variance-authority) para variantes
-3. Usa tokens semánticos de tokens/semantic/colors.json
+3. Usa tokens semánticos CSS (var(--semantic-color-*))
 4. Sigue reglas de accesibilidad de docs/accessibility/A11Y-ERROR-GUIDE.md:
-   - Contraste dark mode: dark:text-slate-400 (NUNCA slate-500)
+   - Usa tokens semánticos para contraste automático
    - SVGs decorativos: aria-hidden="true"
    - Botones icon-only: aria-label obligatorio
 5. Crea archivo .stories.tsx con decorator withA11yStoryWrapper
-6. Incluye soporte dark mode completo
+6. Dark mode automático via tokens semánticos (NO usar dark: prefix)
 7. Agrega TypeScript types para todas las props
+
+TOKENS SEMÁNTICOS (OBLIGATORIO):
+✅ CORRECTO:
+- bg-[var(--semantic-color-background-default)]
+- text-[var(--semantic-color-foreground-default)]
+- text-[var(--semantic-color-foreground-muted)]
+- border-[var(--semantic-color-border-default)]
+
+❌ INCORRECTO:
+- bg-white dark:bg-gray-950
+- text-gray-500 dark:text-gray-400
 
 ESTRUCTURA DE ARCHIVOS:
 - src/components/[Nombre]/[Nombre].tsx
@@ -67,8 +78,14 @@ INSTRUCCIONES:
 5. Crear stories con variantes:
    - Default
    - WithImage
-   - Dark (si aplica)
    - Mobile (responsive preview)
+
+TOKENS SEMÁNTICOS (OBLIGATORIO):
+Usar variables CSS semánticas en lugar de clases directas:
+- bg-[var(--semantic-color-background-default)]
+- text-[var(--semantic-color-foreground-default)]
+- text-[var(--semantic-color-foreground-muted)]
+- bg-[var(--semantic-color-primary-default)]
 
 COMPONENTES DISPONIBLES:
 Revisar src/components/ para lista completa antes de crear nuevos.
@@ -102,7 +119,19 @@ INSTRUCCIONES:
    - Loading (skeleton)
    - Empty (mensaje + CTA)
    - Error (mensaje + retry)
-6. Soporte completo dark mode
+6. Dark mode automático via tokens semánticos
+
+TOKENS SEMÁNTICOS (OBLIGATORIO):
+✅ CORRECTO:
+- bg-[var(--semantic-color-background-default)]
+- bg-[var(--semantic-color-background-subtle)]
+- text-[var(--semantic-color-foreground-default)]
+- text-[var(--semantic-color-foreground-muted)]
+- border-[var(--semantic-color-border-default)]
+
+❌ INCORRECTO:
+- bg-white dark:bg-gray-950
+- text-gray-500 dark:text-gray-400
 
 ACCESIBILIDAD CRÍTICA:
 - Scrollable regions: tabIndex={0} role="region" aria-label="[descripción]"
@@ -141,17 +170,19 @@ INSTRUCCIONES:
    - Loading indicators
    - Error states
 
+TOKENS SEMÁNTICOS (OBLIGATORIO):
+Usar variables CSS para colores:
+- Texto principal: text-[var(--semantic-color-foreground-default)]
+- Texto muted: text-[var(--semantic-color-foreground-muted)]
+- Fondo: bg-[var(--semantic-color-background-default)]
+- Fondo sutil: bg-[var(--semantic-color-background-subtle)]
+
 ACCESIBILIDAD ESPECÍFICA:
 - Chat container: role="log" aria-live="polite"
 - Mensajes nuevos anunciados a screen readers
 - Input de mensaje: aria-label descriptivo
 - Botón enviar: aria-label="Enviar mensaje"
 - Typing indicator: aria-live="polite" aria-label="El asistente está escribiendo"
-
-CONTRASTE (CRÍTICO):
-- Timestamps: text-slate-500 dark:text-slate-400
-- Metadata: text-slate-600 dark:text-slate-400
-- NUNCA usar dark:text-slate-500
 
 VALIDACIÓN: npm run a11y:validate debe pasar
 
@@ -172,10 +203,12 @@ GUÍA DE REFERENCIA: docs/accessibility/A11Y-ERROR-GUIDE.md
 
 ERRORES COMUNES A BUSCAR Y CORREGIR:
 
-1. CONTRASTE:
-   - dark:text-slate-500 → dark:text-slate-400
-   - dark:text-gray-500 → dark:text-gray-400
-   - Ratio mínimo: 4.5:1 para texto normal
+1. COLORES SIN TOKENS SEMÁNTICOS:
+   ❌ text-gray-500 dark:text-gray-400
+   ✅ text-[var(--semantic-color-foreground-muted)]
+
+   ❌ bg-white dark:bg-gray-950
+   ✅ bg-[var(--semantic-color-background-default)]
 
 2. ICONOS Y SVGs:
    - Agregar aria-hidden="true" a SVGs decorativos
@@ -199,8 +232,9 @@ PROCESO:
 1. Ejecutar npm run a11y:validate
 2. Listar todos los errores
 3. Aplicar fixes siguiendo A11Y-ERROR-GUIDE.md
-4. Re-ejecutar validación
-5. Solo crear PR si pasa validación
+4. Migrar a tokens semánticos CSS
+5. Re-ejecutar validación
+6. Solo crear PR si pasa validación
 
 VALIDACIÓN OBLIGATORIA: npm run a11y:validate debe pasar
 
@@ -225,6 +259,13 @@ INSTRUCCIONES:
 3. Agregar nuevas variantes/props según el diseño
 4. Actualizar stories para reflejar cambios
 5. Mantener o mejorar accesibilidad existente
+6. Usar tokens semánticos CSS para todos los colores
+
+TOKENS SEMÁNTICOS:
+Si el componente usa clases directas de Tailwind, migrar a tokens:
+- bg-white → bg-[var(--semantic-color-background-default)]
+- text-gray-900 → text-[var(--semantic-color-foreground-default)]
+- text-gray-500 → text-[var(--semantic-color-foreground-muted)]
 
 CONSIDERACIONES:
 - No eliminar props existentes sin deprecation
@@ -258,6 +299,17 @@ INSTRUCCIONES:
 2. Analizar qué componentes existentes se pueden reutilizar
 3. Crear nuevos componentes SOLO si no existen equivalentes
 4. Estructura modular y reutilizable
+5. Usar tokens semánticos CSS para TODOS los colores
+
+TOKENS SEMÁNTICOS (OBLIGATORIO):
+Ver src/styles/generated/variables.css para lista completa.
+Variables principales:
+- --semantic-color-background-default
+- --semantic-color-background-subtle
+- --semantic-color-foreground-default
+- --semantic-color-foreground-muted
+- --semantic-color-primary-default
+- --semantic-color-border-default
 
 ESTRUCTURA SUGERIDA:
 src/
@@ -292,31 +344,32 @@ Antes de generar el diseño en Stitch, incluye este contexto:
 ```
 CONTEXTO DE DESIGN SYSTEM:
 - Proyecto: limbpuma/design-system-pipeline
-- Stack: React 18 + TypeScript + Tailwind CSS
+- Stack: React 19 + TypeScript + Tailwind CSS
 - Accesibilidad: WCAG 2.1 AA obligatorio
-- Contraste mínimo: 4.5:1
+- Contraste: Automático via tokens semánticos
 
-COLORES SEMÁNTICOS:
-Light Mode:
-- Background: white (#ffffff)
-- Foreground: gray-900 (#111827)
-- Muted text: slate-500 (#64748b) - 5.5:1 ratio
-- Primary: blue-600 (#2563eb)
-- Destructive: red-600 (#dc2626)
-- Border: gray-200 (#e5e7eb)
+TOKENS SEMÁNTICOS CSS (OBLIGATORIO):
+Usar variables CSS en lugar de clases directas de Tailwind:
 
-Dark Mode:
-- Background: gray-950 (#030712)
-- Foreground: gray-50 (#f9fafb)
-- Muted text: slate-400 (#94a3b8) - NUNCA slate-500
-- Primary: blue-500 (#3b82f6)
-- Border: gray-800 (#1f2937)
+✅ CORRECTO:
+- bg-[var(--semantic-color-background-default)]
+- bg-[var(--semantic-color-background-subtle)]
+- text-[var(--semantic-color-foreground-default)]
+- text-[var(--semantic-color-foreground-muted)]
+- bg-[var(--semantic-color-primary-default)]
+- text-[var(--semantic-color-primary-foreground)]
+- border-[var(--semantic-color-border-default)]
+
+❌ INCORRECTO:
+- bg-white dark:bg-gray-950
+- text-gray-900 dark:text-gray-50
+- text-gray-500 dark:text-gray-400
 
 PATRONES REQUERIDOS:
 - Transiciones: transition-all duration-200 ease-out
 - Focus: focus-visible:ring-2 focus-visible:ring-offset-2
 - Disabled: disabled:pointer-events-none disabled:opacity-50
-- Hover: hover:bg-[semantic-color-hover]
+- Hover: hover:bg-[var(--semantic-color-*-hover)]
 - Active: active:scale-[0.98]
 
 ---
@@ -334,3 +387,8 @@ DISEÑO SOLICITADO:
 3. **Indica validación**: Siempre incluir que debe pasar `a11y:validate`
 4. **Branch naming**: Usar convención `feat/`, `fix/`, `update/`
 5. **Reutilizar**: Mencionar componentes existentes que deben usarse
+6. **Tokens semánticos**: SIEMPRE usar variables CSS, nunca clases directas
+
+---
+
+*Actualizado: Enero 2026 - Migrado a tokens semánticos CSS*
