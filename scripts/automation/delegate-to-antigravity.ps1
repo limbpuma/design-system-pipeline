@@ -95,10 +95,19 @@ Implementar la pagina **$TaskName** siguiendo el Design System Pipeline.
    └── index.ts
    ``````
 
-2. **Colores (CRITICO):**
-   - Light mode: bg-white, text-gray-900, text-gray-500 (muted)
-   - Dark mode: bg-gray-950, text-gray-50, text-gray-400 (muted)
-   - Primary: blue-600 (light) / blue-500 (dark)
+2. **Tokens Semanticos CSS (CRITICO):**
+   USAR variables CSS en lugar de clases Tailwind directas:
+
+   CORRECTO:
+   - bg-[var(--semantic-color-background-default)]
+   - text-[var(--semantic-color-foreground-default)]
+   - text-[var(--semantic-color-foreground-muted)]
+   - border-[var(--semantic-color-border-default)]
+   - bg-[var(--semantic-color-primary-default)]
+
+   INCORRECTO:
+   - bg-white dark:bg-gray-950
+   - text-gray-900 dark:text-gray-50
 
 3. **Accesibilidad WCAG 2.1 AA:**
    - Todos los SVG con aria-hidden="true"
@@ -106,9 +115,9 @@ Implementar la pagina **$TaskName** siguiendo el Design System Pipeline.
    - Focus visible en elementos interactivos
    - Soporte para navegacion por teclado
 
-4. **Ambos modos de tema:**
-   - Implementar light Y dark mode
-   - Usar clases dark: de Tailwind
+4. **Dark mode automatico:**
+   - NO usar clases dark: de Tailwind
+   - Los tokens semanticos manejan dark mode automaticamente
 
 $(if ($Description) { "### Descripcion Adicional`n$Description`n" })
 
