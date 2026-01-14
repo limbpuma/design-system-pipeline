@@ -81,3 +81,20 @@ export {
   generateThemeVariables,
   quickPresets,
 } from './themeGenerator';
+
+// Runtime theme injection hook
+export {
+  useRuntimeTheme,
+  type RuntimeThemeState,
+  type RuntimeThemeActions,
+  type UseRuntimeThemeOptions,
+} from './useRuntimeTheme';
+
+// Theme storage utilities
+export {
+  createThemeStorage,
+  themeStorage,
+  useThemeStorage,
+  type StoredTheme,
+  type ThemeStorage,
+} from './themeStorage';
