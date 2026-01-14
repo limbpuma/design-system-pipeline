@@ -407,10 +407,16 @@ export function NotificationList({
       {/* Header */}
       {header !== null && (header || defaultHeader)}
 
-      {/* Notification list */}
+      {/* Notification list - scrollable with keyboard access */}
       <div
-        className={cn('overflow-y-auto')}
+        className={cn(
+          'overflow-y-auto',
+          'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
+        )}
         style={{ maxHeight }}
+        tabIndex={maxHeight ? 0 : undefined}
+        role="region"
+        aria-label="Notification list"
       >
         {loading ? (
           <NotificationSkeleton />

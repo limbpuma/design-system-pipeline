@@ -465,6 +465,7 @@ export function SearchBar({
             'bg-[var(--semantic-color-popover-default)]',
             'border border-[var(--semantic-color-border-default)]',
             'rounded-lg shadow-lg py-2 max-h-80 overflow-auto',
+            'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]',
             variant === 'hero' && 'rounded-xl'
           )}
           role="listbox"

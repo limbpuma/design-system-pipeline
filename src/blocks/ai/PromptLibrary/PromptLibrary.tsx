@@ -136,8 +136,16 @@ const PromptLibrary: React.FC<PromptLibraryProps> = ({
         </div>
       </div>
 
-      {/* Prompt List */}
-      <div className="flex-1 overflow-y-auto p-2">
+      {/* Prompt List - scrollable with keyboard access */}
+      <div
+        tabIndex={0}
+        role="region"
+        aria-label="Prompt list"
+        className={cn(
+          'flex-1 overflow-y-auto p-2',
+          'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
+        )}
+      >
         {filteredPrompts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <svg className="h-12 w-12 text-[var(--semantic-color-foreground-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

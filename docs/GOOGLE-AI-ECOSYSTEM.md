@@ -3,11 +3,71 @@
 Guía completa para integrar el Design System Pipeline con el ecosistema de herramientas Google AI Pro.
 
 **Fecha:** Enero 2026
-**Suscripción:** Google AI Pro ($19.99/mes)
+**Suscripción:** Google AI Pro ($19.99/mes) + Claude Code Ultra ($100/mes)
 
 ---
 
-## Arquitectura del Ecosistema
+## Arquitectura de Dos Niveles
+
+El ecosistema se divide en dos niveles operativos:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│              NIVEL 1: GOOGLE CLOUD (Intervención Manual)                    │
+│                                                                             │
+│   ┌─────────┐    ┌─────────┐    ┌──────────┐    ┌─────────┐               │
+│   │ Stitch  │    │AI Studio│    │NotebookLM│    │  Jules  │               │
+│   │  (UI)   │    │  (UI)   │    │   (UI)   │    │  (Web)  │               │
+│   └────┬────┘    └────┬────┘    └────┬─────┘    └────┬────┘               │
+│        │              │              │               │                     │
+│   ┌────▼──────────────▼──────────────▼───────────────▼────┐               │
+│   │     MANUAL TASKS (docs/MANUAL-GOOGLE-TASKS.md)        │               │
+│   │        + Structured Prompts + Instructions            │               │
+│   └─────────────────────────┬─────────────────────────────┘               │
+│                             │                                              │
+│                      [ User Executes ]                                     │
+│                             │                                              │
+└─────────────────────────────┼──────────────────────────────────────────────┘
+                              │
+                       [ Output to Local ]
+                              │
+┌─────────────────────────────▼──────────────────────────────────────────────┐
+│              NIVEL 2: LOCAL (Semi/Full Automatizado)                       │
+│                                                                            │
+│   ┌─────────────────────────────────────────────────────────────────────┐ │
+│   │                      Claude Code (Orchestrator)                      │ │
+│   │              Revisión + Validación + Integración                    │ │
+│   └─────────────────────────────┬───────────────────────────────────────┘ │
+│                                 │                                          │
+│   ┌─────────────────────────────▼───────────────────────────────────────┐ │
+│   │                       automation-team                                │ │
+│   │        C:\Users\limbp\Documents\AI_FIRST\automation-team            │ │
+│   │                                                                      │ │
+│   │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌───────────┐           │ │
+│   │  │gemini-cli│  │jules-cli │  │Antigravity│  │ Worktrees │           │ │
+│   │  │ Research │  │  Async   │  │  Advanced │  │ Claude 1-4│           │ │
+│   │  │ Analysis │  │  Tasks   │  │   Agent   │  │ Gemini 1-2│           │ │
+│   │  └──────────┘  └──────────┘  └──────────┘  └───────────┘           │ │
+│   └──────────────────────────────────────────────────────────────────────┘ │
+└────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Capacidad Diaria
+
+| Herramienta | Límite | Tipo |
+|-------------|--------|------|
+| Gemini CLI | 100/día | Automatizable |
+| Jules CLI | 100/día (15 concurrent) | Automatizable |
+| AI Studio UI | Ilimitado | Manual |
+| Stitch | Ilimitado | Manual |
+| NotebookLM | Ilimitado | Manual |
+| Claude Code | ~60/5h | Semi-auto |
+
+**Ver:** `docs/MANUAL-GOOGLE-TASKS.md` para tareas estructuradas
+
+---
+
+## Arquitectura Original del Ecosistema
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
@@ -469,3 +529,46 @@ gemini "Revisa git diff HEAD~1 según AGENTS.md"
 
 ### Foros
 - [Google AI Developers Forum](https://discuss.ai.google.dev/)
+
+---
+
+## Integración con automation-team
+
+### Ubicación
+```
+C:\Users\limbp\Documents\AI_FIRST\automation-team
+```
+
+### Delegación de Páginas Completas
+
+Usar `delegate-page.ps1` para delegar implementación:
+
+```powershell
+# Desde diseño de Stitch
+.\scripts\automation\delegate-page.ps1 -PageName "Dashboard" -Source stitch
+
+# Preview sin ejecutar
+.\scripts\automation\delegate-page.ps1 -PageName "Settings" -DryRun
+```
+
+### Verificar Capacidad
+
+```bash
+cd C:\Users\limbp\Documents\AI_FIRST\automation-team
+python scripts/orchestrator.py status
+```
+
+### Workflows Disponibles
+
+| Workflow | Comando | Agentes |
+|----------|---------|---------|
+| Feature | `orchestrator.py feature "..."` | Gemini → Claude → Jules |
+| Bug Fix | `orchestrator.py bugfix "..."` | Gemini → Jules |
+| Research | `orchestrator.py research "..."` | Gemini |
+| Batch | `orchestrator.py batch "pattern" "instr"` | AI Studio API |
+
+### Documentación Relacionada
+
+- `docs/MANUAL-GOOGLE-TASKS.md` - Tareas manuales estructuradas
+- `docs/DESIGN-SYSTEM-RULES.md` - Reglas del Design System
+- `automation-team/CLAUDE.md` - Coordinación multi-agente

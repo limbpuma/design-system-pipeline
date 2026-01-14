@@ -204,16 +204,20 @@ export function ChatInterface({
           />
         </div>
 
-        {/* Context panel (optional) */}
+        {/* Context panel (optional) - scrollable with keyboard access */}
         {contextPanel && showContextPanel && (
           <div
             className={cn(
               'w-full lg:w-80 flex-shrink-0',
               'rounded-xl border border-[var(--semantic-color-border-default)]',
               'bg-[var(--semantic-color-card-default)]',
-              'p-4 overflow-y-auto'
+              'p-4 overflow-y-auto',
+              'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
             )}
             style={{ maxHeight: 'calc(100vh - 200px)' }}
+            tabIndex={0}
+            role="complementary"
+            aria-label="Context panel"
           >
             {context && (
               <div className="mb-4 pb-4 border-b border-[var(--semantic-color-border-default)]">

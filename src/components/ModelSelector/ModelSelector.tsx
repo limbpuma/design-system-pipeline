@@ -102,7 +102,15 @@ const ModelSelector = React.forwardRef<HTMLDivElement, ModelSelectorProps>(
           </button>
 
           {isOpen && (
-            <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-80 overflow-auto rounded-md border border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-popover-default)] shadow-lg">
+            <div
+              className={cn(
+                'absolute left-0 right-0 top-full z-50 mt-1 max-h-80 overflow-auto rounded-md border border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-popover-default)] shadow-lg',
+                'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
+              )}
+              tabIndex={0}
+              role="listbox"
+              aria-label="Select AI model"
+            >
               {Object.entries(groupedModels).map(([provider, providerModels]) => (
                 <div key={provider}>
                   {provider && groupByProvider && (

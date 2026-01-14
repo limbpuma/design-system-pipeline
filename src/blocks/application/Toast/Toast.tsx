@@ -59,7 +59,12 @@ const iconMap = {
 
 const Toast: React.FC<ToastProps> = ({ id, title, description, variant = 'default', action, onDismiss }) => {
   return (
-    <div className={cn(toastVariants({ variant }))}>
+    <div
+      className={cn(toastVariants({ variant }))}
+      role="alert"
+      aria-live={variant === 'error' ? 'assertive' : 'polite'}
+      aria-atomic="true"
+    >
       {iconMap[variant]}
       <div className="flex-1">
         {title && <p className="font-semibold">{title}</p>}
@@ -153,7 +158,11 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({
   return (
     <ToastContext.Provider value={{ toast, dismiss, dismissAll }}>
       {children}
-      <div className={cn('fixed z-50 flex flex-col gap-2 w-full max-w-sm pointer-events-none', positionClasses[position])}>
+      <div
+        className={cn('fixed z-50 flex flex-col gap-2 w-full max-w-sm pointer-events-none', positionClasses[position])}
+        role="region"
+        aria-label="Notifications"
+      >
         {toasts.map((t) => (
           <Toast key={t.id} {...t} onDismiss={dismiss} />
         ))}

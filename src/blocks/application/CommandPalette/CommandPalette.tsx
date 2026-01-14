@@ -107,23 +107,29 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({
   let flatIndex = -1;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh]">
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh]"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Command palette"
+    >
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={() => onOpenChange?.(false)}
         onKeyDown={(e) => e.key === 'Escape' && onOpenChange?.(false)}
-        role="button"
+        role="presentation"
         tabIndex={-1}
-        aria-label="Close command palette"
+        aria-hidden="true"
       />
 
-      {/* Dialog */}
+      {/* Dialog content */}
       <div
         className={cn(
           'relative w-full max-w-lg overflow-hidden rounded-xl border border-[var(--semantic-color-border-default)] bg-[var(--semantic-color-popover-default)] shadow-2xl',
           className
         )}
+        role="document"
       >
         {/* Search Input */}
         <div className="flex items-center border-b border-[var(--semantic-color-border-default)] px-4">
@@ -143,8 +149,16 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({
           </kbd>
         </div>
 
-        {/* Results */}
-        <div className="max-h-80 overflow-y-auto p-2">
+        {/* Results - scrollable with keyboard access */}
+        <div
+          className={cn(
+            'max-h-80 overflow-y-auto p-2',
+            'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
+          )}
+          tabIndex={0}
+          role="listbox"
+          aria-label="Command results"
+        >
           {filteredItems.length === 0 ? (
             <p className="py-6 text-center text-sm text-[var(--semantic-color-foreground-muted)]">
               {emptyMessage}

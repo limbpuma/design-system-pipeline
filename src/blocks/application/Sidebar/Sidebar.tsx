@@ -160,8 +160,15 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto p-2">
+        {/* Navigation - scrollable with keyboard access */}
+        <nav
+          className={cn(
+            'flex-1 overflow-y-auto p-2',
+            'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
+          )}
+          tabIndex={0}
+          aria-label="Main navigation"
+        >
           <div className="space-y-1">
             {items.map((item) => (
               <NavItemComponent
