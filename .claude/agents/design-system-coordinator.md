@@ -151,3 +151,69 @@ HeroSection │ ~35     │ 70+    │ Revisión completa
 - `docs/DESIGN-QUALITY-FRAMEWORK.md` - Framework completo
 - `docs/AI-AGENT-INSTRUCTIONS.md` - Instrucciones para agentes
 - `docs/examples/ButtonPremium.example.tsx` - Gold standard
+
+---
+
+## 🔍 PA11Y AUDIT (RESPONSABILIDAD DEL COORDINATOR)
+
+### Auditoría de Accesibilidad Automatizada
+
+El Coordinator es responsable de ejecutar auditorías Pa11y como parte del flujo de validación.
+
+### Comandos de Auditoría
+```bash
+# Check de composición (OBLIGATORIO antes de aprobar)
+npm run pa11y:composition
+
+# Pa11y directo sobre URL
+npm run pa11y -- http://localhost:6006
+
+# Storybook + Pa11y automático
+npm run pa11y:storybook
+
+# CI/CD con configuración
+npm run pa11y:ci
+```
+
+### Checklist de Auditoría
+```
+Antes de aprobar CUALQUIER componente:
+
+[ ] npm run pa11y:composition → PASS
+[ ] Contrast ratio >= 3:1 para iconos UI
+[ ] Contrast ratio >= 4.5:1 para texto
+[ ] Revisar reports/pa11y/*.png (screenshots)
+[ ] Verificar iconos visibles en light Y dark mode
+```
+
+### Gap Crítico Corregido
+
+El swarm NO detectaba iconos invisibles dentro de containers oscuros.
+
+```tsx
+// ❌ ANTES: El swarm NO detectaba esto
+<Card className="bg-gray-900">
+  <Icon className="text-gray-900" />  // INVISIBLE
+</Card>
+
+// ✅ AHORA: Pa11y + composition check lo detecta
+$ npm run pa11y:composition
+❌ Icon inside dark Card
+   Contrast Ratio: 1:1
+   Status: FAIL (< 3:1 for UI elements)
+```
+
+### Updated Workflow con Pa11y
+```
+1. ANALYZE → Revisar estado actual
+2. PLAN → TodoWrite
+3. DELEGATE → Asignar tareas
+4. PA11Y CHECK → npm run pa11y:composition ⭐ NUEVO
+5. QUALITY CHECK → validate_design_quality
+6. COORDINATE → Sincronizar capas
+7. VALIDATE → Verificar entregables
+8. SUBMIT → Solo si pa11y + quality >= 70
+```
+
+### Reference
+- `docs/PA11Y-AUDIT-GUIDE.md` - Guía completa de auditoría

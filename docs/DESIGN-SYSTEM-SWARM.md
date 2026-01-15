@@ -135,7 +135,29 @@ Tareas:
   - Agregar navegación por teclado
 ```
 
-### Fase 3.5: Quality Validation
+### Fase 3.5: 🚨 Pa11y Composition Audit (CRÍTICO)
+```
+Agentes: 🌈 + ♿ + ⚛️ + 👑
+Comandos:
+  - npm run pa11y:composition   ← OBLIGATORIO
+  - npm run pa11y:audit         ← Si Storybook activo
+
+Tareas:
+  - ESCANEAR todas las composiciones padre-hijo
+  - VALIDAR contraste de iconos/elementos vs fondo del contenedor
+  - RECHAZAR si ratio < 3:1 para iconos UI
+  - NUNCA asumir que el contraste se hereda correctamente
+  - Revisar reportes en reports/pa11y/
+
+Gap Corregido:
+  - El swarm NO detectaba iconos invisibles dentro de cards oscuras
+  - Ejemplo: Card(bg-gray-900) + Icon(text-gray-900) = INVISIBLE
+  - AHORA: pa11y + escaneo recursivo obligatorio
+
+Reference: docs/PA11Y-AUDIT-GUIDE.md
+```
+
+### Fase 3.6: Quality Validation
 ```
 Agentes: 👑 + 🖼️ + ⚛️ + 🎨
 Tareas:
@@ -229,6 +251,42 @@ Flujo:
 | Storybook Stories | Todos | 📖 |
 | Color Contrast | WCAG AA | 🌈 |
 | SVG aria-hidden | 100% | ♿ |
+| **Composition Contrast** | **≥ 3:1 iconos** | 🌈 + ♿ |
+
+---
+
+## 🚨 Gap Crítico Corregido: Composition Contrast
+
+### El Problema Original
+El swarm NO escaneaba el contraste de elementos hijos (iconos) contra el fondo de su contenedor padre. Esto resultó en iconos invisibles dentro de cards oscuras.
+
+### Ejemplo de Falla No Detectada
+```tsx
+// ❌ El swarm NO detectó esto - icono invisible
+<Card className="bg-gray-900 dark:bg-gray-950">
+  <Icon className="text-gray-900" />  // Ratio 1:1 = INVISIBLE
+</Card>
+
+// ✅ CORRECTO - contraste verificado
+<Card className="bg-gray-900 dark:bg-gray-950">
+  <Icon className="text-gray-300" />  // Ratio 7.5:1 ✅
+</Card>
+```
+
+### Solución Implementada
+1. **Nueva Fase 3.5**: Composition Contrast Validation obligatoria
+2. **Agentes actualizados**: 🌈 color-accessibility-expert y ♿ accessibility-specialist
+3. **Escaneo recursivo**: Todos los hijos vs fondo del padre
+4. **Nueva métrica**: Composition Contrast ≥ 3:1 para iconos UI
+
+### Validación Requerida
+```
+Para CADA componente compuesto:
+1. Identificar contenedores con bg-* o background
+2. Listar todos los hijos con text-*, fill-*, stroke-*
+3. Calcular contraste hijo vs fondo-padre (NO fondo-página)
+4. RECHAZAR si < 3:1 para iconos, < 4.5:1 para texto
+```
 
 ---
 
