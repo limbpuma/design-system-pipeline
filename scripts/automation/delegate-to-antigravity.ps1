@@ -132,10 +132,39 @@ $(if ($ContextFiles) { $ContextFiles | ForEach-Object { "- $_" } | Out-String })
 - Stories de Storybook
 - Export en index.ts
 
+## Validation Loop (OBLIGATORIO)
+
+Antes de entregar, ejecutar este ciclo hasta que TODO pase:
+
+``````bash
+# 1. Lint
+npm run lint
+# Si falla → corregir y repetir
+
+# 2. Validacion de accesibilidad estatica
+npm run a11y:validate
+# Si falla → corregir y repetir
+
+# 3. Pa11y Composition Contrast (CRITICO)
+npm run pa11y:composition
+# Si falla → corregir iconos/colores y repetir
+# Requisito: 0 failures en composition contrast
+
+# 4. Solo cuando los 3 pasen → entregar
+``````
+
+### Pa11y Composition - Errores Comunes
+
+Si pa11y:composition falla, verificar:
+- Iconos en containers oscuros deben usar text-gray-300 o mas claro
+- Iconos en containers claros deben usar text-gray-700 o mas oscuro
+- Usar tokens semanticos: text-[var(--semantic-color-icon-default)]
+- Ratio minimo: 3:1 para iconos UI (WCAG 1.4.11)
+
 ## Delivery
 - Output Path: $InboxPath\output\$taskId\
 - PR Required: No (copiar a design-system-pipeline manualmente)
-- Validation: npm run lint && npm run a11y:validate
+- Validation: TODOS los checks del Validation Loop deben pasar
 
 ## MCP Tools Sugeridos
 - `compute-router` para generar codigo React
@@ -181,9 +210,21 @@ $(if ($ContextFiles) { $ContextFiles | ForEach-Object { "- $_" } | Out-String })
 - Stories file
 - Tipos TypeScript
 
+## Validation Loop (OBLIGATORIO)
+
+Ejecutar hasta que TODO pase:
+
+``````bash
+npm run lint                  # Debe pasar
+npm run a11y:validate         # Debe pasar
+npm run pa11y:composition     # Debe pasar (0 failures)
+``````
+
+Si pa11y:composition falla → corregir contraste de iconos y repetir.
+
 ## Delivery
 - Output Path: $InboxPath\output\$taskId\
-- Validation: npm run lint
+- Validation: TODOS los checks deben pasar
 
 ---
 *Tarea generada por Claude Code: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')*
@@ -251,9 +292,21 @@ $(if ($ContextFiles) { $ContextFiles | ForEach-Object { "- $_" } | Out-String } 
 - Explicacion del fix
 - Test de regresion si aplica
 
+## Validation Loop (OBLIGATORIO)
+
+Ejecutar hasta que TODO pase:
+
+``````bash
+npm run lint                  # Debe pasar
+npm run test                  # Debe pasar
+npm run pa11y:composition     # Debe pasar (0 failures)
+``````
+
+Si pa11y:composition falla → corregir contraste y repetir.
+
 ## Delivery
 - Output Path: $InboxPath\output\$taskId\
-- Validation: npm run lint && npm run test
+- Validation: TODOS los checks deben pasar
 
 ---
 *Tarea generada por Claude Code: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')*
