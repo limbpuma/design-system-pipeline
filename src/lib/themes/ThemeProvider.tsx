@@ -132,6 +132,9 @@ export function ThemeProvider({
 
   // Listen for system color mode changes
   useEffect(() => {
+    // SSR guard: window is not available on the server
+    if (typeof window === 'undefined') return;
+
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
       setSystemColorMode(e.matches ? 'dark' : 'light');
@@ -143,6 +146,9 @@ export function ThemeProvider({
 
   // Apply theme and color mode to DOM
   useEffect(() => {
+    // SSR guard: document is not available on the server
+    if (typeof document === 'undefined') return;
+
     const element = targetElement ?? document.documentElement;
 
     // Remove all theme classes

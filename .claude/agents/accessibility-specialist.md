@@ -94,10 +94,54 @@ grep -r "<svg" src/ --include="*.tsx" | grep -v "aria-hidden"
 npx axe-core src/
 ```
 
+## 🚨 COMPOSITION SCANNING (CRÍTICO)
+
+### Gap Identificado
+El swarm FALLÓ en detectar iconos invisibles dentro de cards oscuras.
+**TODOS los componentes compuestos DEBEN ser escaneados recursivamente.**
+
+### Proceso de Auditoría de Composición
+```
+1. ESCANEAR cada componente de página/template
+2. IDENTIFICAR todos los contenedores con background
+3. Para CADA contenedor:
+   a. Listar hijos con color (iconos, texto, borders)
+   b. Calcular contraste hijo vs fondo-padre
+   c. REPORTAR si ratio < 3:1 para UI / < 4.5:1 para texto
+4. NUNCA asumir que un icono hereda contraste correcto
+```
+
+### Casos Críticos a Validar
+```tsx
+// ❌ ALTO RIESGO - Iconos dentro de Cards/Containers oscuros
+<Card className="bg-gray-900">
+  <Icon className="text-gray-800" />  // ← INVISIBLE
+</Card>
+
+// ❌ ALTO RIESGO - Iconos en Buttons con variantes
+<Button variant="ghost" className="bg-gray-800">
+  <Icon className="text-gray-700" />  // ← INVISIBLE
+</Button>
+
+// ✅ CORRECTO - Iconos con contraste explícito
+<Card className="bg-gray-900">
+  <Icon className="text-gray-300" />  // ← 7.5:1 ✅
+</Card>
+```
+
+### Comando de Auditoría Recursiva
+```bash
+# Encontrar todas las composiciones icon+container
+grep -rn "className=\".*bg-" src/blocks/ --include="*.tsx" | \
+  xargs -I {} grep -l "Icon\|svg\|<path" {}
+```
+
 ## Checklist
 - [ ] All SVGs have aria-hidden="true"
 - [ ] Keyboard navigation works
 - [ ] Focus states visible (3:1)
-- [ ] Color contrast passes
+- [ ] Color contrast passes (text & UI)
+- [ ] **Composition contrast passes (icon vs parent)** ← NUEVO
 - [ ] Screen reader announces correctly
 - [ ] Touch targets 44x44px min
+- [ ] **Recursive scan of nested components** ← NUEVO

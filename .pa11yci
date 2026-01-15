@@ -1,0 +1,47 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "runners": ["axe", "htmlcs"],
+    "timeout": 30000,
+    "wait": 2000,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+    },
+    "hideElements": ".sb-show-main > .sb-addon-actions-panel",
+    "ignore": []
+  },
+  "urls": [
+    {
+      "url": "http://localhost:6006/iframe.html?id=primitives-button--primary",
+      "screenCapture": "./reports/pa11y/button-primary.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=primitives-button--secondary",
+      "screenCapture": "./reports/pa11y/button-secondary.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=primitives-button--destructive",
+      "screenCapture": "./reports/pa11y/button-destructive.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=primitives-input--default",
+      "screenCapture": "./reports/pa11y/input-default.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=primitives-card--default",
+      "screenCapture": "./reports/pa11y/card-default.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=primitives-dialog--default",
+      "screenCapture": "./reports/pa11y/dialog-default.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=primitives-tabs--default",
+      "screenCapture": "./reports/pa11y/tabs-default.png"
+    },
+    {
+      "url": "http://localhost:6006/iframe.html?id=primitives-select--default",
+      "screenCapture": "./reports/pa11y/select-default.png"
+    }
+  ]
+}

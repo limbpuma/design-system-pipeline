@@ -368,12 +368,50 @@ const PremiumSkeleton = () => (
 
 | Categoría | Peso | Descripción |
 |-----------|------|-------------|
-| **Micro-interacciones** | 25% | Hover, focus, active, disabled states |
-| **Animaciones** | 20% | Transiciones suaves, timing correcto |
+| **Micro-interacciones** | 20% | Hover, focus, active, disabled states |
+| **Animaciones** | 15% | Transiciones suaves, timing correcto |
 | **Profundidad Visual** | 15% | Sombras, bordes, gradientes |
 | **Feedback** | 15% | Estados de loading, error, success |
 | **Consistencia** | 15% | Uso de tokens, patrones establecidos |
+| **Composition Contrast** | 10% | Contraste de hijos vs contenedor padre |
 | **Innovación** | 10% | Detalles únicos, sorpresa positiva |
+
+### 5.1.1 🚨 Composition Contrast (NUEVO - CRÍTICO)
+
+> **Gap identificado:** El swarm NO escaneaba iconos dentro de containers.
+
+**Validación obligatoria para componentes compuestos:**
+
+```typescript
+interface CompositionContrastCheck {
+  // CADA icono/elemento hijo debe validarse contra su contenedor padre
+  parentBackground: string;      // ej: 'bg-gray-900'
+  childElement: string;          // ej: 'Icon', 'svg', 'text'
+  childColor: string;            // ej: 'text-gray-800'
+  contrastRatio: number;         // ej: 1.2:1 ❌
+  meetsWCAG: boolean;            // mínimo 3:1 para UI, 4.5:1 texto
+}
+```
+
+**Ejemplo de falla NO detectada anteriormente:**
+```tsx
+// ❌ INVISIBLE - El swarm NO detectó esto
+<Card className="bg-gray-900">
+  <Icon className="text-gray-900" />  // Ratio: 1:1 = INVISIBLE
+</Card>
+
+// ✅ CORRECTO
+<Card className="bg-gray-900">
+  <Icon className="text-gray-300" />  // Ratio: 7.5:1 ✅
+</Card>
+```
+
+**Proceso de validación:**
+1. Escanear TODOS los contenedores con `bg-*` o `background`
+2. Identificar TODOS los hijos con `text-*`, `fill-*`, `stroke-*`
+3. Calcular ratio de contraste hijo vs fondo del padre
+4. RECHAZAR si ratio < 3:1 para iconos UI
+5. RECHAZAR si ratio < 4.5:1 para texto normal
 
 ### 5.2 Niveles de Calidad
 
@@ -437,6 +475,10 @@ interface DesignQualityCheck {
   usesSemanticTokens: boolean;      // 5 pts
   followsPatterns: boolean;         // 5 pts
   consistentSpacing: boolean;       // 5 pts
+
+  // Composition Contrast (10 puntos) - NUEVO
+  iconParentContrastPasses: boolean; // 5 pts - iconos vs contenedor
+  nestedElementsScanned: boolean;    // 5 pts - escaneo recursivo
 
   // Innovación (10 puntos)
   hasUniqueDetails: boolean;        // 5 pts

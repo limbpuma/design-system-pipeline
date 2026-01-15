@@ -114,6 +114,37 @@ Tasks:
 - Add keyboard navigation
 ```
 
+### Phase 3.5: 🚨 PA11Y COMPOSITION AUDIT (CRÍTICO)
+```
+Agents: 🌈 + ♿ + ⚛️
+Commands:
+- npm run pa11y:composition   ← OBLIGATORIO
+- npm run pa11y:audit         ← Si Storybook activo
+
+Tasks:
+- ESCANEAR todas las composiciones (icon dentro de card, etc.)
+- VALIDAR contraste de hijos vs fondo del contenedor padre
+- RECHAZAR si icono/elemento no tiene ratio ≥ 3:1 vs su padre
+- NUNCA asumir que contraste heredado es correcto
+- Revisar reportes en reports/pa11y/
+
+Gap Corregido:
+- El swarm NO detectaba iconos invisibles dentro de cards oscuras
+- AHORA: pa11y + escaneo recursivo de composiciones padre-hijo
+
+Reference: docs/PA11Y-AUDIT-GUIDE.md
+```
+
+### Phase 3.6: QUALITY VALIDATION
+```
+Agents: 👑 + 🖼️ + ⚛️ + 🎨
+Tasks:
+- Run validate_design_quality on each component
+- Verify score >= 70
+- Fix issues if score < 70
+- Use suggest_design_improvements for guidance
+```
+
 ### Phase 4: DOCUMENTATION & TESTING
 ```
 Agents: 📖 + 🧪 + 📚
@@ -207,6 +238,7 @@ Agents involved:
 | Storybook Stories | All components | 📖 |
 | Color Contrast | WCAG AA | 🌈 |
 | SVG aria-hidden | 100% | ♿ |
+| **Composition Contrast** | **3:1 min icons** | **🌈 + ♿** |
 
 ---
 
@@ -217,15 +249,19 @@ Agents involved:
 
 Componentes con score < 70 serán **RECHAZADOS** por `submit_component`.
 
-### Quality Validation Phase (NEW)
+### 🚨 Composition Contrast Phase (NEW - CRÍTICO)
 ```
-Phase 3.5: QUALITY VALIDATION
-Agents: 👑 + 🖼️ + ⚛️ + 🎨
+Phase 3.5: COMPOSITION CONTRAST VALIDATION
+Agents: 🌈 + ♿ + ⚛️
 Tasks:
-- Run validate_design_quality on each component
-- Verify score >= 70
-- Fix issues if score < 70
-- Use suggest_design_improvements for guidance
+- Escanear TODAS las composiciones padre-hijo
+- Validar contraste icono vs fondo del contenedor
+- Rechazar si ratio < 3:1 para iconos UI
+- NUNCA asumir que el contraste se hereda correctamente
+
+EJEMPLO DE FALLA CORREGIDA:
+Card (bg-gray-900) + Icon (text-gray-900) = INVISIBLE ❌
+Card (bg-gray-900) + Icon (text-gray-300) = 7.5:1 ✅
 ```
 
 ### Required Premium Patterns
