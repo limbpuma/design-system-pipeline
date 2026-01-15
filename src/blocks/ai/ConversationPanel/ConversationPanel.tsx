@@ -334,17 +334,14 @@ export function ConversationPanel({
         </div>
       )}
 
-      {/* Messages area - scrollable with keyboard access */}
+      {/* Messages area - scrollable */}
       <div
         ref={containerRef}
         onScroll={handleScroll}
-        tabIndex={0}
         className={cn(
           'flex-1 overflow-y-auto p-5 space-y-4',
           'scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600',
-          'scrollbar-track-transparent',
-          // Focus visible for keyboard users
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
+          'scrollbar-track-transparent'
         )}
         style={{ maxHeight }}
         role="log"

@@ -135,7 +135,7 @@ export const Dashboard: React.FC = () => {
                                 <span className="text-sm text-gray-500 dark:text-gray-400">Application</span>
                             </li>
                             <li>
-                                <span className="text-sm text-gray-400 dark:text-gray-600">/</span>
+                                <span className="text-sm text-gray-400 dark:text-gray-500" aria-hidden="true">/</span>
                             </li>
                             <li>
                                 <span className="text-sm font-medium text-gray-900 dark:text-gray-50" aria-current="page">Dashboard</span>
@@ -189,7 +189,10 @@ export const Dashboard: React.FC = () => {
                                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-50">Revenue Overview</h2>
                                 <div className="flex items-center space-x-2">
                                     {/* Example time range selector */}
-                                    <select className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
+                                    <select
+                                        aria-label="Select time range"
+                                        className="bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2"
+                                    >
                                         <option>Last 7 days</option>
                                         <option>Last 30 days</option>
                                         <option>Last year</option>
@@ -209,7 +212,7 @@ export const Dashboard: React.FC = () => {
                                     </svg>
                                 </div>
                                 <div className="text-center z-10">
-                                    <IconTrendingUp className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-600 mb-2" />
+                                    <IconTrendingUp className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-2" />
                                     <p className="text-gray-500 dark:text-gray-400 text-sm">Chart visualization would render here</p>
                                 </div>
                             </div>

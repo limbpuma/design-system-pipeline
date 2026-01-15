@@ -136,14 +136,12 @@ const PromptLibrary: React.FC<PromptLibraryProps> = ({
         </div>
       </div>
 
-      {/* Prompt List - scrollable with keyboard access */}
+      {/* Prompt List - scrollable */}
       <div
-        tabIndex={0}
         role="region"
         aria-label="Prompt list"
         className={cn(
-          'flex-1 overflow-y-auto p-2',
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
+          'flex-1 overflow-y-auto p-2'
         )}
       >
         {filteredPrompts.length === 0 ? (

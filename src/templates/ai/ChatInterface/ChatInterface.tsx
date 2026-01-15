@@ -211,11 +211,9 @@ export function ChatInterface({
               'w-full lg:w-80 flex-shrink-0',
               'rounded-xl border border-[var(--semantic-color-border-default)]',
               'bg-[var(--semantic-color-card-default)]',
-              'p-4 overflow-y-auto',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
+              'p-4 overflow-y-auto'
             )}
             style={{ maxHeight: 'calc(100vh - 200px)' }}
-            tabIndex={0}
             role="complementary"
             aria-label="Context panel"
           >

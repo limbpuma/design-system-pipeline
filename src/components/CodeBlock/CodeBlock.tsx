@@ -94,12 +94,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
 
       {/* Code Content - scrollable with keyboard access */}
       <div
-        className={cn(
-          'overflow-auto',
-          'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
-        )}
+        className="overflow-auto"
         style={{ maxHeight }}
-        tabIndex={0}
         role="region"
         aria-label={`Code block${filename ? `: ${filename}` : ''}`}
       >

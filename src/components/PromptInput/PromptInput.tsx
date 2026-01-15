@@ -402,18 +402,16 @@ export function PromptInput({
                 <span>Suggestions</span>
               </div>
             </div>
-            <ul
-              className={cn(
-                'max-h-60 overflow-y-auto',
-                'focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--semantic-color-ring-default)]'
-              )}
-              tabIndex={0}
+            <div
+              className="max-h-60 overflow-y-auto"
               role="listbox"
               aria-label="Prompt suggestions"
             >
               {suggestions.map((suggestion, index) => (
-                <li
+                <div
                   key={suggestion.id}
+                  role="option"
+                  aria-selected={index === selectedSuggestion}
                   className={cn(
                     'px-4 py-3 cursor-pointer transition-all duration-150',
                     'hover:bg-slate-50 dark:hover:bg-slate-800',
@@ -475,9 +473,9 @@ export function PromptInput({
                     </svg>
                   </div>
                   </button>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         )}
       </div>
